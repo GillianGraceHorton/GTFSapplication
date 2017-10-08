@@ -1,7 +1,7 @@
 import javafx.scene.layout.Pane;
 
 /**
- * @author hortong
+ * @author hortong, hoffmanjc
  * @version 1.0
  * @created 03-Oct-2017 4:57:29 PM
  */
