@@ -1,5 +1,7 @@
 import javafx.scene.layout.Pane;
 
+import java.util.ArrayList;
+
 /**
  * @author hortong, hoffmanjc
  * @version 1.0
@@ -7,15 +9,18 @@ import javafx.scene.layout.Pane;
  */
 public class BusMap extends Pane implements Observer {
 
-	private Subject subject;
-	public DataStorage m_DataStorage;
+	private Subject dataStorage;
 
 	public BusMap(){
 
 	}
 
-	public void update(){
-
+	public void setSubject(Subject dataStorage) {
+		this.dataStorage = dataStorage;
 	}
 
+	@Override
+	public void update(ArrayList<Object> updatedItems) {
+
+	}
 }

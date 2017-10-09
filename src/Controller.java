@@ -1,8 +1,12 @@
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -16,11 +20,22 @@ public class Controller implements Initializable {
 	private FileManager fileManager;
 	private ListView listView;
 	private DataStorage dataStorage;
+	@FXML
+    private VBox mainVBox;
 
 	public void initialize(URL location, ResourceBundle resources){
 		fileManager = new FileManager();
 		listView = new ListView();
+		map = new BusMap();
 		dataStorage = new DataStorage();
+		ArrayList<Observer> observers = new ArrayList<>();
+		observers.add(listView);
+		observers.add(map);
+		dataStorage.setObservers(observers);
+		listView.setSubject(dataStorage);
+		map.setSubject(dataStorage);
+
+		mainVBox.getChildren().add(listView);
 	}
 
 	public void loadFilesHandler(){
@@ -39,13 +54,15 @@ public class Controller implements Initializable {
 
 	}
 
-	public void importFilesHandler(){
+	public void importFilesHandler() throws FileNotFoundException {
 		FileChooser fileChooser = new FileChooser();
 		File fileToAdd = fileChooser.showOpenDialog(null);
 		if(fileToAdd == null){
 			//TODO error message
 		}else {
-			fileManager.addFile(fileToAdd);
+			//fileManager.addFile(fileToAdd);
+            ArrayList<Object> stops = fileManager.parseStopFile(fileToAdd);
+            dataStorage.notifyObservers(stops);
 		}
 	}
 

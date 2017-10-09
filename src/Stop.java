@@ -101,4 +101,10 @@ public class Stop {
 		return (stopID.equals(stop.getStopID()));
 	}
 
+	public String toString(){
+		return "Stop: " + stopID + "\n    Name: " + name + "\n    Description: " + stopDescription + "\n    " +
+				"Latitude: " + location.getLat() + "\n    Longitude: " + location.getLon() + "\n " +
+				"   Arrival Time: " + arrivalTime + "\n    Departure Time: " + departureTime;
+	}
+
 }

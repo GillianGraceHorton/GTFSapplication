@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -14,6 +15,10 @@ public class DataStorage implements Subject {
 
 	public DataStorage(){
 
+	}
+
+	public void setObservers(Collection<Observer> observers) {
+		this.observers = observers;
 	}
 
 	/**
@@ -48,8 +53,10 @@ public class DataStorage implements Subject {
 		return null;
 	}
 
-	public void notifyObservers(){
-
+	public void notifyObservers(ArrayList<Object> itemsToSend){
+		for (Observer observer: observers) {
+			observer.update(itemsToSend);
+		}
 	}
 
 	/**

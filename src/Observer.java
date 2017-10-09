@@ -1,4 +1,4 @@
-
+import java.util.ArrayList;
 
 /**
  * @author hortong
@@ -7,6 +7,6 @@
  */
 public interface Observer {
 
-	public void update();
+	public void update(ArrayList<Object> updatedItems);
 
 }

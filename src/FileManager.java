@@ -15,7 +15,6 @@ public class FileManager {
 
 	private Collection<File> validFileList;
 	private ArrayList<String> validFileTypes;
-
 	public void FileManager(){
 
 	}
@@ -116,8 +115,8 @@ public class FileManager {
 	 * 
 	 * @param file
 	 */
-	public Collection<Stop> parseStopFile(File file) throws FileNotFoundException {
-		Collection<Stop> toReturn = new ArrayList<Stop>();
+	public ArrayList<Object> parseStopFile(File file) throws FileNotFoundException {
+		ArrayList<Object> toReturn = new ArrayList<>();
 		String stop_id;
 		String stop_desc;
 		String stop_lat;
@@ -144,8 +143,8 @@ public class FileManager {
 	 * 
 	 * @param file
 	 */
-	public Collection<Route> parseRouteFile(File file) throws FileNotFoundException {
-		Collection<Route> toReturn = new ArrayList<Route>();
+	public ArrayList<Object> parseRouteFile(File file) throws FileNotFoundException {
+		ArrayList<Object> toReturn = new ArrayList<>();
 		String route_id;
 		String agency_id;
 		String route_short_name;
@@ -178,8 +177,8 @@ public class FileManager {
 	 * 
 	 * @param file
 	 */
-	public Collection<Trip> parseTripFile(File file) throws FileNotFoundException {
-		Collection<Trip> toReturn= new ArrayList<Trip>();
+	public ArrayList<Object> parseTripFile(File file) throws FileNotFoundException {
+		ArrayList<Object> toReturn= new ArrayList<>();
 		String route_id;
 		String service_id;
 		String trip_id;

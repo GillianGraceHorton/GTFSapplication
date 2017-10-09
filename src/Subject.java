@@ -1,5 +1,4 @@
-
-
+import java.util.ArrayList;
 
 /**
  * @author heinzja
@@ -20,6 +19,6 @@ public interface Subject {
 	 */
 	public void detach(Observer observer);
 
-	public void notifyObservers();
+	public void notifyObservers(ArrayList<Object> itemsToSend);
 
 }
