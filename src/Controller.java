@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
- * @author heinzja
+ * @author hortong
  * @version 1.0
  * @created 03-Oct-2017 4:57:20 PM
  */
@@ -26,7 +26,7 @@ public class Controller implements Initializable {
 	public void initialize(URL location, ResourceBundle resources){
 		try {
 			fileManager = new FileManager();
-			fileManager.Initialize();
+			fileManager.initFileManager();
 			listView = new ListView();
 			map = new BusMap();
 			dataStorage = new DataStorage();
