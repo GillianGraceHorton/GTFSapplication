@@ -13,8 +13,9 @@ public class Controller implements Initializable {
 	private BusMap map;
 	private FileManager fileManager;
 	private ListView listView;
+	private DataStorage dataStorage;
 
-	public Controller(){
+	public void initialize(URL location, ResourceBundle resources){
 
 	}
 
@@ -46,9 +47,7 @@ public class Controller implements Initializable {
 
 	}
 
-	public void initialize(URL location, ResourceBundle resources){
 
-	}
 
 	public void searchTripHandler(){
 

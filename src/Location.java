@@ -11,16 +11,12 @@ public class Location {
 	private float lat;
 	private float lon;
 
-	public Location(){
-
-	}
-
 	/**
 	 * 
 	 * @param lon
 	 * @param lat
 	 */
-	public void Location(float lon, float lat){
+	public Location(float lon, float lat){
 
 	}
 

@@ -8,82 +8,89 @@
  */
 public class Stop {
 
+	/**
+	 * arrival time for the bus at given stop. to be set when the stop is part of a trip.
+	 */
 	private int arrivalTime;
+
+	/**
+	 * departure time for the bus at given stop. to be set when the stop is part of a trip.
+	 */
 	private int departureTime;
+
+	/**
+	 * gps location of the stop
+	 */
 	private Location location;
+
+	/**
+	 * stop identifier
+	 */
 	private String stopID;
+
+	/**
+	 * stop name
+	 */
 	private String name;
-	public DataStorage m_DataStorage;
-	public Location m_Location;
-
-	public Stop(){
-
-	}
-
-
 
 	/**
-	 * 
-	 * @param lon
-	 * @param lat
-	 * @param name
+	 * short description of stop and/or where it is located
 	 */
-	public void Stop(float lon, float lat, String name){
-
-	}
+	private String stopDescription;
 
 	/**
-	 * 
-	 * @param arrivalTime
+	 * creates a stop object with information loaded from a stop file
+	 * @param lon longitude for the gps location of the stop
+	 * @param lat latitude for the gps location of the stop
+	 * @param name of the stop
+	 * @param stopID identifier for the stop
+	 * @param stopDesc description of the stop
 	 */
-	public void setArrivalTime(int arrivalTime){
-
+	public Stop(float lon, float lat, String name, String stopID, String stopDesc){
+		this.location = new Location(lon, lat);
+		this.name = name;
+		this.stopID = stopID;
+		this.stopDescription = stopDesc;
 	}
 
-	public int getArrivalTime(){
-		return 0;
+	public void setArrivalTime(int arrivalTime) {
+		this.arrivalTime = arrivalTime;
 	}
 
-	/**
-	 * 
-	 * @param departureTime
-	 */
-	public void setDepartureTime(int departureTime){
-
+	public void setDepartureTime(int departureTime) {
+		this.departureTime = departureTime;
 	}
 
-	public int getDepartureTime(){
-		return 0;
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
-	/**
-	 * 
-	 * @param lat
-	 */
-	public void setLatitude(float lat){
-
+	public void setStopDescription(String stopDescription) {
+		this.stopDescription = stopDescription;
 	}
 
-	/**
-	 * 
-	 * @param lon
-	 */
-	public void setLongitude(float lon){
-
+	public int getArrivalTime() {
+		return arrivalTime;
 	}
 
-	public float getLatitude(){
-		float num = 0;
-		return num;
+	public int getDepartureTime() {
+		return departureTime;
 	}
 
-	public float getLongitude(){
-		float num = 0;
-		return num;
+	public Location getLocation() {
+		return location;
 	}
 
-	public int getID(){
-		return 0;
+	public String getStopID() {
+		return stopID;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getStopDescription() {
+		return stopDescription;
 	}
 
 	/**
@@ -91,7 +98,7 @@ public class Stop {
 	 * @param stop
 	 */
 	public boolean equals(Stop stop){
-		return false;
+		return (stopID.equals(stop.getStopID()));
 	}
 
 }

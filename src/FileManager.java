@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Scanner;
 
 /**
  * @author heinzja
@@ -91,22 +92,6 @@ public class FileManager {
 	}
 
 	/**
-	 * 
-	 * @param observer
-	 */
-	public void detach(Observer observer){
-
-	}
-
-	/**
-	 * 
-	 * @param created
-	 */
-	public void notifyObservers(Collection<Observer> created){
-
-	}
-
-	/**
 	 *
 	 * @param filename
 	 */
@@ -132,24 +117,94 @@ public class FileManager {
 	 * 
 	 * @param file
 	 */
-	public Stop parseStopFile(File file){
-		return null;
+	public Collection<Stop> parseStopFile(File file) throws FileNotFoundException {
+		Collection<Stop> toReturn = new ArrayList<Stop>();
+		String stop_id;
+		String stop_desc;
+		String stop_lat;
+		String stop_lon;
+		String stop_name;
+		Scanner scanner = new Scanner(file);
+		scanner.nextLine();
+		String line;
+		while(scanner.hasNext()){
+			line = scanner.nextLine();
+			String[] items = line.split(",");
+			stop_id = items[0];
+			stop_name = items[1];
+			stop_desc = items[2];
+			stop_lat = items[3];
+			stop_lon = items[4];
+			toReturn.add(new Stop(Float.parseFloat(stop_lon), Float.parseFloat(stop_lat),
+					stop_name, stop_id, stop_desc));
+		}
+		return toReturn;
 	}
 
 	/**
 	 * 
 	 * @param file
 	 */
-	public Route parseRouteFile(File file){
-		return null;
+	public Collection<Route> parseRouteFile(File file) throws FileNotFoundException {
+		Collection<Route> toReturn = new ArrayList<Route>();
+		String route_id;
+		String agency_id;
+		String route_short_name;
+		String route_long_name;
+		String route_desc;
+		String route_type;
+		String route_url;
+		String route_color;
+		String route_text_color;
+		Scanner scanner = new Scanner(file);
+		scanner.nextLine();
+		String line;
+		while(scanner.hasNext()){
+				line = scanner.nextLine();
+				String[] items = line.split(",");
+				route_id = items[0];
+				agency_id = items[1];
+				route_short_name = items[3];
+				route_long_name = items[4];
+				route_desc = items[5];
+				route_type = items[6];
+				route_url = items[7];
+				toReturn.add(new Route(route_id, agency_id, route_short_name, route_long_name,
+						route_desc, route_type, route_url));
+		}
+		return toReturn;
 	}
 
 	/**
 	 * 
 	 * @param file
 	 */
-	public Trip parseTripFile(File file){
-		return null;
+	public Collection<Trip> parseTripFile(File file) throws FileNotFoundException {
+		Collection<Trip> toReturn= new ArrayList<Trip>();
+		String route_id;
+		String service_id;
+		String trip_id;
+		String trip_head_sign;
+		String direction_id;
+		String block_id;
+		String shape_id;
+		Scanner scanner = new Scanner(file);
+		scanner.nextLine();
+		String line;
+		while(scanner.hasNext()) {
+			line = scanner.nextLine();
+			String[] items = line.split(",");
+			route_id = items[0];
+			service_id = items[1];
+			trip_id = items[2];
+			trip_head_sign = items[3];
+			direction_id = items[4];
+			block_id = items[5];
+			shape_id = items[6];
+			toReturn.add(new Trip(trip_id, service_id, route_id, trip_head_sign, direction_id,
+					block_id, shape_id));
+		}
+		return toReturn;
 	}
 
 	private boolean parseFile(File file){ //TODO: Set specific action for each file type.
