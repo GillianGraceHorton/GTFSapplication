@@ -24,18 +24,22 @@ public class Controller implements Initializable {
     private VBox mainVBox;
 
 	public void initialize(URL location, ResourceBundle resources){
-		fileManager = new FileManager();
-		listView = new ListView();
-		map = new BusMap();
-		dataStorage = new DataStorage();
-		ArrayList<Observer> observers = new ArrayList<>();
-		observers.add(listView);
-		observers.add(map);
-		dataStorage.setObservers(observers);
-		listView.setSubject(dataStorage);
-		map.setSubject(dataStorage);
-
-		mainVBox.getChildren().add(listView);
+		try {
+			fileManager = new FileManager();
+			fileManager.Initialize();
+			listView = new ListView();
+			map = new BusMap();
+			dataStorage = new DataStorage();
+			ArrayList<Observer> observers = new ArrayList<>();
+			observers.add(listView);
+			observers.add(map);
+			dataStorage.setObservers(observers);
+			listView.setSubject(dataStorage);
+			map.setSubject(dataStorage);
+			mainVBox.getChildren().add(listView);
+		}catch (Exception e){
+			System.out.println(e);
+		}
 	}
 
 	public void loadFilesHandler(){
@@ -54,15 +58,15 @@ public class Controller implements Initializable {
 
 	}
 
-	public void importFilesHandler() throws FileNotFoundException {
+	public void importFilesHandler() {
 		FileChooser fileChooser = new FileChooser();
 		File fileToAdd = fileChooser.showOpenDialog(null);
-		if(fileToAdd == null){
-			//TODO error message
-		}else {
-			//fileManager.addFile(fileToAdd);
-            ArrayList<Object> stops = fileManager.parseStopFile(fileToAdd);
-            dataStorage.notifyObservers(stops);
+		try {
+			fileManager.addFile(fileToAdd);
+			ArrayList<Object> stops = fileManager.parseFile(fileToAdd);
+			dataStorage.notifyObservers(stops);
+		}catch (Exception e){
+			System.out.println("TEST: importFilesHandler -> " + e);
 		}
 	}
 

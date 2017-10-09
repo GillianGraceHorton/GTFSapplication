@@ -4,6 +4,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.File;
+
 
 /**
  * author hoffmanjc
@@ -26,10 +28,14 @@ public class Driver extends Application {
 	 * @param primaryStage
 	 */
 	public void start(Stage primaryStage) throws Exception{
-		Parent mainPane = FXMLLoader.load(getClass().getResource("transitc.fxml"));
-		primaryStage.setTitle("Transit");
-		primaryStage.setScene(new Scene(mainPane));
-		primaryStage.show();
+		try {
+			Parent mainPane = FXMLLoader.load(getClass().getResource("transitc.fxml"));
+			primaryStage.setTitle("Transit");
+			primaryStage.setScene(new Scene(mainPane));
+			primaryStage.show();
+		}catch (Exception e){
+			System.out.println(e);
+		}
 	}
 
 }
