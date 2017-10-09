@@ -36,6 +36,8 @@ public class Controller implements Initializable {
 		map.setSubject(dataStorage);
 
 		mainVBox.getChildren().add(listView);
+		listView.setPrefWidth(mainVBox.getPrefWidth());
+		listView.adjustSizes(mainVBox.getPrefHeight(), mainVBox.getPrefWidth());
 	}
 
 	public void loadFilesHandler(){

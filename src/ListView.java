@@ -14,16 +14,30 @@ public class ListView extends Pane implements Observer {
 
 	private Subject dataStorage;
 	private HBox hbox;
-	private VBox stops;
-	private VBox routes;
-	private VBox trips;
+	private TextArea stops;
+	private TextArea routes;
+	private TextArea trips;
 
 	public ListView(){
 		hbox = new HBox();
-		stops = new VBox();
-		routes = new VBox();
-		trips = new VBox();
+		stops = new TextArea("*STOPS*");
+		stops.setEditable(false);
+		routes = new TextArea("*ROUTES*");
+		routes.setEditable(false);
+		trips = new TextArea("*TRIPS*");
+		trips.setEditable(false);
 		hbox.getChildren().addAll(stops, routes, trips);
+		this.getChildren().add(hbox);
+	}
+
+	public void adjustSizes(double height, double width){
+		hbox.setPrefWidth(width);
+		stops.setPrefWidth(width/3);
+		stops.setPrefHeight(height);
+		routes.setPrefWidth(width/3);
+		routes.setPrefHeight(height);
+		trips.setPrefWidth(width/3);
+		trips.setPrefHeight(height);
 	}
 
 	public void setSubject(Subject dataStorage){
@@ -33,12 +47,11 @@ public class ListView extends Pane implements Observer {
 	public void update(ArrayList<Object> addedItems){
 		for (Object item: addedItems) {
 			if(item instanceof Stop){
-				stops.getChildren().add(new TextArea(item.toString()));
+				stops.setText(stops.getText() + "\n" + item.toString());
 			}else if(item instanceof Route){
-				routes.getChildren().add(new TextArea(item.toString()));
+				routes.setText(routes.getText() + "\n" + item.toString());
 			}else if(item instanceof Trip){
-				trips.getChildren().add(new TextArea(item.toString()));
-			}
+				trips.setText(trips.getText() + "\n" + item.toString());			}
 		}
 	}
 
