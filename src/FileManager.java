@@ -14,7 +14,6 @@ import java.util.Scanner;
 public class FileManager {
 
 	private Collection<File> validFileList;
-	private static Collection<Observer> observers;
 	private ArrayList<String> validFileTypes;
 
 	public void FileManager(){
@@ -62,7 +61,7 @@ public class FileManager {
      *              If the directory 'validfiles' does not exist, its creates the directory and add the file to it.
 	 * @param file File which is to be added to validFileList
 	 */
-	private boolean addFile(File file){
+	public boolean addFile(File file){
         boolean result = false;                                                                            //initializes result, false by default
 		if(isValid(file)) {                                                                                     //checks if file is valid
             File newDir = new File("validfiles");                                                        //makes temp file with validfiles folder dir

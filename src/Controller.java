@@ -1,5 +1,7 @@
 import javafx.fxml.Initializable;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -16,7 +18,9 @@ public class Controller implements Initializable {
 	private DataStorage dataStorage;
 
 	public void initialize(URL location, ResourceBundle resources){
-
+		fileManager = new FileManager();
+		listView = new ListView();
+		dataStorage = new DataStorage();
 	}
 
 	public void loadFilesHandler(){
@@ -36,7 +40,13 @@ public class Controller implements Initializable {
 	}
 
 	public void importFilesHandler(){
-
+		FileChooser fileChooser = new FileChooser();
+		File fileToAdd = fileChooser.showOpenDialog(null);
+		if(fileToAdd == null){
+			//TODO error message
+		}else {
+			fileManager.addFile(fileToAdd);
+		}
 	}
 
 	public void exportFilesHandler(){
