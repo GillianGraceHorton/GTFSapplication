@@ -36,7 +36,10 @@ public class Controller implements Initializable {
 			dataStorage.setObservers(observers);
 			listView.setSubject(dataStorage);
 			map.setSubject(dataStorage);
+
 			mainVBox.getChildren().add(listView);
+            listView.setPrefWidth(mainVBox.getPrefWidth());
+            listView.adjustSizes(mainVBox.getPrefHeight(), mainVBox.getPrefWidth());
 		}catch (Exception e){
 			System.out.println(e);
 		}
