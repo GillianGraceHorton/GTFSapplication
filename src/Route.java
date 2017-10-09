@@ -120,4 +120,13 @@ public class Route {
 		return this.getRouteID().equalsIgnoreCase(route.getRouteID());
 	}
 
+	public String toString(){
+		return "Route: " + routeID +
+				"\n    AgencyID: " + agencyID +
+				"\n    Name: " + routeShortName +
+				"\n    Description: " + routeDescription +
+				"\n    Type: " + routeType +
+				"\n    URL: " + routeUrl;
+	}
+
 }

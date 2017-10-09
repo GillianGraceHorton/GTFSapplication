@@ -11,22 +11,23 @@ public class Location {
 	private float lat;
 	private float lon;
 
+
+	/**
+	 *
+	 * @param lon
+	 * @param lat
+	 */
+	public Location(float lon, float lat){
+		this.lon = lon;
+		this.lat = lat;
+	}
+
 	public float getLat() {
 		return lat;
 	}
 
 	public float getLon() {
 		return lon;
-	}
-
-	/**
-	 *
-
-	 * @param lon
-	 * @param lat
-	 */
-	public Location(float lon, float lat){
-
 	}
 
 	/**

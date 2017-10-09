@@ -100,4 +100,13 @@ public class Trip {
 		return false;
 	}
 
+	public String toString(){
+		return "Trip: " + tripID +
+				"\n    RouteID: " + routeID +
+				"\n    shapeID: " + shapeID +
+				"\n    directionID: " + directionID +
+				"\n    serviceID: " + serviceID +
+				"\n    tripHeadsign: " + tripHeadsign;
+	}
+
 }
