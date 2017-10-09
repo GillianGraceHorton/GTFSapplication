@@ -15,8 +15,10 @@ public class FileManager {
 
 	private Collection<File> validFileList;
 	private ArrayList<String> validFileTypes;
-	public void FileManager(){
-
+	public void Initialize(){
+		validFileList = new ArrayList<File>();
+		validFileTypes = new ArrayList<String>();
+		addValidType();
 	}
 
 	/**
@@ -34,21 +36,17 @@ public class FileManager {
 	 */
 	private boolean isValid(File file){
 		boolean result = false;
-		Path filePath = file.toPath();
-		try (InputStream in = Files.newInputStream(filePath);
-			 BufferedReader reader = new BufferedReader(new InputStreamReader(in)))
-		{
-			String firstLine = reader.readLine();
-			//TODO: if necessary, iterate through entire file to check for validity
-
+		try {
+			String firstLine = getFirstLine(file);
 			for(int i=0;i<validFileTypes.size();i++){ //checks if valid file type
 				if(firstLine.equals(validFileTypes.get(i))){
+					//TODO: if necessary, iterate through entire file to check for validity
 					result = true;
 				}
 			}
 
-		} catch (IOException io) {
-			System.err.println("Test: File sent to isValid, not found.");
+		} catch (Exception e) {
+			System.err.println("TEST: isValid -> " + e);
 		}
 
 		return result;
@@ -115,7 +113,7 @@ public class FileManager {
 	 * 
 	 * @param file
 	 */
-	public ArrayList<Object> parseStopFile(File file) throws FileNotFoundException {
+	private ArrayList<Object> parseStopFile(File file) throws FileNotFoundException {
 		ArrayList<Object> toReturn = new ArrayList<>();
 		String stop_id;
 		String stop_desc;
@@ -127,7 +125,7 @@ public class FileManager {
 		String line;
 		while(scanner.hasNext()){
 			line = scanner.nextLine();
-			String[] items = line.split(",");
+			String[] items = line.split(",\\S");
 			stop_id = items[0];
 			stop_name = items[1];
 			stop_desc = items[2];
@@ -143,7 +141,7 @@ public class FileManager {
 	 * 
 	 * @param file
 	 */
-	public ArrayList<Object> parseRouteFile(File file) throws FileNotFoundException {
+	private ArrayList<Object> parseRouteFile(File file) throws FileNotFoundException {
 		ArrayList<Object> toReturn = new ArrayList<>();
 		String route_id;
 		String agency_id;
@@ -159,7 +157,7 @@ public class FileManager {
 		String line;
 		while(scanner.hasNext()){
 				line = scanner.nextLine();
-				String[] items = line.split(",");
+				String[] items = line.split(",\\S");
 				route_id = items[0];
 				agency_id = items[1];
 				route_short_name = items[3];
@@ -177,7 +175,7 @@ public class FileManager {
 	 * 
 	 * @param file
 	 */
-	public ArrayList<Object> parseTripFile(File file) throws FileNotFoundException {
+	private ArrayList<Object> parseTripFile(File file) throws FileNotFoundException {
 		ArrayList<Object> toReturn= new ArrayList<>();
 		String route_id;
 		String service_id;
@@ -191,7 +189,7 @@ public class FileManager {
 		String line;
 		while(scanner.hasNext()) {
 			line = scanner.nextLine();
-			String[] items = line.split(",");
+			String[] items = line.split(",\\S");
 			route_id = items[0];
 			service_id = items[1];
 			trip_id = items[2];
@@ -205,35 +203,57 @@ public class FileManager {
 		return toReturn;
 	}
 
-	private boolean parseFile(File file){ //TODO: Set specific action for each file type.
-		boolean result = false;
-
-
-
+	public ArrayList<Object> parseFile(File file){ //TODO: add specific action for each valid file type.
+		ArrayList<Object> result = null;
+		try {
+			switch (getFirstLine(file)) {
+				case "stop_id,stop_name,stop_desc,stop_lat,stop_lon":
+					result = parseStopFile(file);
+					break;
+				case "route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color":
+					result = parseRouteFile(file);
+					break;
+				case "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type":
+					result = parseTripFile(file);
+					break;
+				default:
+					System.out.println("TEST: parseFile -> parse format of valid file not supported yet");
+			}
+		}catch (Exception e){
+			System.out.println("TEST: parseFile -> " + e);
+		}
 		return result; 									//returns result of if the file was parsed correctly.
 	}
 
 	/**
 	 *
-	 * @param fileTypes - file which stores a list of other file formats
 	 * @return result - true if able to add file, false if file already exists.
 	 */
-	private boolean addFileType(File fileTypes){
-
-		boolean result = false;
-		try {
-
-			if (!fileTypes.exists()) {
-				fileTypes.createNewFile();
-				result = true;
-			}else {
-				System.out.println("TEST: " + fileTypes.getName() + "Already Exists");
-			}
-
-		}catch (IOException io){
-			System.out.println("TEST: IOException -> addFileTypes");
-		}
-		return result;
+	private void addValidType(){
+		validFileTypes.add("agency_id,agency_name,agency_url,agency_timezone,agency_phone");
+		validFileTypes.add("service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date");
+		validFileTypes.add("service_id,date,exception_type");
+		validFileTypes.add("fare_id,price,currency_type,payment_method,transfers,transfer_duration,agency_id");
+		validFileTypes.add("feed_publisher_name,feed_publisher_url,feed_lang");
+		validFileTypes.add("route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color");
+		validFileTypes.add("shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence");
+		validFileTypes.add("trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type");
+		validFileTypes.add("stop_id,stop_name,stop_desc,stop_lat,stop_lon");
+		validFileTypes.add("from_stop_id,to_stop_id,transfer_type");
+		validFileTypes.add("route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id");
 	}
+
+	private String getFirstLine(File filename){
+		String firstLine = null;
+		try{
+		InputStream in = Files.newInputStream(filename.toPath());
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+		firstLine = reader.readLine();
+		}catch (Exception e){
+			System.out.println("TEST: getFirstLine -> " + e);
+		}
+		return firstLine;
+	}
+
 
 }
