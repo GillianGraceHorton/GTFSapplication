@@ -191,7 +191,7 @@ public class FileManager {
 		String line;
 		while(scanner.hasNext()) {
 			line = scanner.nextLine();
-			String[] items = line.split(",\\S");
+			String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 			route_id = items[0];
 			service_id = items[1];
 			trip_id = items[2];
@@ -222,7 +222,7 @@ public class FileManager {
 				case "route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color":
 					result = parseRouteFile(file);
 					break;
-				case "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type":
+				case "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id":
 					result = parseTripFile(file);
 					break;
 				default:
