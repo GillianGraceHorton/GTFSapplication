@@ -15,7 +15,8 @@ public class FileManager {
 
 	private Collection<File> validFileList;
 	private ArrayList<String> validFileTypes;
-	public void Initialize(){
+
+	public void initFileManager(){
 		validFileList = new ArrayList<File>();
 		validFileTypes = new ArrayList<String>();
 		addValidType();
@@ -30,8 +31,8 @@ public class FileManager {
 	}
 
 	/**
-	 * Author: joseph heinz heinzja@msoe.edu
-	 * Description: current implementation only checks if first line follows format
+	 * @author joseph heinz heinzja@msoe.edu
+	 * Description: current implementation only checks if first line follows valid list of formats
 	 * @param file - file which is to be checked for validity
 	 */
 	private boolean isValid(File file){
@@ -40,7 +41,7 @@ public class FileManager {
 			String firstLine = getFirstLine(file);
 			for(int i=0;i<validFileTypes.size();i++){ //checks if valid file type
 				if(firstLine.equals(validFileTypes.get(i))){
-					//TODO: if necessary, iterate through entire file to check for validity
+					//TODO: Future implementation/testing, iterate through entire file before valid
 					result = true;
 				}
 			}
@@ -53,7 +54,7 @@ public class FileManager {
 	}
 
 	/**
-	 * Author: joseph heinz <heinzja@msoe.edu>
+	 * @author joseph heinz - heinzja@msoe.edu
      * Description: Checks if file is of valid format before adding it to the 'validfiles' directory.
      *              If the directory 'validfiles' does not exist, its creates the directory and add the file to it.
 	 * @param file File which is to be added to validFileList
@@ -88,19 +89,19 @@ public class FileManager {
 	}
 
 	/**
-	 *
+	 * @author
+	 *	Description: removes file from 'validfiles' directory
 	 * @param filename
 	 */
 	public boolean rmFile(String filename){
 		boolean result = false;
 		//TODO: Complete rmFile
-
 		return result;
 	}
 
 	/**
-	 *
-	 * @param filename - name of the file to get from Collection validFileList
+	 *	Description: returns specified file stored in Collection validFileList
+	 * @param filename - name of the file to return
 	 * @return File - file found in list, returns NULL if file does not exist
 	 */
 	private File getFile(String filename){
@@ -110,7 +111,7 @@ public class FileManager {
 	}
 
 	/**
-	 * 
+	 * @author hortong
 	 * @param file
 	 */
 	private ArrayList<Object> parseStopFile(File file) throws FileNotFoundException {
@@ -138,7 +139,7 @@ public class FileManager {
 	}
 
 	/**
-	 * 
+	 * @author hortong
 	 * @param file
 	 */
 	private ArrayList<Object> parseRouteFile(File file) throws FileNotFoundException {
@@ -172,8 +173,9 @@ public class FileManager {
 	}
 
 	/**
-	 * 
-	 * @param file
+	 * @author hortong
+	 * @param file - file to parse for Trip data
+	 *             @return - returns ArrayList full of parsed data from trip file.
 	 */
 	private ArrayList<Object> parseTripFile(File file) throws FileNotFoundException {
 		ArrayList<Object> toReturn= new ArrayList<>();
@@ -189,7 +191,7 @@ public class FileManager {
 		String line;
 		while(scanner.hasNext()) {
 			line = scanner.nextLine();
-			String[] items = line.split(",\\S");
+			String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 			route_id = items[0];
 			service_id = items[1];
 			trip_id = items[2];
@@ -203,9 +205,16 @@ public class FileManager {
 		return toReturn;
 	}
 
-	public ArrayList<Object> parseFile(File file){ //TODO: add specific action for each valid file type.
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: Checks what type of file is to be parsed, and sends it to the correct parse method.
+	 * @param  file - the file to parse for data
+	 * @return returns an ArrayList of objects which contain the parsed data from the file.
+	 */
+	public ArrayList<Object> parseFile(File file){
 		ArrayList<Object> result = null;
 		try {
+			//TODO: as we add more functionality, add specific action for each valid file type.
 			switch (getFirstLine(file)) {
 				case "stop_id,stop_name,stop_desc,stop_lat,stop_lon":
 					result = parseStopFile(file);
@@ -213,7 +222,7 @@ public class FileManager {
 				case "route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color":
 					result = parseRouteFile(file);
 					break;
-				case "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type":
+				case "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id":
 					result = parseTripFile(file);
 					break;
 				default:
@@ -222,12 +231,13 @@ public class FileManager {
 		}catch (Exception e){
 			System.out.println("TEST: parseFile -> " + e);
 		}
-		return result; 									//returns result of if the file was parsed correctly.
+		return result; 													//returns result of if the file was parsed correctly.
 	}
 
 	/**
-	 *
-	 * @return result - true if able to add file, false if file already exists.
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Temporary valid file type arraylist will be changed to be less static in the future.
+	 * Description: adds valid file types to an arraylist of valid file types.
 	 */
 	private void addValidType(){
 		validFileTypes.add("agency_id,agency_name,agency_url,agency_timezone,agency_phone");
@@ -243,12 +253,18 @@ public class FileManager {
 		validFileTypes.add("route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id");
 	}
 
-	private String getFirstLine(File filename){
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: Returns the first line of a given file, used for file validity check
+	 * @param file - the file to get the first line of text from.
+	 * @return returns string of first line of text from file.
+	 */
+	private String getFirstLine(File file){
 		String firstLine = null;
 		try{
-		InputStream in = Files.newInputStream(filename.toPath());
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-		firstLine = reader.readLine();
+			InputStream in = Files.newInputStream(file.toPath());
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+			firstLine = reader.readLine();
 		}catch (Exception e){
 			System.out.println("TEST: getFirstLine -> " + e);
 		}
