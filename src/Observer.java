@@ -7,6 +7,6 @@ import java.util.ArrayList;
  */
 public interface Observer {
 
-	public void update(ArrayList<Object> updatedItems);
+	void update(ArrayList<Object> updatedItems);
 
 }
