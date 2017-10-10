@@ -37,7 +37,6 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <Pane prefHeight="200.0" prefWidth="200.0" />
          </children>
       </VBox>
    </children>
