@@ -1,3 +1,5 @@
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -9,24 +11,31 @@ import java.util.ArrayList;
  * @version 1.0
  * @created 03-Oct-2017 4:57:27 PM
  */
-public class ListView extends Pane implements Observer {
+public class ListView extends TabPane implements Observer {
 
 	private Subject dataStorage;
-	private HBox hbox;
+	//private HBox hbox;
+	private Tab stopsTab;
+	private Tab routesTab;
+	private Tab tripsTab;
+
 	private TextArea stops;
 	private TextArea routes;
 	private TextArea trips;
 
 	public ListView(){
-		hbox = new HBox();
+		this.getTabs().addAll(stopsTab, routesTab, tripsTab);
+
+		//hbox = new HBox();
 		stops = new TextArea("*STOPS*");
 		stops.setEditable(false);
 		routes = new TextArea("*ROUTES*");
 		routes.setEditable(false);
 		trips = new TextArea("*TRIPS*");
 		trips.setEditable(false);
-		hbox.getChildren().addAll(stops, routes, trips);
-		this.getChildren().add(hbox);
+		stopsTab.getTabPane().getChildrenUnmodifiable().add(stops);
+		routesTab.getTabPane().getChildrenUnmodifiable().add(routes);
+		tripsTab.getTabPane().getChildrenUnmodifiable().add(trips);
 	}
 
 	/**
@@ -35,7 +44,7 @@ public class ListView extends Pane implements Observer {
 	 * @param width
 	 */
 	public void adjustSizes(double height, double width){
-		hbox.setPrefWidth(width);
+		//hbox.setPrefWidth(width);
 		stops.setPrefWidth(width/3);
 		stops.setPrefHeight(height);
 		routes.setPrefWidth(width/3);
