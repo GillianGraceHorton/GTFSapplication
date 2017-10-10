@@ -9,8 +9,6 @@ import java.util.Collection;
  */
 public class Route {
 
-	private String routeTextColorCode;
-	private String routeColorCode;
 	private Color color;
 	private String routeID;
 	private Collection<Stop> stops;
@@ -20,9 +18,11 @@ public class Route {
 	private String routeDescription;
 	private String routeType;
 	private String routeUrl;
+	private String routeColor;
+	private String routeTextColor;
 
-	public Route(String route_id, String agency_id, String route_short_name, String route_long_name,
-				 String route_desc, String route_type, String route_url, String route_color, String route_text_color){
+	public Route(String route_id, String agency_id,String route_short_name, String route_long_name,
+				 String route_desc,String route_type, String route_url,String route_color, String route_text_color){
 		this.routeID = route_id;
 		this.agencyID = agency_id;
 		this.routeShortName = route_short_name;
@@ -30,8 +30,8 @@ public class Route {
 		this.routeDescription = route_desc;
 		this.routeType = route_type;
 		this.routeUrl = route_url;
-		this.routeTextColorCode = route_text_color;
-		this.routeColorCode = route_color;
+		this.routeColor = route_color;
+		this.routeTextColor = route_text_color;
 	}
 
 	/**
@@ -101,6 +101,8 @@ public class Route {
 	public String getRouteUrl() {
 		return routeUrl;
 	}
+	public String getRouteColor(){return routeColor;}
+	public String getRouteTextColor (){return routeTextColor;}
 
 	/**
 	 * searches route for a stop with the specified stopID
@@ -115,6 +117,21 @@ public class Route {
 		}
 		return null;
 	}
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * @return returns string of data stored in route class
+	 */
+	public String toString(){
+		return  "RouteID: " + getRouteID() +"\n" +
+				"AgencyID: " + getAgencyID() +"\n" +
+				"ShortName: " + getRouteShortName() +"\n" +
+				"LongName: " + getRouteLongName() +"\n" +
+				"Description: " + getRouteDescription() +"\n" +
+				"Type: " + getRouteType() +"\n" +
+				"URL: " + getRouteUrl() +"\n" +
+				"Color: " + getRouteColor() +"\n" +
+				"TextColor: " + getRouteTextColor() +"\n";
+	}
 
 	/**
 	 * 
@@ -122,15 +139,6 @@ public class Route {
 	 */
 	public boolean equals(Route route){
 		return this.getRouteID().equalsIgnoreCase(route.getRouteID());
-	}
-
-	public String toString(){
-		return "Route: " + routeID +
-				"\n    AgencyID: " + agencyID +
-				"\n    Name: " + routeShortName +
-				"\n    Description: " + routeDescription +
-				"\n    Type: " + routeType +
-				"\n    URL: " + routeUrl;
 	}
 
 }

@@ -51,7 +51,8 @@ public class ListView extends Pane implements Observer {
 			}else if(item instanceof Route){
 				routes.setText(routes.getText() + "\n" + item.toString());
 			}else if(item instanceof Trip){
-				trips.setText(trips.getText() + "\n" + item.toString());			}
+				trips.setText(trips.getText() + "\n" + item.toString());
+			}
 		}
 	}
 
