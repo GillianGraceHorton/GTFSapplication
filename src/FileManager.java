@@ -20,10 +20,21 @@ public class FileManager {
 	 * @author Joseph Heinz - heinzja@msoe.edu
 	 * Description: initializes validFileList and validFileTypes
 	 */
-	public void initFileManager(){
+	public FileManager(){
 		validFileList = new ArrayList<File>();
 		validFileTypes = new ArrayList<String>();
 		addValidType();
+	}
+
+	public ArrayList<Object> loadFromValidFiles(){
+		ArrayList<Object> itemsToReturn = new ArrayList<Object>();
+		File validFiles = new File("validfiles");
+		if (validFiles.exists()){
+			for (String fileName: validFiles.list()) {
+				itemsToReturn.addAll(parseFile(new File(validFiles, fileName)));
+			}
+		}
+		return itemsToReturn;
 	}
 
 	/**
@@ -261,6 +272,40 @@ public class FileManager {
 			System.out.println("TEST: getFirstLine -> " + e);
 		}
 		return firstLine;
+	}
+
+	public void exportFile(String filename){
+		try {
+			File exportsDir = new File("exports");
+			File file2export = new File(exportsDir, filename);
+			if (!exportsDir.exists()) {
+				exportsDir.mkdir();
+			}
+
+			if (!file2export.exists()) {                                                                        //checks if passed file already exists in dir
+				file2export.createNewFile();
+			}
+
+		}catch (Exception e){
+			System.out.println("TEST: exportFile -> " + e);
+		}
+
+
+	}
+
+	private void exportStopFile(File filename){
+
+	}
+
+	private void exportRouteFile(File filename){
+
+	}
+
+	private void exportTripFile(File filename){
+
+	}
+	private void exportStopTimesFile(File filename){
+
 	}
 
 

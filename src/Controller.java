@@ -1,3 +1,4 @@
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
@@ -26,7 +27,6 @@ public class Controller implements Initializable {
 	public void initialize(URL location, ResourceBundle resources){
 		try {
 			fileManager = new FileManager();
-			fileManager.initFileManager();
 			listView = new ListView();
 			map = new BusMap();
 			dataStorage = new DataStorage();
@@ -37,9 +37,12 @@ public class Controller implements Initializable {
 			listView.setSubject(dataStorage);
 			map.setSubject(dataStorage);
 
+
 			mainVBox.getChildren().add(listView);
             listView.setPrefWidth(mainVBox.getPrefWidth());
             listView.adjustSizes(mainVBox.getPrefHeight(), mainVBox.getPrefWidth());
+
+            dataStorage.notifyObservers(fileManager.loadFromValidFiles());
 		}catch (Exception e){
 			System.out.println(e);
 		}
@@ -87,4 +90,6 @@ public class Controller implements Initializable {
 
 	}
 
+    public void searchStopHandler(ActionEvent actionEvent) {
+    }
 }

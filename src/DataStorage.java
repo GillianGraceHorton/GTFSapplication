@@ -15,7 +15,9 @@ public class DataStorage implements Subject {
 	private Collection<Observer> observers;
 
 	public DataStorage(){
-
+		stops = new ArrayList<Stop>();
+		routes = new ArrayList<Route>();
+		trips = new ArrayList<Trip>();
 	}
 
 	public void setObservers(Collection<Observer> observers) {
@@ -67,6 +69,15 @@ public class DataStorage implements Subject {
 	 * @param itemsToSend
 	 */
 	public void notifyObservers(ArrayList<Object> itemsToSend){
+		for (Object item: itemsToSend) {
+			if(item instanceof Stop){
+				stops.add((Stop)item);
+			}else if(item instanceof Route){
+				routes.add((Route)item);
+			}else if(item instanceof Trip){
+				trips.add((Trip)item);
+			}
+		}
 		for (Observer observer: observers) {
 			observer.update(itemsToSend);
 		}
