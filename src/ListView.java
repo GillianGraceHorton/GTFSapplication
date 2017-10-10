@@ -33,9 +33,6 @@ public class ListView extends TabPane implements Observer {
 		routes.setEditable(false);
 		trips = new TextArea("*TRIPS*");
 		trips.setEditable(false);
-		stopsTab.getTabPane().getChildrenUnmodifiable().add(stops);
-		routesTab.getTabPane().getChildrenUnmodifiable().add(routes);
-		tripsTab.getTabPane().getChildrenUnmodifiable().add(trips);
 	}
 
 	/**
