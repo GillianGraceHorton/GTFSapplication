@@ -2,7 +2,7 @@
 
 
 /**
- * @author hortong
+ * @author Gracie Horton
  * @version 1.0
  * @created 03-Oct-2017 4:57:33 PM
  */
@@ -94,8 +94,10 @@ public class Stop {
 	}
 
 	/**
-	 * 
-	 * @param stop
+	 * @author Gracie Horton
+	 * compares two stops based on their stopIDS
+	 * @param stop to compare to
+	 * @return true if the stopIDs are equal and false if they are not
 	 */
 	public boolean equals(Stop stop){
 		return (stopID.equals(stop.getStopID()));

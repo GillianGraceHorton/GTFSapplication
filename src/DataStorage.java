@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * @author hortong
+ * @author Gracie Horton
  * @version 1.0
  * @created 03-Oct-2017 4:57:21 PM
  */
@@ -53,6 +53,10 @@ public class DataStorage implements Subject {
 		return null;
 	}
 
+	/**
+	 * sends updates to all observers
+	 * @param itemsToSend
+	 */
 	public void notifyObservers(ArrayList<Object> itemsToSend){
 		for (Observer observer: observers) {
 			observer.update(itemsToSend);

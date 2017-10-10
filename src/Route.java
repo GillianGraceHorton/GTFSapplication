@@ -3,7 +3,7 @@ import javafx.scene.paint.Color;
 import java.util.Collection;
 
 /**
- * @author hortong
+ * @author Gracie Horton
  * @version 1.0
  * @created 03-Oct-2017 4:57:32 PM
  */
@@ -134,8 +134,9 @@ public class Route {
 	}
 
 	/**
-	 * 
-	 * @param route
+	 * compares two route objects based on their routeIDs
+	 * @param route to compare to
+     * @return true if their routeIDs are the same and false if they are not
 	 */
 	public boolean equals(Route route){
 		return this.getRouteID().equalsIgnoreCase(route.getRouteID());

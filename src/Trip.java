@@ -1,7 +1,7 @@
 import java.util.Collection;
 
 /**
- * @author hortong
+ * @author Gracie Horton
  * @version 1.0
  * @created 03-Oct-2017 4:57:35 PM
  */
@@ -113,14 +113,4 @@ public class Trip {
 	public boolean equals(Trip trip){
 		return false;
 	}
-
-	public String toString(){
-		return "Trip: " + tripID +
-				"\n    RouteID: " + routeID +
-				"\n    shapeID: " + shapeID +
-				"\n    directionID: " + directionID +
-				"\n    serviceID: " + serviceID +
-				"\n    tripHeadsign: " + tripHeadsign;
-	}
-
 }

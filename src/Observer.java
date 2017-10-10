@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * @author hortong
+ * @author Gracie Horton
  * @version 1.0
  * @created 03-Oct-2017 4:57:30 PM
  */

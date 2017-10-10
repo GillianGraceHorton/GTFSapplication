@@ -115,8 +115,10 @@ public class FileManager {
 	}
 
 	/**
-	 * @author hortong, heinzja
-	 * @param file
+     * parses the information from a file containing stop objects.
+	 * @author hortong
+	 * @param file containing stop objects
+     * @return Array containing all the stop objects
 	 */
 	private ArrayList<Object> parseStopFile(File file) throws FileNotFoundException {
 		ArrayList<Object> toReturn = new ArrayList<>();
@@ -139,8 +141,10 @@ public class FileManager {
 	}
 
 	/**
-	 * @author hortong, heinzja
-	 * @param file
+	 * parses the information from a file containing route objects.
+     * @author hortong
+     * @param file containing route objects
+     * @return Array containing all the route objects
 	 */
 	private ArrayList<Object> parseRouteFile(File file) throws FileNotFoundException {
 		ArrayList<Object> toReturn = new ArrayList<>();

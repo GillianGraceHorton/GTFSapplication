@@ -1,12 +1,11 @@
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 
 import java.util.ArrayList;
 
 /**
- * @author hortong
+ * @author Gracie Horton
  * @version 1.0
  * @created 03-Oct-2017 4:57:27 PM
  */
@@ -30,6 +29,11 @@ public class ListView extends Pane implements Observer {
 		this.getChildren().add(hbox);
 	}
 
+	/**
+	 * adjusts the sizes of the javaFX objects
+	 * @param height
+	 * @param width
+	 */
 	public void adjustSizes(double height, double width){
 		hbox.setPrefWidth(width);
 		stops.setPrefWidth(width/3);
@@ -44,6 +48,10 @@ public class ListView extends Pane implements Observer {
 		this.dataStorage = dataStorage;
 	}
 
+	/**
+	 * recieves update from the subject
+	 * @param addedItems items that have been updated
+	 */
 	public void update(ArrayList<Object> addedItems){
 		for (Object item: addedItems) {
 			if(item instanceof Stop){
