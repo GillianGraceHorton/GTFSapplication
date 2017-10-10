@@ -24,15 +24,21 @@ public class ListView extends TabPane implements Observer {
 	private TextArea trips;
 
 	public ListView(){
+		stopsTab = new Tab("STOPS");
+		routesTab = new Tab("ROUTES");
+		tripsTab = new Tab("TRIPS");
 		this.getTabs().addAll(stopsTab, routesTab, tripsTab);
 
-		//hbox = new HBox();
-		stops = new TextArea("*STOPS*");
+		stops = new TextArea();
 		stops.setEditable(false);
-		routes = new TextArea("*ROUTES*");
+		routes = new TextArea();
 		routes.setEditable(false);
-		trips = new TextArea("*TRIPS*");
+		trips = new TextArea();
 		trips.setEditable(false);
+
+		stopsTab.setContent(stops);
+		routesTab.setContent(routes);
+		tripsTab.setContent(trips);
 	}
 
 	/**
