@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
       <VBox fx:id="mainVBox" prefHeight="700.0" prefWidth="900.0">
          <children>
@@ -14,25 +11,50 @@
               <menus>
                 <Menu mnemonicParsing="false" text="File">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#importFilesHandler" text="Import" />
-                        <MenuItem mnemonicParsing="false" onAction="#exportFilesHandler" text="Export" />
-                        <MenuItem mnemonicParsing="false" text="Update" />
+                        <Menu mnemonicParsing="false" text="Import">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#importFilesHandler" text="StopFile" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem mnemonicParsing="false" onAction="#importFilesHandler" text="StopTimesFile" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem mnemonicParsing="false" onAction="#importFilesHandler" text="RouteFile" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem mnemonicParsing="false" onAction="#importFilesHandler" text="TripFile" />
+                          </items>
+                        </Menu>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <Menu mnemonicParsing="false" text="Export">
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#exportStopFileHandler" text="StopFile" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem mnemonicParsing="false" onAction="#exportStopTimesFileHandler" text="StopTimesFile" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem mnemonicParsing="false" onAction="#searchRouteHandler" text="RouteFile" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem mnemonicParsing="false" onAction="#exportTripFileHandler" text="TripFile" />
+                          </items>
+                        </Menu>
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Edit">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#searchStopHandler" text="Stop" />
-                        <MenuItem mnemonicParsing="false" onAction="#searchRouteHandler" text="Route" />
-                        <MenuItem mnemonicParsing="false" onAction="#searchTripHandler" text="Trip" />
+                    <MenuItem mnemonicParsing="false" onAction="#editFilesHandler" text="Stop" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#editFilesHandler" text="Route" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#editFilesHandler" text="Trip" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Search">
                   <items>
-                    <MenuItem mnemonicParsing="false" text="StopID" />
-                        <MenuItem mnemonicParsing="false" text="RouteID" />
-                        <MenuItem mnemonicParsing="false" text="TripID" />
+                    <MenuItem mnemonicParsing="false" onAction="#searchStopHandler" text="StopID" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#searchRouteHandler" text="RouteID" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#searchTripHandler" text="TripID" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Update" />
               </menus>
             </MenuBar>
          </children>

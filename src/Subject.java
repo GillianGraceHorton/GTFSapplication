@@ -11,14 +11,14 @@ public interface Subject {
 	 * 
 	 * @param observer
 	 */
-	public void attach(Observer observer);
+    void attach(Observer observer);
 
 	/**
 	 * 
 	 * @param observer
 	 */
-	public void detach(Observer observer);
+    void detach(Observer observer);
 
-	public void notifyObservers(ArrayList<Object> itemsToSend);
+	void notifyObservers(ArrayList<Object> itemsToSend);
 
 }
