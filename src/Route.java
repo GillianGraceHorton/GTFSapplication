@@ -18,9 +18,11 @@ public class Route {
 	private String routeDescription;
 	private String routeType;
 	private String routeUrl;
+	private String routeColor;
+	private String routeTextColor;
 
 	public Route(String route_id, String agency_id,String route_short_name, String route_long_name,
-				 String route_desc,String route_type, String route_url){
+				 String route_desc,String route_type, String route_url,String route_color, String route_text_color){
 		this.routeID = route_id;
 		this.agencyID = agency_id;
 		this.routeShortName = route_short_name;
@@ -28,6 +30,8 @@ public class Route {
 		this.routeDescription = route_desc;
 		this.routeType = route_type;
 		this.routeUrl = route_url;
+		this.routeColor = route_color;
+		this.routeTextColor = route_text_color;
 	}
 
 	/**
@@ -97,6 +101,8 @@ public class Route {
 	public String getRouteUrl() {
 		return routeUrl;
 	}
+	public String getRouteColor(){return routeColor;}
+	public String getRouteTextColor (){return routeTextColor;}
 
 	/**
 	 * searches route for a stop with the specified stopID
@@ -110,6 +116,21 @@ public class Route {
 			}
 		}
 		return null;
+	}
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * @return returns string of data stored in route class
+	 */
+	public String toString(){
+		return  "RouteID: " + getRouteID() +"\n" +
+				"AgencyID: " + getAgencyID() +"\n" +
+				"ShortName: " + getRouteShortName() +"\n" +
+				"LongName: " + getRouteLongName() +"\n" +
+				"Description: " + getRouteDescription() +"\n" +
+				"Type: " + getRouteType() +"\n" +
+				"URL: " + getRouteUrl() +"\n" +
+				"Color: " + getRouteColor() +"\n" +
+				"TextColor: " + getRouteTextColor() +"\n";
 	}
 
 	/**

@@ -46,7 +46,7 @@ public class Stop {
 	 * @param stopID identifier for the stop
 	 * @param stopDesc description of the stop
 	 */
-	public Stop(float lon, float lat, String name, String stopID, String stopDesc){
+	public Stop(double lon, double lat, String name, String stopID, String stopDesc){
 		this.location = new Location(lon, lat);
 		this.name = name;
 		this.stopID = stopID;
@@ -101,10 +101,18 @@ public class Stop {
 		return (stopID.equals(stop.getStopID()));
 	}
 
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * @return returns formatted string of data stored in stop class.
+	 */
 	public String toString(){
-		return "Stop: " + stopID + "\n    Name: " + name + "\n    Description: " + stopDescription + "\n    " +
-				"Latitude: " + location.getLat() + "\n    Longitude: " + location.getLon() + "\n " +
-				"   Arrival Time: " + arrivalTime + "\n    Departure Time: " + departureTime;
+		return  "StopID: " + getStopID() + "\n" +
+				"Name: " + getName() + "\n" +
+				"Description: " + getStopDescription() + "\n" +
+				"Latitude: " + location.getLat() + "\n" +
+				"Longitude: " + location.getLon() + "\n" +
+				"Arrival Time: " + getArrivalTime() + "\n" +
+				"Departure Time: " + getDepartureTime() + "\n";
 	}
 
 }

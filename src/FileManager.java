@@ -16,6 +16,10 @@ public class FileManager {
 	private Collection<File> validFileList;
 	private ArrayList<String> validFileTypes;
 
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: initializes validFileList and validFileTypes
+	 */
 	public void initFileManager(){
 		validFileList = new ArrayList<File>();
 		validFileTypes = new ArrayList<String>();
@@ -27,7 +31,7 @@ public class FileManager {
 	 * @param observer
 	 */
 	public void attach(Observer observer){
-
+		//TODO: Complete attach
 	}
 
 	/**
@@ -111,63 +115,54 @@ public class FileManager {
 	}
 
 	/**
-	 * @author hortong
+	 * @author hortong, heinzja
 	 * @param file
 	 */
 	private ArrayList<Object> parseStopFile(File file) throws FileNotFoundException {
 		ArrayList<Object> toReturn = new ArrayList<>();
-		String stop_id;
-		String stop_desc;
-		String stop_lat;
-		String stop_lon;
-		String stop_name;
+		String stop_id, stop_desc,stop_name;
+		double stop_lat,stop_lon;
 		Scanner scanner = new Scanner(file);
 		scanner.nextLine();
 		String line;
 		while(scanner.hasNext()){
 			line = scanner.nextLine();
-			String[] items = line.split(",\\S");
+			String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 			stop_id = items[0];
 			stop_name = items[1];
 			stop_desc = items[2];
-			stop_lat = items[3];
-			stop_lon = items[4];
-			toReturn.add(new Stop(Float.parseFloat(stop_lon), Float.parseFloat(stop_lat),
-					stop_name, stop_id, stop_desc));
+			stop_lat = Double.parseDouble(items[3]);
+			stop_lon = Double.parseDouble(items[4]);
+			toReturn.add(new Stop(stop_lon, stop_lat, stop_name, stop_id, stop_desc));
 		}
 		return toReturn;
 	}
 
 	/**
-	 * @author hortong
+	 * @author hortong, heinzja
 	 * @param file
 	 */
 	private ArrayList<Object> parseRouteFile(File file) throws FileNotFoundException {
 		ArrayList<Object> toReturn = new ArrayList<>();
-		String route_id;
-		String agency_id;
-		String route_short_name;
-		String route_long_name;
-		String route_desc;
-		String route_type;
-		String route_url;
-		String route_color;
-		String route_text_color;
+		String route_id,agency_id,route_short_name,route_long_name;
+		String route_desc,route_type,route_url,route_color,route_text_color;
 		Scanner scanner = new Scanner(file);
 		scanner.nextLine();
 		String line;
 		while(scanner.hasNext()){
 				line = scanner.nextLine();
-				String[] items = line.split(",\\S");
+				String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				route_id = items[0];
 				agency_id = items[1];
-				route_short_name = items[3];
-				route_long_name = items[4];
-				route_desc = items[5];
-				route_type = items[6];
-				route_url = items[7];
+				route_short_name = items[2];
+				route_long_name = items[3];
+				route_desc = items[4];
+				route_type = items[5];
+				route_url = items[6];
+				route_color = items[7];
+				route_text_color = items[8];
 				toReturn.add(new Route(route_id, agency_id, route_short_name, route_long_name,
-						route_desc, route_type, route_url));
+						route_desc, route_type, route_url,route_color,route_text_color));
 		}
 		return toReturn;
 	}
@@ -175,17 +170,11 @@ public class FileManager {
 	/**
 	 * @author hortong
 	 * @param file - file to parse for Trip data
-	 *             @return - returns ArrayList full of parsed data from trip file.
+	 * @return - returns ArrayList full of parsed data from trip file.
 	 */
 	private ArrayList<Object> parseTripFile(File file) throws FileNotFoundException {
 		ArrayList<Object> toReturn= new ArrayList<>();
-		String route_id;
-		String service_id;
-		String trip_id;
-		String trip_head_sign;
-		String direction_id;
-		String block_id;
-		String shape_id;
+		String route_id,service_id,trip_id,trip_head_sign,direction_id,block_id,shape_id;
 		Scanner scanner = new Scanner(file);
 		scanner.nextLine();
 		String line;
@@ -199,8 +188,7 @@ public class FileManager {
 			direction_id = items[4];
 			block_id = items[5];
 			shape_id = items[6];
-			toReturn.add(new Trip(trip_id, service_id, route_id, trip_head_sign, direction_id,
-					block_id, shape_id));
+			toReturn.add(new Trip(trip_id, service_id, route_id, trip_head_sign, direction_id, block_id, shape_id));
 		}
 		return toReturn;
 	}
@@ -214,7 +202,7 @@ public class FileManager {
 	public ArrayList<Object> parseFile(File file){
 		ArrayList<Object> result = null;
 		try {
-			//TODO: as we add more functionality, add specific action for each valid file type.
+			//TODO: as we add more functionality, add specific parse for each valid file type.
 			switch (getFirstLine(file)) {
 				case "stop_id,stop_name,stop_desc,stop_lat,stop_lon":
 					result = parseStopFile(file);

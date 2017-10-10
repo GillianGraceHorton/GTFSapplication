@@ -8,14 +8,14 @@
  */
 public class Location {
 
-	private float lat;
-	private float lon;
+	private double lat;
+	private double lon;
 
-	public float getLat() {
+	public double getLat() {
 		return lat;
 	}
 
-	public float getLon() {
+	public double getLon() {
 		return lon;
 	}
 
@@ -25,15 +25,16 @@ public class Location {
 	 * @param lon
 	 * @param lat
 	 */
-	public Location(float lon, float lat){
-
+	public Location(double lon, double lat){
+		this.lon = lon;
+		this.lat = lat;
 	}
 
 	/**
 	 * 
 	 * @param lon
 	 */
-	public void setLon(float lon){
+	public void setLon(double lon){
 
 	}
 
@@ -41,7 +42,7 @@ public class Location {
 	 * 
 	 * @param lan
 	 */
-	public void setLan(float lan){
+	public void setLan(double lan){
 
 	}
 

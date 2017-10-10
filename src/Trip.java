@@ -93,6 +93,20 @@ public class Trip {
 	}
 
 	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * @return returns string of data stored in trip class
+	 */
+	public String toString(){
+		return  "RouteID: " + getRouteID() + "\n" +
+				"ServiceID: " + getServiceID() + "\n" +
+				"TripID: " + getTripID() + "\n" +
+				"HeadSign: " + getTripHeadsign() + "\n" +
+				"DirectionID: " + getDirectionID() + "\n" +
+				"BlockID: " + getBlockID() + "\n" +
+				"ShapeID: " + getShapeID() + "\n";
+	}
+
+	/**
 	 * 
 	 * @param trip
 	 */
