@@ -1,3 +1,4 @@
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
@@ -87,4 +88,6 @@ public class Controller implements Initializable {
 
 	}
 
+    public void searchStopHandler(ActionEvent actionEvent) {
+    }
 }
