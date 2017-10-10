@@ -11,6 +11,7 @@ public class DataStorage implements Subject {
 	private Collection<Stop> stops;
 	private Collection<Route> routes;
 	private Collection<Trip> trips;
+	private Collection<Trip> tripsWithTimes;
 	private Collection<Observer> observers;
 
 	public DataStorage(){
@@ -28,7 +29,7 @@ public class DataStorage implements Subject {
 	 * @param observer
 	 */
 	public void attach(Observer observer){
-
+        observers.add(observer);
 	}
 
 	/**
@@ -44,7 +45,7 @@ public class DataStorage implements Subject {
 	 * @param observer
 	 */
 	public void detach(Observer observer){
-
+        observers.remove(observer);
 	}
 
 	/**
