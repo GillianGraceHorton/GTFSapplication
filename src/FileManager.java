@@ -20,10 +20,21 @@ public class FileManager {
 	 * @author Joseph Heinz - heinzja@msoe.edu
 	 * Description: initializes validFileList and validFileTypes
 	 */
-	public void initFileManager(){
+	public FileManager(){
 		validFileList = new ArrayList<File>();
 		validFileTypes = new ArrayList<String>();
 		addValidType();
+	}
+
+	public ArrayList<Object> loadFromValidFiles(){
+		ArrayList<Object> itemsToReturn = new ArrayList<Object>();
+		File validFiles = new File("validfiles");
+		if (validFiles.exists()){
+			for (String fileName: validFiles.list()) {
+				itemsToReturn.addAll(parseFile(new File(validFiles, fileName)));
+			}
+		}
+		return itemsToReturn;
 	}
 
 	/**
