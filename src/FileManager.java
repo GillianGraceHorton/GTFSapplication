@@ -274,5 +274,39 @@ public class FileManager {
 		return firstLine;
 	}
 
+	public void exportFile(String filename){
+		try {
+			File exportsDir = new File("exports");
+			File file2export = new File(exportsDir, filename);
+			if (!exportsDir.exists()) {
+				exportsDir.mkdir();
+			}
+
+			if (!file2export.exists()) {                                                                        //checks if passed file already exists in dir
+				file2export.createNewFile();
+			}
+
+		}catch (Exception e){
+			System.out.println("TEST: exportFile -> " + e);
+		}
+
+
+	}
+
+	private void exportStopFile(File filename){
+
+	}
+
+	private void exportRouteFile(File filename){
+
+	}
+
+	private void exportTripFile(File filename){
+
+	}
+	private void exportStopTimesFile(File filename){
+
+	}
+
 
 }
