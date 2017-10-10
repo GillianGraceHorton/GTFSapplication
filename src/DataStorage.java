@@ -58,7 +58,7 @@ public class DataStorage implements Subject {
 				if (route.getRouteID().equalsIgnoreCase(routeID)) {
 					break;
 				} else {
-					iterator.next();
+					Route routes = iterator.next();
 				}
 		}
 		return iterator.next();
