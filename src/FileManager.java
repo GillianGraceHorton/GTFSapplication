@@ -158,16 +158,18 @@ public class FileManager {
 		String line;
 		while(scanner.hasNext()){
 				line = scanner.nextLine();
-				String[] items = line.split(",\\S");
+				String[] items = line.split("[,]");
 				route_id = items[0];
 				agency_id = items[1];
-				route_short_name = items[3];
-				route_long_name = items[4];
-				route_desc = items[5];
-				route_type = items[6];
-				route_url = items[7];
+				route_short_name = items[2];
+				route_long_name = items[3];
+				route_desc = items[4];
+				route_type = items[5];
+				route_url = items[6];
+				route_color = items[7];
+				route_text_color = items[8];
 				toReturn.add(new Route(route_id, agency_id, route_short_name, route_long_name,
-						route_desc, route_type, route_url));
+						route_desc, route_type, route_url, route_color, route_text_color));
 		}
 		return toReturn;
 	}

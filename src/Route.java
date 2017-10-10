@@ -9,6 +9,8 @@ import java.util.Collection;
  */
 public class Route {
 
+	private String routeTextColorCode;
+	private String routeColorCode;
 	private Color color;
 	private String routeID;
 	private Collection<Stop> stops;
@@ -19,8 +21,8 @@ public class Route {
 	private String routeType;
 	private String routeUrl;
 
-	public Route(String route_id, String agency_id,String route_short_name, String route_long_name,
-				 String route_desc,String route_type, String route_url){
+	public Route(String route_id, String agency_id, String route_short_name, String route_long_name,
+				 String route_desc, String route_type, String route_url, String route_color, String route_text_color){
 		this.routeID = route_id;
 		this.agencyID = agency_id;
 		this.routeShortName = route_short_name;
@@ -28,6 +30,8 @@ public class Route {
 		this.routeDescription = route_desc;
 		this.routeType = route_type;
 		this.routeUrl = route_url;
+		this.routeTextColorCode = route_text_color;
+		this.routeColorCode = route_color;
 	}
 
 	/**
