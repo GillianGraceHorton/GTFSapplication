@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * @author Gracie Horton
@@ -46,11 +47,19 @@ public class DataStorage implements Subject {
 	}
 
 	/**
-	 * 
+	 * searches for a route by routeID
 	 * @param routeID
 	 */
-	public Route searchRoutes(String routeID){
-		return null;
+	public Route searchRoutes(String routeID) {
+		Iterator<Route> iterator = routes.iterator();
+		for (Route route : routes) {
+				if (route.getRouteID().equalsIgnoreCase(routeID)) {
+					break;
+				} else {
+					iterator.next();
+				}
+		}
+		return iterator.next();
 	}
 
 	/**
