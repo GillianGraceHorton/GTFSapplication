@@ -208,6 +208,28 @@ public class FileManager {
 		return toReturn;
 	}
 
+	private ArrayList<Object> parseStopTimesFile(File file) throws FileNotFoundException {
+	    ArrayList<Object> toReturn = new ArrayList<>();
+	    String trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,
+                pickup_type,drop_off_type;
+	    Scanner scanner = new Scanner(file);
+	    scanner.nextLine();
+	    String line;
+	    while(scanner.hasNext()){
+            line = scanner.nextLine();
+            String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+            trip_id = items[0];
+            arrival_time = items[1];
+            departure_time = items[2];
+            stop_id = items[3];
+            stop_sequence = items[4];
+            stop_headsign = items[5];
+            pickup_type = items[6];
+            drop_off_type = items[7];
+        }
+        return toReturn;
+    }
+
 	/**
 	 * @author Joseph Heinz - heinzja@msoe.edu
 	 * Description: Checks what type of file is to be parsed, and sends it to the correct parse method.
