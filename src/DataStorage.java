@@ -51,18 +51,16 @@ public class DataStorage implements Subject {
 
 	/**
 	 * searches for a route by routeID
+	 * @author Joey Hoffman
 	 * @param routeID
 	 */
 	public Route searchRoutes(String routeID) {
-		Iterator<Route> iterator = routes.iterator();
 		for (Route route : routes) {
 				if (route.getRouteID().equalsIgnoreCase(routeID)) {
-					break;
-				} else {
-					Route routes = iterator.next();
+					return route;
 				}
 		}
-		return iterator.next();
+		return null;
 	}
 
 	/**
