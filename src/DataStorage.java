@@ -55,12 +55,13 @@ public class DataStorage implements Subject {
 	 * @param routeID
 	 */
 	public Route searchRoutes(String routeID) {
+		Route result = null;
 		for (Route route : routes) {
 				if (route.getRouteID().equalsIgnoreCase(routeID)) {
-					return route;
+					result = route;
 				}
 		}
-		return null;
+		return result;
 	}
 
 	/**

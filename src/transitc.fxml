@@ -29,7 +29,7 @@
                               <SeparatorMenuItem mnemonicParsing="false" />
                               <MenuItem mnemonicParsing="false" onAction="#exportStopTimesFileHandler" text="StopTimesFile" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#searchRouteHandler" text="RouteFile" />
+                              <MenuItem mnemonicParsing="false" onAction="#exportRouteFileHandler" text="RouteFile" />
                               <SeparatorMenuItem mnemonicParsing="false" />
                               <MenuItem mnemonicParsing="false" onAction="#exportTripFileHandler" text="TripFile" />
                           </items>
