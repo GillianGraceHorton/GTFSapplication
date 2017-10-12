@@ -13,6 +13,7 @@ public class DataStorage implements Subject {
 	private Collection<Route> routes;
 	private Collection<Trip> trips;
 	private Collection<Trip> tripsWithTimes;
+	private Collection<StopTime> stopTimes;
 	private Collection<Observer> observers;
 
 	public DataStorage(){
@@ -76,12 +77,25 @@ public class DataStorage implements Subject {
 				routes.add((Route)item);
 			}else if(item instanceof Trip){
 				trips.add((Trip)item);
+			}else if(item instanceof StopTime){
+				stopTimes.add((StopTime)item);
+				updateStopsWithTimes(item);
+				updateTripWithStopTimes(item);
 			}
 		}
 		for (Observer observer: observers) {
 			observer.update(itemsToSend);
 		}
 	}
+
+	private void updateTripWithStopTimes(Object item) {
+
+	}
+
+	private void updateStopsWithTimes(Object item) {
+	}
+
+
 
 	/**
 	 * 

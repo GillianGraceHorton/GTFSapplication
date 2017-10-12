@@ -226,6 +226,8 @@ public class FileManager {
             stop_headsign = items[5];
             pickup_type = items[6];
             drop_off_type = items[7];
+            toReturn.add(new StopTime(trip_id, arrival_time, departure_time, stop_id,
+					stop_sequence, stop_headsign, pickup_type, drop_off_type));
         }
         return toReturn;
     }

@@ -1,15 +1,15 @@
 public class StopTime {
 
     private String trip_id;
-    private int arrival_time;
-    private int departure_time;
+    private String arrival_time;
+    private String departure_time;
     private String stop_id;
     private String stop_sequence;
     private String stop_headsign;
     private String pickup_type;
     private String dropoff_type;
 
-    public StopTime(String trip_id, int arrival_time, int departure_time, String stop_id,
+    public StopTime(String trip_id, String arrival_time, String departure_time, String stop_id,
                     String stop_sequence, String stop_headsign, String pickup_type,
                     String drop_off_type){
 
@@ -27,11 +27,11 @@ public class StopTime {
         return trip_id;
     }
 
-    public int getArrivalTime() {
+    public String getArrivalTime() {
         return arrival_time;
     }
 
-    public int getDepartureTime() {
+    public String getDepartureTime() {
         return departure_time;
     }
 
@@ -59,11 +59,11 @@ public class StopTime {
         this.trip_id = trip_id;
     }
 
-    public void setArrivalTime(int arrival_time) {
+    public void setArrivalTime(String arrival_time) {
         this.arrival_time = arrival_time;
     }
 
-    public void setDepartureTime(int departure_time) {
+    public void setDepartureTime(String departure_time) {
         this.departure_time = departure_time;
     }
 
