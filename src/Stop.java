@@ -1,5 +1,4 @@
-
-
+import java.util.ArrayList;
 
 /**
  * @author Gracie Horton
@@ -11,12 +10,12 @@ public class Stop {
 	/**
 	 * arrival time for the bus at given stop. to be set when the stop is part of a trip.
 	 */
-	private int arrivalTime;
+	private String arrivalTime;
 
 	/**
 	 * departure time for the bus at given stop. to be set when the stop is part of a trip.
 	 */
-	private int departureTime;
+	private String departureTime;
 
 	/**
 	 * gps location of the stop
@@ -38,6 +37,8 @@ public class Stop {
 	 */
 	private String stopDescription;
 
+	private ArrayList<StopTime> stopTimes;
+
 	/**
 	 * creates a stop object with information loaded from a stop file
 	 * @param lon longitude for the gps location of the stop
@@ -53,11 +54,11 @@ public class Stop {
 		this.stopDescription = stopDesc;
 	}
 
-	public void setArrivalTime(int arrivalTime) {
+	public void setArrivalTime(String arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	}
 
-	public void setDepartureTime(int departureTime) {
+	public void setDepartureTime(String departureTime) {
 		this.departureTime = departureTime;
 	}
 
@@ -69,11 +70,11 @@ public class Stop {
 		this.stopDescription = stopDescription;
 	}
 
-	public int getArrivalTime() {
+	public String getArrivalTime() {
 		return arrivalTime;
 	}
 
-	public int getDepartureTime() {
+	public String getDepartureTime() {
 		return departureTime;
 	}
 
@@ -91,6 +92,13 @@ public class Stop {
 
 	public String getStopDescription() {
 		return stopDescription;
+	}
+
+	public boolean addStopTimes(StopTime stopTime){
+		if(stopTimes == null){
+			stopTimes = new ArrayList<StopTime>();
+		}
+		return stopTimes.add(stopTime);
 	}
 
 	/**

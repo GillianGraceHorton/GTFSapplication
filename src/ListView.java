@@ -16,16 +16,19 @@ public class ListView extends TabPane implements Observer {
 	private Tab stopsTab;
 	private Tab routesTab;
 	private Tab tripsTab;
+	private Tab stopTimesTab;
 
 	private TextArea stops;
 	private TextArea routes;
 	private TextArea trips;
+	private TextArea stopTimes;
 
 	public ListView(){
 		stopsTab = new Tab("STOPS");
 		routesTab = new Tab("ROUTES");
 		tripsTab = new Tab("TRIPS");
-		this.getTabs().addAll(stopsTab, routesTab, tripsTab);
+		stopTimesTab = new Tab("STOP TIMES");
+		this.getTabs().addAll(stopsTab, routesTab, tripsTab, stopTimesTab);
 
 		stops = new TextArea();
 		stops.setEditable(false);
@@ -33,10 +36,13 @@ public class ListView extends TabPane implements Observer {
 		routes.setEditable(false);
 		trips = new TextArea();
 		trips.setEditable(false);
+		stopTimes = new TextArea();
+		stopTimes.setEditable(false);
 
 		stopsTab.setContent(stops);
 		routesTab.setContent(routes);
 		tripsTab.setContent(trips);
+		stopTimesTab.setContent(stopTimes);
 	}
 
 	/**
@@ -45,7 +51,6 @@ public class ListView extends TabPane implements Observer {
 	 * @param width
 	 */
 	public void adjustSizes(double height, double width){
-		//hbox.setPrefWidth(width);
 		stops.setPrefWidth(width/3);
 		stops.setPrefHeight(height);
 		routes.setPrefWidth(width/3);
@@ -70,6 +75,8 @@ public class ListView extends TabPane implements Observer {
 				routes.setText(routes.getText() + "\n" + item.toString());
 			}else if(item instanceof Trip){
 				trips.setText(trips.getText() + "\n" + item.toString());
+			}else if(item instanceof StopTime){
+				stopTimes.setText(stopTimes.getText() + "\n" + item.toString());
 			}
 		}
 	}

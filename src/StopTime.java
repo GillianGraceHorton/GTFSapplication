@@ -86,4 +86,15 @@ public class StopTime {
     public void setDropoffType(String dropoff_type) {
         this.dropoff_type = dropoff_type;
     }
+
+    public String toString(){
+        return  "TripID: " + getTripID() + "\n" +
+                "StopID: " + getStopID() + "\n" +
+                "Stop Sequence: " + getStopSequence() + "\n" +
+                "Stop Headsign: " + getStopHeadsign() + "\n" +
+                "Pickup Type: " + getPickupType() + "\n" +
+                "Drop Off Type: " + getDropoffType() + "\n" +
+                "Arrival Time: " + getArrivalTime() + "\n" +
+                "Departure Time: " + getDepartureTime() + "\n";
+    }
 }

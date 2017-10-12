@@ -66,7 +66,7 @@ public class DataStorage implements Subject {
 	}
 
 	/**
-	 * sends updates to all observers
+	 * sends updates to all observers after adding each object to its own dataStructures
 	 * @param itemsToSend
 	 */
 	public void notifyObservers(ArrayList<Object> itemsToSend){
@@ -79,8 +79,7 @@ public class DataStorage implements Subject {
 				trips.add((Trip)item);
 			}else if(item instanceof StopTime){
 				stopTimes.add((StopTime)item);
-				updateStopsWithTimes(item);
-				updateTripWithStopTimes(item);
+				updateTripWithStopTimes((StopTime)item);
 			}
 		}
 		for (Observer observer: observers) {
@@ -88,14 +87,19 @@ public class DataStorage implements Subject {
 		}
 	}
 
-	private void updateTripWithStopTimes(Object item) {
-
+    /**
+     * updates the trip with information loaded from the stopTimes file and adds the stopTime
+     * object to is corresponding stop object where its put into an arrayList in the stop object.
+     * @param stopTime
+     */
+	private void updateTripWithStopTimes(StopTime stopTime) {
+        Trip tripToUpdate = searchTrips(stopTime.getTripID());
+        tripToUpdate.addStop(searchStops(stopTime.getStopID()), Integer.parseInt(stopTime
+                .getStopSequence()));
+        tripToUpdate.getStop(stopTime.getStopID()).setArrivalTime(stopTime.getArrivalTime());
+        tripToUpdate.getStop(stopTime.getStopID()).setDepartureTime(stopTime.getDepartureTime());
+        searchStops(stopTime.getStopID()).addStopTimes(stopTime);
 	}
-
-	private void updateStopsWithTimes(Object item) {
-	}
-
-
 
 	/**
 	 * 

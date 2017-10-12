@@ -252,6 +252,9 @@ public class FileManager {
 				case "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id":
 					result = parseTripFile(file);
 					break;
+				case "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type":
+					result = parseStopTimesFile(file);
+					break;
 				default:
 					System.out.println("TEST: parseFile -> parse format of valid file not supported yet");
 			}
