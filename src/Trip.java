@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * @author Gracie Horton
@@ -13,7 +12,7 @@ public class Trip {
     private String directionID;
     private String tripHeadsign;
     private String serviceID;
-    private Collection<Stop> tripList;
+    private NavigableMap<Integer, Stop> tripList;
     private Route route;
     private String routeID;
     private String tripID;
@@ -99,27 +98,26 @@ public class Trip {
      * @return true after the stop is added
      */
     public boolean addStop(Stop stop, int stopNum) {
-        if (tripList == null) {
-            tripList = new ArrayList<Stop>(5);
+        if(tripList == null){
+            tripList = new TreeMap<>();
         }
 
-        if (stopNum > tripList.size()) {
-            ArrayList<Stop> temp = new ArrayList<>(tripList.size() + 5);
-            temp.addAll(tripList);
-            tripList = temp;
-        }
-
-        ((ArrayList) tripList).add(stopNum, stop);
+        tripList.put(stopNum, stop);
         return true;
     }
 
     public Stop getStop(String stopId){
-        for (Stop stop:tripList) {
-            if(stop.getStopID().equals(stopId)){
-                return stop;
+        NavigableSet<Integer> nav = tripList.navigableKeySet();
+        for (Integer num: nav) {
+            if(tripList.get(num).getStopID().equals(stopId)){
+                return tripList.get(num);
             }
         }
         return null;
+    }
+
+    public NavigableMap<Integer, Stop> getTripList() {
+        return tripList;
     }
 
     /**
@@ -127,13 +125,26 @@ public class Trip {
      * @author Joseph Heinz - heinzja@msoe.edu
      */
     public String toString() {
-        return "RouteID: " + getRouteID() + "\n" +
+        String toReturn = "RouteID: " + getRouteID() + "\n" +
                 "ServiceID: " + getServiceID() + "\n" +
                 "TripID: " + getTripID() + "\n" +
                 "HeadSign: " + getTripHeadsign() + "\n" +
                 "DirectionID: " + getDirectionID() + "\n" +
                 "BlockID: " + getBlockID() + "\n" +
                 "ShapeID: " + getShapeID() + "\n";
+        return toReturn;
+    }
+
+    public String tripListToString(){
+        String toReturn = "";
+        toReturn += "TripID: " + this.getTripID() + "\n" + "Stops: " + "\n";
+        NavigableSet<Integer> nav = tripList.navigableKeySet();
+        for (Integer num: nav) {
+            toReturn += "  " + num + " ID : " + tripList.get(num).getStopID() + ", " +
+                    "Arrival: " + tripList.get(num).getArrivalTime() +
+                    ", Departure: " + tripList.get(num).getDepartureTime() + "\n";
+        }
+        return toReturn;
     }
 
     /**

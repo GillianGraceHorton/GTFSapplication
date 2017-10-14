@@ -75,10 +75,14 @@ public class ListView extends TabPane implements Observer {
 				routes.setText(routes.getText() + "\n" + item.toString());
 			}else if(item instanceof Trip){
 				trips.setText(trips.getText() + "\n" + item.toString());
-			}else if(item instanceof StopTime){
-				stopTimes.setText(stopTimes.getText() + "\n" + item.toString());
-			}
+				if (((Trip)item).getTripList() != null){
+					stopTimes.setText(stopTimes.getText() + "\n" + ((Trip)item).tripListToString());
+				}
+			}//else if(item instanceof StopTime){
+			//	stopTimes.setText(stopTimes.getText() + "\n" + item.toString());
+			//}
 		}
+		System.out.println("got here");
 	}
 
 }

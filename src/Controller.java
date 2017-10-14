@@ -44,6 +44,7 @@ public class Controller implements Initializable {
             dataStorage.notifyObservers(fileManager.loadFromValidFiles());
 		}catch (Exception e){
 			System.out.println(e);
+			e.printStackTrace();
 		}
 	}
 
