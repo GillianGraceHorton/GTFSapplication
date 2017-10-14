@@ -17,9 +17,11 @@ public class DataStorage implements Subject {
 	private Collection<Observer> observers;
 
 	public DataStorage(){
-		stops = new ArrayList<Stop>();
-		routes = new ArrayList<Route>();
-		trips = new ArrayList<Trip>();
+		stops = new ArrayList<>();
+		routes = new ArrayList<>();
+		trips = new ArrayList<>();
+		stopTimes = new ArrayList<>();
+		tripsWithTimes = new ArrayList<>();
 	}
 
 	public void setObservers(Collection<Observer> observers) {
@@ -27,27 +29,32 @@ public class DataStorage implements Subject {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param observer
 	 */
 	public void attach(Observer observer){
-        observers.add(observer);
+		observers.add(observer);
 	}
 
 	/**
-	 * 
+	 *
 	 * @param stopID
 	 */
 	public Stop searchStops(String stopID){
+		for (Stop stop: stops) {
+			if (stop.getStopID().equals(stopID)){
+				return stop;
+			}
+		}
 		return null;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param observer
 	 */
 	public void detach(Observer observer){
-        observers.remove(observer);
+		observers.remove(observer);
 	}
 
 	/**
@@ -58,9 +65,9 @@ public class DataStorage implements Subject {
 	public Route searchRoutes(String routeID) {
 		Route result = null;
 		for (Route route : routes) {
-				if (route.getRouteID().equalsIgnoreCase(routeID)) {
-					result = route;
-				}
+			if (route.getRouteID().equalsIgnoreCase(routeID)) {
+				result = route;
+			}
 		}
 		return result;
 	}
@@ -79,41 +86,60 @@ public class DataStorage implements Subject {
 				trips.add((Trip)item);
 			}else if(item instanceof StopTime){
 				stopTimes.add((StopTime)item);
-				updateTripWithStopTimes((StopTime)item);
 			}
+		}
+		if(trips.size()!=0 && stopTimes.size()!=0){
+			updateTripsWithStopTimes();
 		}
 		for (Observer observer: observers) {
 			observer.update(itemsToSend);
 		}
 	}
 
-    /**
-     * updates the trip with information loaded from the stopTimes file and adds the stopTime
-     * object to is corresponding stop object where its put into an arrayList in the stop object.
-     * @param stopTime
-     */
-	private void updateTripWithStopTimes(StopTime stopTime) {
-        Trip tripToUpdate = searchTrips(stopTime.getTripID());
-        tripToUpdate.addStop(searchStops(stopTime.getStopID()), Integer.parseInt(stopTime
-                .getStopSequence()));
-        tripToUpdate.getStop(stopTime.getStopID()).setArrivalTime(stopTime.getArrivalTime());
-        tripToUpdate.getStop(stopTime.getStopID()).setDepartureTime(stopTime.getDepartureTime());
-        searchStops(stopTime.getStopID()).addStopTimes(stopTime);
+	/**
+	 * updates the trip with information loaded from the stopTimes file and adds the stopTime
+	 * object to is corresponding stop object where its put into an arrayList in the stop object.
+	 */
+	private void updateTripsWithStopTimes() {
+		for (StopTime stopTime: stopTimes) {
+			Trip tripToUpdate = searchTrips(stopTime.getTripID());
+			tripsWithTimes.add(tripToUpdate);
+			tripToUpdate.addStop(searchStops(stopTime.getStopID()), Integer.parseInt(stopTime
+					.getStopSequence()));
+			tripToUpdate.getStop(stopTime.getStopID()).setArrivalTime(stopTime.getArrivalTime());
+			tripToUpdate.getStop(stopTime.getStopID()).setDepartureTime(stopTime.getDepartureTime());
+			searchStops(stopTime.getStopID()).addStopTimes(stopTime);
+		}
 	}
 
 	/**
-	 * 
+	 *
 	 * @param tripID
 	 */
 	public Trip searchTrips(String tripID){
+		for (Trip trip: trips) {
+			if (trip.getTripID().equals(tripID)){
+				return trip;
+			}
+		}
 		return null;
 	}
 
 	/**
-	 * 
+	 *
 	 * @param stopID
 	 */
-	public Collection<Trip> searchTripsForStop(String stopID){
+	public Collection<Trip> searchTripsForStop(String stopID)
+	{
+		ArrayList<Trip> tripsToReturn = new ArrayList<>();
+		for (Trip trip: trips) {
+			if(trip.getStop(stopID) != null){
+				tripsToReturn.add(trip);
+			}
+		}
+		if(tripsToReturn.size() >= 0){
+			return tripsToReturn;
+		}
 		return null;
 	}
 
