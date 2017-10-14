@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class ListView extends TabPane implements Observer {
 
 	private Subject dataStorage;
-	//private HBox hbox;
 	private Tab stopsTab;
 	private Tab routesTab;
 	private Tab tripsTab;
@@ -75,10 +74,12 @@ public class ListView extends TabPane implements Observer {
 				routes.setText(routes.getText() + "\n" + item.toString());
 			}else if(item instanceof Trip){
 				trips.setText(trips.getText() + "\n" + item.toString());
-			}else if(item instanceof StopTime){
-				stopTimes.setText(stopTimes.getText() + "\n" + item.toString());
+				if (((Trip)item).getTripList() != null){
+					stopTimes.setText(stopTimes.getText() + "\n" + ((Trip)item).tripListToString());
+				}
 			}
 		}
+		System.out.println("got here");
 	}
 
 }
