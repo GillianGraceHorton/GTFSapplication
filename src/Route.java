@@ -1,6 +1,9 @@
 import javafx.scene.paint.Color;
 
 import java.util.Collection;
+import java.util.NavigableMap;
+import java.util.NavigableSet;
+import java.util.TreeMap;
 
 /**
  * @author Gracie Horton
@@ -11,7 +14,7 @@ public class Route {
 
 	private Color color;
 	private String routeID;
-	private Collection<Stop> stops;
+	private NavigableMap<Integer, Stop> stops;
 	private String agencyID;
 	private String routeShortName;
 	private String routeLongName;
@@ -46,10 +49,6 @@ public class Route {
 		this.color = color;
 	}
 
-	public void setStops(Collection<Stop> stops) {
-		this.stops = stops;
-	}
-
 	public void setRouteShortName(String routeShortName) {
 		this.routeShortName = routeShortName;
 	}
@@ -68,6 +67,14 @@ public class Route {
 
 	public void setRouteUrl(String routeUrl) {
 		this.routeUrl = routeUrl;
+	}
+
+	public boolean addStop(Stop stop, int stopNum) {
+		if(stops == null){
+			stops = new TreeMap<>();
+		}
+		stops.put(stopNum, stop);
+		return true;
 	}
 
 	public Color getColor() {
@@ -101,7 +108,9 @@ public class Route {
 	public String getRouteUrl() {
 		return routeUrl;
 	}
+
 	public String getRouteColor(){return routeColor;}
+
 	public String getRouteTextColor (){return routeTextColor;}
 
 	/**
@@ -110,9 +119,10 @@ public class Route {
 	 * @return the stop with the specified stopID or null if no such stop is found.
 	 */
 	public Stop searchRoute(String stopID){
-		for (Stop stop: stops) {
-			if(stop.getStopID().equalsIgnoreCase(stopID)){
-				return stop;
+		NavigableSet<Integer> nav = stops.navigableKeySet();
+		for (Integer num: nav) {
+			if(stops.get(num).getStopID().equals(stopID)){
+				return stops.get(num);
 			}
 		}
 		return null;

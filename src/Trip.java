@@ -17,6 +17,8 @@ public class Trip {
     private String routeID;
     private String tripID;
 
+
+
     public Trip(String tripID, String serviceID, String routeID, String tripHeadsign, String
             directionID, String blockID, String shapeID) {
         this.tripID = tripID;
@@ -26,6 +28,7 @@ public class Trip {
         this.directionID = directionID;
         this.blockID = blockID;
         this.shapeID = shapeID;
+
     }
 
     /**
@@ -33,6 +36,10 @@ public class Trip {
      */
     public Trip(Route route) {
 
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
     }
 
     public void setShapeID(String shapeID) {
@@ -101,8 +108,10 @@ public class Trip {
         if(tripList == null){
             tripList = new TreeMap<>();
         }
-
         tripList.put(stopNum, stop);
+        if(route != null){
+            route.addStop(stop, stopNum);
+        }
         return true;
     }
 

@@ -91,12 +91,27 @@ public class DataStorage implements Subject {
 		if(trips.size()!=0 && stopTimes.size()!=0){
 			updateTripsWithStopTimes();
 		}
+		if (trips.size()!=0 && routes.size()!=0){
+			addRoutesToTrips();
+		}
 		for (Observer observer: observers) {
 			observer.update(itemsToSend);
 		}
 	}
 
 	/**
+	 * @author hortong
+	 */
+	private void addRoutesToTrips() {
+		for (Trip trip:trips) {
+			if(trip.getRoute() == null) {
+				trip.setRoute(searchRoutes(trip.getRouteID()));
+			}
+		}
+	}
+
+	/**
+	 * @author hortong
 	 * updates the trip with information loaded from the stopTimes file and adds the stopTime
 	 * object to is corresponding stop object where its put into an arrayList in the stop object.
 	 */
@@ -139,6 +154,19 @@ public class DataStorage implements Subject {
 		}
 		if(tripsToReturn.size() >= 0){
 			return tripsToReturn;
+		}
+		return null;
+	}
+
+	public Collection<Route> searchRoutesForStop(String stopID){
+		ArrayList<Route> routesToReturn = new ArrayList<>();
+		for (Route route: routes) {
+			if(route.searchRoute(stopID) != null){
+				routesToReturn.add(route);
+			}
+		}
+		if(routesToReturn.size() >= 0){
+			return routesToReturn;
 		}
 		return null;
 	}
