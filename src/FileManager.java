@@ -1,3 +1,4 @@
+import javax.xml.crypto.Data;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -301,18 +302,17 @@ public class FileManager {
 		return firstLine;
 	}
 
-	private void exportStopFile(File filename){
+	private void exportStopFile(File filename, DataStorage dataStorage){
+	}
+
+	private void exportRouteFile(File filename, DataStorage dataStorage){
 
 	}
 
-	private void exportRouteFile(File filename){
+	private void exportTripFile(File filename, DataStorage dataStorage){
 
 	}
-
-	private void exportTripFile(File filename){
-
-	}
-	private void exportStopTimesFile(File filename){
+	private void exportStopTimesFile(File filename, DataStorage dataStorage){
 
 	}
 

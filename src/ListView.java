@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * @author Gracie Horton
  * @version 1.0
- * @created 03-Oct-2017 4:57:27 PM
+ * Created: 03-Oct-2017 4:57:27 PM
  */
 public class ListView extends TabPane implements Observer {
 
@@ -46,8 +46,8 @@ public class ListView extends TabPane implements Observer {
 
 	/**
 	 * adjusts the sizes of the javaFX objects
-	 * @param height
-	 * @param width
+	 * @param height height of the object
+	 * @param width width of the object
 	 */
 	public void adjustSizes(double height, double width){
 		stops.setPrefWidth(width/3);
@@ -63,7 +63,7 @@ public class ListView extends TabPane implements Observer {
 	}
 
 	/**
-	 * recieves update from the subject
+	 * receives update from the subject
 	 * @param addedItems items that have been updated
 	 */
 	public void update(ArrayList<Object> addedItems){
@@ -81,5 +81,4 @@ public class ListView extends TabPane implements Observer {
 		}
 		System.out.println("got here");
 	}
-
 }

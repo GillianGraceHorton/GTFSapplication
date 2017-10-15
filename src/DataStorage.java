@@ -171,4 +171,45 @@ public class DataStorage implements Subject {
 		return null;
 	}
 
+
+	public Collection<Stop> getStops() {
+		return stops;
+	}
+
+	public void setStops(Collection<Stop> stops) {
+		this.stops = stops;
+	}
+
+	public Collection<Route> getRoutes() {
+		return routes;
+	}
+
+	public void setRoutes(Collection<Route> routes) {
+		this.routes = routes;
+	}
+
+	public Collection<Trip> getTrips() {
+		return trips;
+	}
+
+	public void setTrips(Collection<Trip> trips) {
+		this.trips = trips;
+	}
+
+	public Collection<Trip> getTripsWithTimes() {
+		return tripsWithTimes;
+	}
+
+	public void setTripsWithTimes(Collection<Trip> tripsWithTimes) {
+		this.tripsWithTimes = tripsWithTimes;
+	}
+
+	public Collection<StopTime> getStopTimes() {
+		return stopTimes;
+	}
+
+	public void setStopTimes(Collection<StopTime> stopTimes) {
+		this.stopTimes = stopTimes;
+	}
+
 }

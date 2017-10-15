@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
  * @created 03-Oct-2017 4:57:20 PM
  */
 public class Controller implements Initializable {
-
 	private BusMap map;
 	private FileManager fileManager;
 	private ListView listView;
