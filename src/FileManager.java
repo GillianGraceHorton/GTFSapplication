@@ -1,4 +1,3 @@
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,7 +9,7 @@ import java.util.Scanner;
 /**
  * @author heinzja
  * @version 1.0
- * @created 03-Oct-2017 4:57:25 PM
+ * Created: 03-Oct-2017 4:57:25 PM
  */
 public class FileManager {
 
@@ -107,7 +106,7 @@ public class FileManager {
 	/**
 	 * @author
 	 *	Description: removes file from 'validfiles' directory
-	 * @param filename
+	 * @param filename the name of the file to remove
 	 */
 	public boolean rmFile(String filename){
 		boolean result = false;
@@ -303,6 +302,7 @@ public class FileManager {
 	}
 
 	private void exportStopFile(File filename, DataStorage dataStorage){
+
 	}
 
 	private void exportRouteFile(File filename, DataStorage dataStorage){
@@ -315,6 +315,5 @@ public class FileManager {
 	private void exportStopTimesFile(File filename, DataStorage dataStorage){
 
 	}
-
 
 }

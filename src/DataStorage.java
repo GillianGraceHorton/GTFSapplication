@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 /**
  * @author Gracie Horton
@@ -170,7 +169,6 @@ public class DataStorage implements Subject {
 		}
 		return null;
 	}
-
 
 	public Collection<Stop> getStops() {
 		return stops;
