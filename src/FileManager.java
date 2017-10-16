@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Scanner;
 
 /**
@@ -33,10 +34,15 @@ public class FileManager {
 	public ArrayList<Object> loadFromValidFiles(){
 		ArrayList<Object> itemsToReturn = new ArrayList<Object>();
 		File validFiles = new File("validfiles");
-		if (validFiles.exists()){
-			for (String fileName: validFiles.list()) {
-				itemsToReturn.addAll(parseFile(new File(validFiles, fileName)));
+		//TODO: validFiles.list() may cause a NullPointerException
+		try {
+			if (validFiles.exists()) {
+				for (String fileName : validFiles.list()) {
+					itemsToReturn.addAll(parseFile(new File(validFiles, fileName)));
+				}
 			}
+		}catch (Exception e){
+			System.out.println("TEST: loadFromValidFiles -> " + e);
 		}
 		return itemsToReturn;
 	}
@@ -305,8 +311,36 @@ public class FileManager {
 		return firstLine;
 	}
 
-	private void exportStopFile(File filename, DataStorage dataStorage){
+	public void exportStopFile(File exportName, DataStorage ds){
+		File exportDir = new File(exportName.getParent(),"exports");
+		try {
+			if(!exportDir.exists()){
+				exportDir.mkdir();
+			}
+			File exportFile = new File(exportDir.getPath(),exportName.getName() + ".txt");
+			if (!exportFile.exists()) {
+				exportFile.createNewFile();
+			}
 
+			PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
+			pw.println("stop_id,stop_name,stop_desc,stop_lat,stop_lon");
+			Iterator<Stop> itr = ds.getStops().iterator();
+			while(itr.hasNext()){
+				Stop tmp = itr.next();
+				String stopID,stopName,stopDescription;
+				double stopLat,stopLon;
+				stopID = tmp.getStopID();
+				stopName = tmp.getName();
+				stopDescription = tmp.getStopDescription();
+				stopLat = tmp.getLocation().getLat();
+				stopLon = tmp.getLocation().getLon();
+				pw.format("%s,%s,%s,%f,%f\n",stopID,stopName,stopDescription,stopLat,stopLon);
+			}
+			pw.close();
+		}catch (Exception e){
+			System.out.println("TEST: exportStopFile -> " + e);
+		}
+		System.out.println("TEST: exportStopFile completed");
 	}
 
 	private void exportRouteFile(File filename, DataStorage dataStorage){

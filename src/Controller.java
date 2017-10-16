@@ -38,7 +38,6 @@ public class Controller implements Initializable {
 			listView.setSubject(dataStorage);
 			map.setSubject(dataStorage);
 
-
 			mainVBox.getChildren().add(listView);
             listView.setPrefWidth(mainVBox.getPrefWidth());
             listView.adjustSizes(mainVBox.getPrefHeight(), mainVBox.getPrefWidth());
@@ -82,6 +81,10 @@ public class Controller implements Initializable {
 	}
 
 	public void exportStopFileHandler(){
+		FileChooser fileChooser = new FileChooser();
+		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
+
+		fileManager.exportStopFile(exportDir, dataStorage);
 	}
 
 	public void exportStopTimesFileHandler(){
