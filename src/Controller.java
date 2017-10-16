@@ -77,26 +77,47 @@ public class Controller implements Initializable {
 	}
 
 	public void exportFileHandler(){
-
+		//TODO: remove exportFileHandler if not needed in future implementation
 	}
 
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 */
 	public void exportStopFileHandler(){
 		FileChooser fileChooser = new FileChooser();
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
-
 		fileManager.exportStopFile(exportDir, dataStorage);
 	}
 
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 */
 	public void exportStopTimesFileHandler(){
-
+		FileChooser fileChooser = new FileChooser();
+		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
+		fileManager.exportStopTimesFile(exportDir, dataStorage);
 	}
 
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 */
 	public void exportRouteFileHandler(){
-
+		FileChooser fileChooser = new FileChooser();
+		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
+		fileManager.exportRouteFile(exportDir, dataStorage);
 	}
 
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 */
 	public void exportTripFileHandler(){
-
+		FileChooser fileChooser = new FileChooser();
+		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
+		fileManager.exportTripFile(exportDir, dataStorage);
 	}
 
 	public void searchRouteForStopHandler(ActionEvent actionEvent) {
