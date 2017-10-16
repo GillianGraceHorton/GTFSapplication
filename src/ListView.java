@@ -16,11 +16,14 @@ public class ListView extends TabPane implements Observer {
 	private Tab routesTab;
 	private Tab tripsTab;
 	private Tab stopTimesTab;
+	private Tab routesContainingStopTab;
 
 	private TextArea stops;
 	private TextArea routes;
 	private TextArea trips;
 	private TextArea stopTimes;
+	private TextArea routesContainingStop;
+
 
 	public ListView(){
 		stopsTab = new Tab("STOPS");
@@ -79,6 +82,21 @@ public class ListView extends TabPane implements Observer {
 				}
 			}
 		}
-		System.out.println("got here");
+	}
+
+	public void displayRoutesContainingStop(ArrayList<Route> routes){
+		if(routesContainingStopTab == null){
+			routesContainingStopTab = new Tab("Routes containing Stop");
+			routesContainingStop = new TextArea();
+			routesContainingStopTab.setContent(routesContainingStop);
+			this.getTabs().add(routesContainingStopTab);
+		}
+		String toAdd = "";
+		for (Route route: routes) {
+			toAdd += "RouteID: " + route.getRouteID() + ", Route Name: " + route
+					.getRouteLongName() + "\n";
+		}
+		routesContainingStop.setText(toAdd);
+		routesContainingStop.setEditable(false);
 	}
 }

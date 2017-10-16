@@ -1,12 +1,15 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
+import javax.swing.*;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -93,16 +96,27 @@ public class Controller implements Initializable {
 
 	}
 
-	public void searchRouteHandler(){
+	public void searchRouteForStopHandler(ActionEvent actionEvent) {
+		TextInputDialog input = new TextInputDialog();
+		input.setHeaderText("Search for a stop by stop_id and display all routes that contain the" +
+						" stop");
+		input.setContentText("please enter the StopID");
+		Optional<String> result = input.showAndWait();
+		String stopID = result.get();
 
+		ArrayList<Route> routes = dataStorage.searchRoutesForStop(stopID);
+		listView.displayRoutesContainingStop(routes);
 	}
 
-
-
-	public void searchTripHandler(){
-
+	public void searchForStopHandler(ActionEvent actionEvent) {
 	}
 
-    public void searchStopHandler(ActionEvent actionEvent) {
-    }
+	public void searchTripsForRouteHandler(ActionEvent actionEvent) {
+	}
+
+	public void searchTripsForStopHandler(ActionEvent actionEvent) {
+	}
+
+	public void searchForTripHandler(ActionEvent actionEvent) {
+	}
 }

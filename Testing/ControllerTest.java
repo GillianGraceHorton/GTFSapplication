@@ -43,16 +43,27 @@ class ControllerTest {
     void exportTripFileHandler() {
     }
 
+    /**
+     * @author: hortong
+     */
     @Test
-    void searchRouteHandler() {
+    void searchRouteForStopHandler() {
     }
 
     @Test
-    void searchTripHandler() {
+    void searchForStopHandler() {
     }
 
     @Test
-    void searchStopHandler() {
+    void searchTripsForRouteHandler() {
+    }
+
+    @Test
+    void searchTripsForStopHandler() {
+    }
+
+    @Test
+    void searchForTripHandler() {
     }
 
 }
