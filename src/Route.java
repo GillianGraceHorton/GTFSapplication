@@ -119,10 +119,12 @@ public class Route {
 	 * @return the stop with the specified stopID or null if no such stop is found.
 	 */
 	public Stop searchRoute(String stopID){
-		NavigableSet<Integer> nav = stops.navigableKeySet();
-		for (Integer num: nav) {
-			if(stops.get(num).getStopID().equals(stopID)){
-				return stops.get(num);
+		if(stops != null) {
+			NavigableSet<Integer> nav = stops.navigableKeySet();
+			for (Integer num : nav) {
+				if (stops.get(num).getStopID().equals(stopID)) {
+					return stops.get(num);
+				}
 			}
 		}
 		return null;

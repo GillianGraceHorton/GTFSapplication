@@ -15,12 +15,19 @@ public class DataStorage implements Subject {
 	private Collection<StopTime> stopTimes;
 	private Collection<Observer> observers;
 
+
+
 	public DataStorage(){
 		stops = new ArrayList<>();
 		routes = new ArrayList<>();
 		trips = new ArrayList<>();
 		stopTimes = new ArrayList<>();
 		tripsWithTimes = new ArrayList<>();
+		observers = new ArrayList<>();
+	}
+
+	public Collection<Observer> getObservers() {
+		return observers;
 	}
 
 	public void setObservers(Collection<Observer> observers) {
@@ -52,8 +59,8 @@ public class DataStorage implements Subject {
 	 *
 	 * @param observer
 	 */
-	public void detach(Observer observer){
-		observers.remove(observer);
+	public boolean detach(Observer observer){
+		return observers.remove(observer);
 	}
 
 	/**
@@ -133,7 +140,7 @@ public class DataStorage implements Subject {
 	 */
 	public Trip searchTrips(String tripID){
 		for (Trip trip: trips) {
-			if (trip.getTripID().equals(tripID)){
+			if (trip.getTripID().equalsIgnoreCase(tripID)){
 				return trip;
 			}
 		}
@@ -152,7 +159,7 @@ public class DataStorage implements Subject {
 				tripsToReturn.add(trip);
 			}
 		}
-		if(tripsToReturn.size() >= 0){
+		if(tripsToReturn.size() > 0){
 			return tripsToReturn;
 		}
 		return null;
@@ -165,7 +172,7 @@ public class DataStorage implements Subject {
 				routesToReturn.add(route);
 			}
 		}
-		if(routesToReturn.size() >= 0){
+		if(routesToReturn.size() > 0){
 			return routesToReturn;
 		}
 		return null;

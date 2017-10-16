@@ -17,7 +17,7 @@ public interface Subject {
 	 * 
 	 * @param observer
 	 */
-    void detach(Observer observer);
+    boolean detach(Observer observer);
 
 	void notifyObservers(ArrayList<Object> itemsToSend);
 

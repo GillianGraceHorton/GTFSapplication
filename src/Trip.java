@@ -118,10 +118,12 @@ public class Trip {
     }
 
     public Stop getStop(String stopId){
-        NavigableSet<Integer> nav = tripList.navigableKeySet();
-        for (Integer num: nav) {
-            if(tripList.get(num).getStopID().equals(stopId)){
-                return tripList.get(num);
+        if(tripList != null) {
+            NavigableSet<Integer> nav = tripList.navigableKeySet();
+            for (Integer num : nav) {
+                if (tripList.get(num).getStopID().equals(stopId)) {
+                    return tripList.get(num);
+                }
             }
         }
         return null;
@@ -162,6 +164,6 @@ public class Trip {
      * @param trip
      */
     public boolean equals(Trip trip) {
-        return false;
+        return (this.getTripID().equals(trip.getTripID()));
     }
 }
