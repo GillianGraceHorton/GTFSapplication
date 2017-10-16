@@ -26,6 +26,10 @@ public class FileManager {
 		addValidType();
 	}
 
+	/**
+	 * @author hortong
+	 * @return
+	 */
 	public ArrayList<Object> loadFromValidFiles(){
 		ArrayList<Object> itemsToReturn = new ArrayList<Object>();
 		File validFiles = new File("validfiles");
