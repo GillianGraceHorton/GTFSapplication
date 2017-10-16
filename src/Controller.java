@@ -108,15 +108,36 @@ public class Controller implements Initializable {
 		listView.displayRoutesContainingStop(routes);
 	}
 
-	public void searchForStopHandler(ActionEvent actionEvent) {
+	public void searchForStopHandler() {
 	}
 
-	public void searchTripsForRouteHandler(ActionEvent actionEvent) {
+	public void searchTripsForRouteHandler() {
 	}
 
-	public void searchTripsForStopHandler(ActionEvent actionEvent) {
+	public void searchTripsForStopHandler() {
 	}
 
-	public void searchForTripHandler(ActionEvent actionEvent) {
+	public void searchForTripHandler() {
+	}
+
+	public void importStopFileHandler() {
+		FileChooser fileChooser = new FileChooser();
+		File fileToAdd = fileChooser.showOpenDialog(null);
+		try {
+			fileManager.addFile(fileToAdd);
+			ArrayList<Object> stops = fileManager.parseFile(fileToAdd);
+			dataStorage.notifyObservers(stops);
+		}catch (Exception e){
+			System.out.println("TEST: importFilesHandler -> " + e);
+		}
+	}
+
+	public void importStopTimesFileHandler() {
+	}
+
+	public void importRouteFileHandler() {
+	}
+
+	public void importTripFileHandler() {
 	}
 }

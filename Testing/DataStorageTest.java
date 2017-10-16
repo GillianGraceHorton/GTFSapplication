@@ -62,6 +62,7 @@ class DataStorageTest {
     }
 
     /**
+     * tests the detach method of the DataStorage class for 3 test cases
      * @author: hortong
      */
     @Test
@@ -88,6 +89,7 @@ class DataStorageTest {
     }
 
     /**
+     * tests the search routes method of the DataStorage Class for 3 test cases.
      * @author: hortong
      */
     @Test
@@ -119,6 +121,13 @@ class DataStorageTest {
      */
     @Test
     void notifyObservers() {
+        ArrayList<Observer> observers = new ArrayList<>();
+        Observer observer1 = new BusMap();
+        observers.add(observer1);
+        Observer observer2 = new BusMap();
+        observers.add(observer2);
+
+        //TODO finish test cases for notifyObservers test
     }
 
     /**
