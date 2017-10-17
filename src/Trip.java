@@ -31,6 +31,7 @@ public class Trip {
         this.blockID = blockID;
         this.shapeID = shapeID;
 
+        tripList = new TreeMap<>();
     }
 
     /**
@@ -107,14 +108,16 @@ public class Trip {
      * @return true after the stop is added
      */
     public boolean addStop(Stop stop, int stopNum) {
-        if(tripList == null){
-            tripList = new TreeMap<>();
+        boolean result = false;
+        if(stop != null && route != null) {
+            if (!tripList.containsKey(stopNum)) {
+                if(route.addStop(stop, stopNum)) {
+                    tripList.put(stopNum, stop);
+                    result = true;
+                }
+            }
         }
-        tripList.put(stopNum, stop);
-        if(route != null && route.addStop(stop, stopNum)) {
-            return true;
-        }
-        return false;
+        return result;
     }
 
     /**
