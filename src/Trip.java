@@ -126,7 +126,7 @@ public class Trip {
         if(tripList != null && stopId != null) {
             NavigableSet<Integer> nav = tripList.navigableKeySet();
             for (Integer num : nav) {
-                if (tripList.get(num).getStopID().equals(stopId)) {
+                if (tripList.get(num).getStopID().equalsIgnoreCase(stopId)) {
                     return tripList.get(num);
                 }
             }

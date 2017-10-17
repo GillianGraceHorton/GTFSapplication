@@ -125,7 +125,7 @@ public class Route {
 		if(stops != null) {
 			NavigableSet<Integer> nav = stops.navigableKeySet();
 			for (Integer num : nav) {
-				if (stops.get(num).getStopID().equals(stopID)) {
+				if (stops.get(num).getStopID().equalsIgnoreCase(stopID)) {
 					return stops.get(num);
 				}
 			}
