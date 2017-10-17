@@ -25,17 +25,6 @@ class FileManagerTest {
     void loadFromValidFiles() {
     }
 
-    /**
-     * @author Joseph Heinz - heinzja@msoe.edu
-     * Description: used to test the addFile() method.
-     */
-    @Test
-    void addFile() throws Exception {
-        FileManager fm = new FileManager();
-        //TestCase1: checks to see if addFile returns false if file is not valid.
-        assertFalse(fm.addFile(new File("notValidFile")));
-    }
-
     @Test
     void isValid(){
 
