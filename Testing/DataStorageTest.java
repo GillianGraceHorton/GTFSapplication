@@ -1,3 +1,5 @@
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.Pane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -117,6 +119,7 @@ class DataStorageTest {
     }
 
     /**
+     * test the notifyObservers method in the dataStorage class for 2 test cases
      * @author: hortong
      */
     @Test
@@ -126,8 +129,19 @@ class DataStorageTest {
         observers.add(observer1);
         Observer observer2 = new BusMap();
         observers.add(observer2);
+        ArrayList<Object> updates = new ArrayList<>();
+        Stop stop = new Stop(0, 0, "test",  "1A", "");
+        updates.add(stop);
 
-        //TODO finish test cases for notifyObservers test
+        //tests that the notifyObservers method does not throw an exception when there are no
+        // observers loaded yet
+        dataStorage.notifyObservers(updates);
+
+        //tests that the correct update is passed to the observers
+        dataStorage.setObservers(observers);
+        dataStorage.notifyObservers(updates);
+        assertEquals(stop, ((BusMap)observer1).getStops().get(0));
+        assertEquals(stop, ((BusMap)observer2).getStops().get(0));
     }
 
     /**
