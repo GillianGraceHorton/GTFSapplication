@@ -117,6 +117,11 @@ public class Trip {
         return false;
     }
 
+    /**
+     * Gets the stop associated to the trip from the specified trip id
+     * @param stopId
+     * @return
+     */
     public Stop getStop(String stopId){
         if(tripList != null && stopId != null) {
             NavigableSet<Integer> nav = tripList.navigableKeySet();
