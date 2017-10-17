@@ -122,15 +122,16 @@ public class Trip {
     }
 
     public Stop getStop(String stopId){
+        Stop result = null;
         if(tripList != null) {
             NavigableSet<Integer> nav = tripList.navigableKeySet();
             for (Integer num : nav) {
                 if (tripList.get(num).getStopID().equals(stopId)) {
-                    return tripList.get(num);
+                    result = tripList.get(num);
                 }
             }
         }
-        return null;
+        return result;
     }
 
     public NavigableMap<Integer, Stop> getTripList() {
