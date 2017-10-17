@@ -317,6 +317,12 @@ public class FileManager {
 		return firstLine;
 	}
 
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: exports stops to user choosen directory
+	 * @param exportName the file containing the desired directory and name of the file to export
+	 * @param  ds the DataStorage object which holds all the stops
+	 */
 	public void exportStopFile(File exportName, DataStorage ds){
 		File exportDir = new File(exportName.getParent(),"exports");
 		try {
@@ -349,15 +355,103 @@ public class FileManager {
 		System.out.println("TEST: exportStopFile completed");
 	}
 
-	private void exportRouteFile(File filename, DataStorage dataStorage){
+	public void exportRouteFile(File exportName, DataStorage ds){
+		File exportDir = new File(exportName.getParent(),"exports");
+		try {
+			if(!exportDir.exists()){
+				exportDir.mkdir();
+			}
+			File exportFile = new File(exportDir.getPath(),exportName.getName() + ".txt");
+			if (!exportFile.exists()) {
+				exportFile.createNewFile();
+			}
 
+			PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
+			pw.println("route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color");
+			Iterator<Route> itr = ds.getRoutes().iterator();
+			while(itr.hasNext()){
+				Route tmp = itr.next();
+				String routeID,agencyID,routeShort,routeLong,routeDesc,routeType,routeURL,routeColor,routeTextColor;
+				routeID = tmp.getRouteID();
+				agencyID = tmp.getAgencyID();
+				routeShort = tmp.getRouteShortName();
+				routeLong = tmp.getRouteLongName();
+				routeDesc = tmp.getRouteDescription();
+				routeType = tmp.getRouteType();
+				routeURL = tmp.getRouteUrl();
+				routeColor = tmp.getRouteColor();
+				routeTextColor = tmp.getRouteTextColor();
+				pw.format("%s,%s,%s,%s,%s,%s,%s,%s,%s\n",routeID,agencyID,routeShort,routeLong,routeDesc,routeType,routeURL,routeColor,routeTextColor);
+			}
+			pw.close();
+		}catch (Exception e){
+			System.out.println("TEST: exportRouteFile -> " + e);
+		}
+		System.out.println("TEST: exportRouteFile completed");
 	}
 
-	private void exportTripFile(File filename, DataStorage dataStorage){
+	public void exportTripFile(File exportName, DataStorage ds){
+		File exportDir = new File(exportName.getParent(),"exports");
+		try {
+			if(!exportDir.exists()){
+				exportDir.mkdir();
+			}
+			File exportFile = new File(exportDir.getPath(),exportName.getName() + ".txt");
+			if (!exportFile.exists()) {
+				exportFile.createNewFile();
+			}
 
+			PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
+			pw.println("route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id");
+			Iterator<Trip> itr = ds.getTrips().iterator();
+			while(itr.hasNext()){
+				Trip tmp = itr.next();
+				String routeID,serviceID,tripID,tripHeadsign,directionID,blockID,shapeID;
+				routeID = tmp.getRouteID();
+				serviceID = tmp.getServiceID();
+				tripID = tmp.getTripID();
+				tripHeadsign = tmp.getTripHeadsign();
+				directionID = tmp.getDirectionID();
+				blockID = tmp.getBlockID();
+				shapeID = tmp.getShapeID();
+				pw.format("%s,%s,%s,%s,%s,%s,%s\n",routeID,serviceID,tripID,tripHeadsign,directionID,blockID,shapeID);
+			}
+			pw.close();
+		}catch (Exception e){
+			System.out.println("TEST: exportTripFile -> " + e);
+		}
+		System.out.println("TEST: exportTripFile completed");
 	}
-	private void exportStopTimesFile(File filename, DataStorage dataStorage){
-
+	public void exportStopTimesFile(File exportName, DataStorage ds){
+		File exportDir = new File(exportName.getParent(),"exports");
+		try {
+			if(!exportDir.exists()){
+				exportDir.mkdir();
+			}
+			File exportFile = new File(exportDir.getPath(),exportName.getName() + ".txt");
+			if (!exportFile.exists()) {
+				exportFile.createNewFile();
+			}
+			PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
+			pw.println("trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type");
+			Iterator<StopTime> itr = ds.getStopTimes().iterator();
+			while(itr.hasNext()){
+				StopTime tmp = itr.next();
+				String tripID,arrivalTime,departureTime,stopID,stopSeq,stopHeadsign,pickupType,dropoffType;
+				tripID = tmp.getTripID();
+				arrivalTime = tmp.getArrivalTime();
+				departureTime = tmp.getDepartureTime();
+				stopID = tmp.getStopID();
+				stopSeq = tmp.getStopSequence();
+				stopHeadsign = tmp.getStopHeadsign();
+				pickupType = tmp.getPickupType();
+				dropoffType = tmp.getDropoffType();
+				pw.format("%s,%s,%s,%s,%s,%s,%s,%s\n",tripID,arrivalTime,departureTime,stopID,stopSeq,stopHeadsign,pickupType,dropoffType);
+			}
+			pw.close();
+		}catch (Exception e){
+			System.out.println("TEST: exportStopTimesFile -> " + e);
+		}
+		System.out.println("TEST: exportStopTimesFile completed");
 	}
-
 }

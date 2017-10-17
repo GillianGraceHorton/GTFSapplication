@@ -77,26 +77,47 @@ public class Controller implements Initializable {
 	}
 
 	public void exportFileHandler(){
-
+		//TODO: remove exportFileHandler if not needed in future implementation
 	}
 
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 */
 	public void exportStopFileHandler(){
 		FileChooser fileChooser = new FileChooser();
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
-
 		fileManager.exportStopFile(exportDir, dataStorage);
 	}
 
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 */
 	public void exportStopTimesFileHandler(){
-
+		FileChooser fileChooser = new FileChooser();
+		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
+		fileManager.exportStopTimesFile(exportDir, dataStorage);
 	}
 
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 */
 	public void exportRouteFileHandler(){
-
+		FileChooser fileChooser = new FileChooser();
+		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
+		fileManager.exportRouteFile(exportDir, dataStorage);
 	}
 
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 */
 	public void exportTripFileHandler(){
-
+		FileChooser fileChooser = new FileChooser();
+		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
+		fileManager.exportTripFile(exportDir, dataStorage);
 	}
 
 	public void searchRouteForStopHandler(ActionEvent actionEvent) {
@@ -111,15 +132,36 @@ public class Controller implements Initializable {
 		listView.displayRoutesContainingStop(routes);
 	}
 
-	public void searchForStopHandler(ActionEvent actionEvent) {
+	public void searchForStopHandler() {
 	}
 
-	public void searchTripsForRouteHandler(ActionEvent actionEvent) {
+	public void searchTripsForRouteHandler() {
 	}
 
-	public void searchTripsForStopHandler(ActionEvent actionEvent) {
+	public void searchTripsForStopHandler() {
 	}
 
-	public void searchForTripHandler(ActionEvent actionEvent) {
+	public void searchForTripHandler() {
+	}
+
+	public void importStopFileHandler() {
+		FileChooser fileChooser = new FileChooser();
+		File fileToAdd = fileChooser.showOpenDialog(null);
+		try {
+			fileManager.addFile(fileToAdd);
+			ArrayList<Object> stops = fileManager.parseFile(fileToAdd);
+			dataStorage.notifyObservers(stops);
+		}catch (Exception e){
+			System.out.println("TEST: importFilesHandler -> " + e);
+		}
+	}
+
+	public void importStopTimesFileHandler() {
+	}
+
+	public void importRouteFileHandler() {
+	}
+
+	public void importTripFileHandler() {
 	}
 }
