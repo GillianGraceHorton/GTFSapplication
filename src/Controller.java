@@ -44,6 +44,7 @@ public class Controller implements Initializable {
             listView.adjustSizes(mainVBox.getPrefHeight(), mainVBox.getPrefWidth());
 		}catch (Exception e){
 			System.out.println(e);
+			writeErrorMessage(e.getMessage());
 		}
 	}
 
@@ -160,6 +161,7 @@ public class Controller implements Initializable {
 			dataStorage.notifyObservers(stops);
 		}catch (Exception e){
 			System.out.println("TEST: importStopFilesHandler -> " + e);
+			writeErrorMessage(e.getMessage());
 		}
 	}
 
@@ -173,6 +175,7 @@ public class Controller implements Initializable {
             System.out.println("finished");
         }catch (Exception e){
             System.out.println("TEST: importFilesHandler -> " + e);
+			writeErrorMessage(e.getMessage());
         }
 	}
 
@@ -185,6 +188,7 @@ public class Controller implements Initializable {
             dataStorage.notifyObservers(stops);
         }catch (Exception e){
             System.out.println("TEST: importFilesHandler -> " + e);
+			writeErrorMessage(e.getMessage());
         }
 	}
 
@@ -197,6 +201,7 @@ public class Controller implements Initializable {
             dataStorage.notifyObservers(stops);
         }catch (Exception e){
             System.out.println("TEST: importFilesHandler -> " + e);
+			writeErrorMessage(e.getMessage());
         }
 	}
 
