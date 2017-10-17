@@ -25,10 +25,10 @@ class ListViewTest {
         dataStorage.attach(listView);
 
         dataStorage.notifyObservers(updates);
-        assertEquals(listView.getTabs().get(0).getContent(), "");
+        assertEquals(listView.getTabs().get(0).getContent().getAccessibleText(), "");
 
         updates.add(stop);
-        assertEquals(listView.getTabs().get(0).getContent(), stop.toString());
+        assertEquals(listView.getTabs().get(0).getContent().getAccessibleText(), stop.toString());
     }
 
 }
