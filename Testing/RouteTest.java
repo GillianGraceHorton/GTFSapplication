@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileNotFoundException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class RouteTest {
@@ -38,7 +40,6 @@ class RouteTest {
             Stop stop = new Stop(12, 11, "Stop", "stop_" + i, "Stop");
             route.addStop(stop, i);
         }
-
 
         //Test if all stops can be found
         for(int i = 10; i >= 1; i--) {
