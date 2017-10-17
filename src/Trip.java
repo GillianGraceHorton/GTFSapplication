@@ -118,7 +118,7 @@ public class Trip {
     }
 
     /**
-     * Gets the stop associated to the trip from the specified trip id
+     * Gets the stop associated to the trip from the specified trip id.
      * @param stopId
      * @return
      */
