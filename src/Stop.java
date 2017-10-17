@@ -98,7 +98,10 @@ public class Stop {
 		if(stopTimes == null){
 			stopTimes = new ArrayList<StopTime>();
 		}
-		return stopTimes.add(stopTime);
+		if(stopTime != null) {
+			return stopTimes.add(stopTime);
+		}
+		return false;
 	}
 
 	/**
