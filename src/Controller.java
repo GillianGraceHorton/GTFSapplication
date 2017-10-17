@@ -7,6 +7,7 @@ import javafx.stage.FileChooser;
 
 import javax.swing.*;
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -123,15 +124,18 @@ public class Controller implements Initializable {
 	}
 
 	public void searchRouteForStopHandler(ActionEvent actionEvent) {
-		TextInputDialog input = new TextInputDialog();
-		input.setHeaderText("Search for a stop by stop_id and display all routes that contain the" +
-						" stop");
-		input.setContentText("please enter the StopID");
-		Optional<String> result = input.showAndWait();
-		String stopID = result.get();
+		try {
+			TextInputDialog input = new TextInputDialog();
+			input.setHeaderText("Search for a stop by stop_id and display all routes that contain the" +
+					" stop");
+			input.setContentText("please enter the StopID");
+			Optional<String> result = input.showAndWait();
+			String stopID = result.get();
+			ArrayList<Route> routes = dataStorage.searchRoutesForStop(stopID);
+			listView.displayRoutesContainingStop(routes);
+		}catch(RuntimeException e){
 
-		ArrayList<Route> routes = dataStorage.searchRoutesForStop(stopID);
-		listView.displayRoutesContainingStop(routes);
+		}
 	}
 
 	public void searchForStopHandler() {

@@ -45,6 +45,8 @@ public class ListView extends TabPane implements Observer {
 		routesTab.setContent(routes);
 		tripsTab.setContent(trips);
 		stopTimesTab.setContent(stopTimes);
+
+		this.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
 	}
 
 	/**
