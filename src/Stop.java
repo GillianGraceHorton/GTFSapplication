@@ -94,6 +94,11 @@ public class Stop {
 		return stopDescription;
 	}
 
+    /**
+     * Adds stop times to the stops object
+     * @param stopTime - The stoptime to add
+     * @return boolean - if it was successfully added or not
+     */
 	public boolean addStopTimes(StopTime stopTime){
 		if(stopTimes == null){
 			stopTimes = new ArrayList<StopTime>();

@@ -15,6 +15,11 @@ class StopTest {
         stops = new Stop(12, 11, "Stop", "stop_1", "Stop");
     }
 
+    /**
+     * Checks if adding stop times works
+     *
+     * :author: hoffmanjc
+     */
     @Test
     void addStopTimes() {
         //Test if normal stoptimes can be added
