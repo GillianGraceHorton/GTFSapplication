@@ -154,12 +154,7 @@ public class FileManager {
 				line = scanner.nextLine();
 				String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				trip_id = items[0];
-
 				arrival_time = items[1];
-				//if(!arrival_time.equals("[0-5][0-9]:[0-5][0-9]:[0-5][0-9]")) {
-				//	throw new IllegalArgumentException("Arrival time for stop_time in trip " + trip_id + "not valid");
-				//}
-
 				departure_time = items[2];
 				stop_id = items[3];
 				stop_sequence = items[4];
@@ -177,38 +172,6 @@ public class FileManager {
 		}
         return toReturn;
     }
-
-	/**
-	 * @author Joseph Heinz - heinzja@msoe.edu
-	 * Description: Checks what type of file is to be parsed, and sends it to the correct parse method.
-	 * @param  file - the file to parse for data
-	 * @return returns an ArrayList of objects which contain the parsed data from the file.
-	 */
-	public ArrayList<Object> parseFile(File file){
-		ArrayList<Object> result = null;
-		try {
-			//TODO: as we add more functionality, add specific parse for each valid file type.
-			switch (getFirstLine(file)) {
-				case "stop_id,stop_name,stop_desc,stop_lat,stop_lon":
-					result = parseStopFile(file);
-					break;
-				case "route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color":
-					result = parseRouteFile(file);
-					break;
-				case "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id":
-					result = parseTripFile(file);
-					break;
-				case "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type":
-					result = parseStopTimesFile(file);
-					break;
-				default:
-					System.out.println("TEST: parseFile -> parse format of valid file not supported yet");
-			}
-		}catch (Exception e){
-			System.out.println("TEST: parseFile -> " + e);
-		}
-		return result; 													//returns result of if the file was parsed correctly.
-	}
 
 	/**
 	 * @author Joseph Heinz - heinzja@msoe.edu

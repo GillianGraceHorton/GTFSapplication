@@ -1,5 +1,3 @@
-import com.sun.media.sound.InvalidFormatException;
-
 /**
  * @author hortong & joseph heinz - heinzja@msoe.edu
  * Description: creates new Location class which holds a latitude and longitude
@@ -8,12 +6,13 @@ public class Location {
 	private double latitude;
 	private double longitude;
 
-	public Location(double lon, double lat) throws InvalidFormatException {
+	public Location(double lon, double lat) throws IllegalArgumentException {
 		if(validLongitude(lon) && validLatitude(lat)){
+
 			this.longitude = lon;
 			this.latitude = lat;
 		}
-		else{ throw new InvalidFormatException(); }
+		else{ throw new IllegalArgumentException(); }
 	}
 
 	public double getLat() {
@@ -24,14 +23,14 @@ public class Location {
 		return longitude;
 	}
 
-	public void setLon(double lon) throws InvalidFormatException {
+	public void setLon(double lon) throws IllegalArgumentException {
 		if(validLongitude(lon)){ this.longitude = lon; }
-		else { throw new InvalidFormatException(); }
+		else { throw new IllegalArgumentException(); }
 	}
 
-	public void setLat(double lat) throws InvalidFormatException {
+	public void setLat(double lat) throws IllegalArgumentException {
 		if(validLatitude(lat)){ this.latitude = lat; }
-		else{ throw new InvalidFormatException(); }
+		else{ throw new IllegalArgumentException(); }
 	}
 
 	private boolean validLongitude(double lon){
