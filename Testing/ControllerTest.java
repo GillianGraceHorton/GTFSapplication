@@ -1,8 +1,19 @@
+import javafx.stage.FileChooser;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ControllerTest {
+    Controller controller;
+
+    @BeforeEach
+    public void setUp(){
+        controller = new Controller();
+    }
+
     @Test
     void loadFilesHandler() {
     }
@@ -19,8 +30,12 @@ class ControllerTest {
     void editFilesHandler() {
     }
 
+    /**
+     * @author hortong
+     */
     @Test
-    void importFilesHandler() {
+    void importFilesHandler(){
+
     }
 
     @Test
@@ -43,9 +58,6 @@ class ControllerTest {
     void exportTripFileHandler() {
     }
 
-    /**
-     * @author: hortong
-     */
     @Test
     void searchRouteForStopHandler() {
     }
@@ -64,6 +76,22 @@ class ControllerTest {
 
     @Test
     void searchForTripHandler() {
+    }
+
+    @Test
+    void importStopFileHandler() {
+    }
+
+    @Test
+    void importStopTimesFileHandler() {
+    }
+
+    @Test
+    void importRouteFileHandler() {
+    }
+
+    @Test
+    void importTripFileHandler() {
     }
 
 }
