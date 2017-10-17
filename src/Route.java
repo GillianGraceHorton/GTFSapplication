@@ -70,11 +70,14 @@ public class Route {
 	}
 
 	public boolean addStop(Stop stop, int stopNum) {
-		if(stops == null){
-			stops = new TreeMap<>();
+		if(stop != null) {
+			if (stops == null) {
+				stops = new TreeMap<>();
+			}
+			stops.put(stopNum, stop);
+			return true;
 		}
-		stops.put(stopNum, stop);
-		return true;
+		return false;
 	}
 
 	public Color getColor() {

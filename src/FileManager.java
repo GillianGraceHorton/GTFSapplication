@@ -217,11 +217,17 @@ public class FileManager {
 	    Scanner scanner = new Scanner(file);
 	    scanner.nextLine();
 	    String line;
+
 	    while(scanner.hasNext()){
             line = scanner.nextLine();
             String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
             trip_id = items[0];
+
             arrival_time = items[1];
+            //if(!arrival_time.equals("[0-5][0-9]:[0-5][0-9]:[0-5][0-9]")) {
+			//	throw new IllegalArgumentException("Arrival time for stop_time in trip " + trip_id + "not valid");
+			//}
+
             departure_time = items[2];
             stop_id = items[3];
             stop_sequence = items[4];
