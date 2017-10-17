@@ -107,14 +107,18 @@ public class Trip {
      * @return true after the stop is added
      */
     public boolean addStop(Stop stop, int stopNum) {
+        boolean result = false;
         if(tripList == null){
             tripList = new TreeMap<>();
         }
-        tripList.put(stopNum, stop);
-        if(route != null){
-            route.addStop(stop, stopNum);
+        if(!tripList.containsKey(stopNum)) {
+            tripList.put(stopNum, stop);
+            if(route != null){
+                route.addStop(stop, stopNum);
+            }
+            result = true;
         }
-        return true;
+        return result;
     }
 
     public Stop getStop(String stopId){
