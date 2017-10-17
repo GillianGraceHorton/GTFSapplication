@@ -64,18 +64,6 @@ public class Controller implements Initializable {
 
 	}
 
-	public void importFilesHandler() {
-		FileChooser fileChooser = new FileChooser();
-		File fileToAdd = fileChooser.showOpenDialog(null);
-		try {
-			fileManager.addFile(fileToAdd);
-			ArrayList<Object> stops = fileManager.parseFile(fileToAdd);
-			dataStorage.notifyObservers(stops);
-		}catch (Exception e){
-			System.out.println("TEST: importFilesHandler -> " + e);
-		}
-	}
-
 	public void exportFileHandler(){
 		//TODO: remove exportFileHandler if not needed in future implementation
 	}
@@ -163,22 +151,51 @@ public class Controller implements Initializable {
 	public void importStopFileHandler() {
 		FileChooser fileChooser = new FileChooser();
 		File fileToAdd = fileChooser.showOpenDialog(null);
-		try {
-			fileManager.addFile(fileToAdd);
-			ArrayList<Object> stops = fileManager.parseFile(fileToAdd);
+        System.out.println();
+        try {
+			//fileManager.addFile(fileToAdd);
+			ArrayList<Object> stops = fileManager.parseStopFile(fileToAdd);
 			dataStorage.notifyObservers(stops);
 		}catch (Exception e){
-			System.out.println("TEST: importFilesHandler -> " + e);
+			System.out.println("TEST: importStopFilesHandler -> " + e);
 		}
 	}
 
 	public void importStopTimesFileHandler() {
+        FileChooser fileChooser = new FileChooser();
+        File fileToAdd = fileChooser.showOpenDialog(null);
+        try {
+            //fileManager.addFile(fileToAdd);
+            ArrayList<Object> stops = fileManager.parseStopTimesFile(fileToAdd);
+            dataStorage.notifyObservers(stops);
+            System.out.println("finished");
+        }catch (Exception e){
+            System.out.println("TEST: importFilesHandler -> " + e);
+        }
 	}
 
 	public void importRouteFileHandler() {
+        FileChooser fileChooser = new FileChooser();
+        File fileToAdd = fileChooser.showOpenDialog(null);
+        try {
+            //fileManager.addFile(fileToAdd);
+            ArrayList<Object> stops = fileManager.parseRouteFile(fileToAdd);
+            dataStorage.notifyObservers(stops);
+        }catch (Exception e){
+            System.out.println("TEST: importFilesHandler -> " + e);
+        }
 	}
 
 	public void importTripFileHandler() {
+        FileChooser fileChooser = new FileChooser();
+        File fileToAdd = fileChooser.showOpenDialog(null);
+        try {
+            //fileManager.addFile(fileToAdd);
+            ArrayList<Object> stops = fileManager.parseTripFile(fileToAdd);
+            dataStorage.notifyObservers(stops);
+        }catch (Exception e){
+            System.out.println("TEST: importFilesHandler -> " + e);
+        }
 	}
 
 	private void writeErrorMessage(String message){

@@ -19,13 +19,18 @@
                   <items>
                         <Menu mnemonicParsing="false" text="Import">
                           <items>
-                            <MenuItem mnemonicParsing="false" onAction="#importFilesHandler" text="StopFile" />
+                            <MenuItem mnemonicParsing="false" onAction="#importStopFileHandler"
+                                      text="StopFile" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#importFilesHandler" text="StopTimesFile" />
+                              <MenuItem mnemonicParsing="false"
+                                        onAction="#importStopTimesFileHandler"
+                                        text="StopTimesFile" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#importFilesHandler" text="RouteFile" />
+                              <MenuItem mnemonicParsing="false" onAction="#importRouteFileHandler"
+                                        text="RouteFile" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#importFilesHandler" text="TripFile" />
+                              <MenuItem mnemonicParsing="false" onAction="#importTripFileHandler"
+                                        text="TripFile" />
                           </items>
                         </Menu>
                         <SeparatorMenuItem mnemonicParsing="false" />
