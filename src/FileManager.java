@@ -76,7 +76,7 @@ public class FileManager {
      *              If the directory 'validfiles' does not exist, its creates the directory and add the file to it.
 	 * @param file File which is to be added to validFileList
 	 */
-	public boolean addFile(File file){
+	public boolean addFile(File file) {
         boolean result = false;                                                                            //initializes result, false by default
 		if(isValid(file)) {                                                                                     //checks if file is valid
             File newDir = new File("validfiles");                                                        //makes temp file with validfiles folder dir
@@ -97,7 +97,7 @@ public class FileManager {
                 }
 
             } catch (IOException io) {
-                System.out.println("IO Exception");
+                System.out.println("TEST: addFile -> " + io);
             }
         }else{
 		    System.out.println("Error: File is not valid format.");
@@ -133,7 +133,7 @@ public class FileManager {
 	 * @param file containing stop objects
      * @return Array containing all the stop objects
 	 */
-	private ArrayList<Object> parseStopFile(File file) throws FileNotFoundException {
+	public ArrayList<Object> parseStopFile(File file) throws FileNotFoundException {
 		ArrayList<Object> toReturn = new ArrayList<>();
 		String stop_id, stop_desc,stop_name;
 		double stop_lat,stop_lon;
@@ -347,6 +347,12 @@ public class FileManager {
 		System.out.println("TEST: exportStopFile completed");
 	}
 
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: exports routes to user choosen directory
+	 * @param exportName the file containing the desired directory and name of the file to export
+	 * @param  ds the DataStorage object which holds all the routes
+	 */
 	public void exportRouteFile(File exportName, DataStorage ds){
 		File exportDir = new File(exportName.getParent(),"exports");
 		try {
@@ -382,6 +388,12 @@ public class FileManager {
 		System.out.println("TEST: exportRouteFile completed");
 	}
 
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: exports trips to user choosen directory
+	 * @param exportName the file containing the desired directory and name of the file to export
+	 * @param  ds the DataStorage object which holds all the trips
+	 */
 	public void exportTripFile(File exportName, DataStorage ds){
 		File exportDir = new File(exportName.getParent(),"exports");
 		try {
@@ -414,6 +426,12 @@ public class FileManager {
 		}
 		System.out.println("TEST: exportTripFile completed");
 	}
+	/**
+	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Description: exports all stored stop times to user choosen directory
+	 * @param exportName the file containing the desired directory and name of the file to export
+	 * @param  ds the DataStorage object which holds all the stop times
+	 */
 	public void exportStopTimesFile(File exportName, DataStorage ds){
 		File exportDir = new File(exportName.getParent(),"exports");
 		try {
