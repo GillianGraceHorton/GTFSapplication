@@ -48,14 +48,6 @@ public class FileManager {
 	}
 
 	/**
-	 * 
-	 * @param observer
-	 */
-	public void attach(Observer observer){
-		//TODO: Complete attach
-	}
-
-	/**
 	 * @author joseph heinz heinzja@msoe.edu
 	 * Description: current implementation only checks if first line follows valid list of formats
 	 * @param file - file which is to be checked for validity
