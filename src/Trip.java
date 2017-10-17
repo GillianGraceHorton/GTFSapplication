@@ -107,31 +107,31 @@ public class Trip {
      * @return true after the stop is added
      */
     public boolean addStop(Stop stop, int stopNum) {
-        boolean result = false;
         if(tripList == null){
             tripList = new TreeMap<>();
         }
-        if(!tripList.containsKey(stopNum)) {
-            tripList.put(stopNum, stop);
-            if(route != null){
-                route.addStop(stop, stopNum);
-            }
-            result = true;
+        tripList.put(stopNum, stop);
+        if(route != null && route.addStop(stop, stopNum)) {
+            return true;
         }
-        return result;
+        return false;
     }
 
+    /**
+     * Gets the stop associated to the trip from the specified trip id.
+     * @param stopId
+     * @return
+     */
     public Stop getStop(String stopId){
-        Stop result = null;
-        if(tripList != null) {
+        if(tripList != null && stopId != null) {
             NavigableSet<Integer> nav = tripList.navigableKeySet();
             for (Integer num : nav) {
                 if (tripList.get(num).getStopID().equals(stopId)) {
-                    result = tripList.get(num);
+                    return tripList.get(num);
                 }
             }
         }
-        return result;
+        return null;
     }
 
     public NavigableMap<Integer, Stop> getTripList() {

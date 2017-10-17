@@ -17,7 +17,6 @@ class StopTest {
 
     /**
      * Checks if adding stop times works
-     *
      * :author: hoffmanjc
      */
     @Test
@@ -28,7 +27,7 @@ class StopTest {
             assertTrue(stops.addStopTimes(stopTime));
         }
 
-        //test if null stoptimes can be added
+        //test if null stoptimes can't be added
         assertFalse(stops.addStopTimes(null));
     }
 

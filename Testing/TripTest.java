@@ -4,40 +4,64 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TripTest {
-    private Trip trip;
-    private Route route;
+    Trip trip;
+
     @BeforeEach
-    void startUp(){
-        trip = new Trip("TEST_TRIPID","TEST_SERVICEID","TEST_TRIPID","TEST_TRIPHEADSIGN","TEST_DIRECTIONID","TEST_BLOCKID","TEST_SHAPEID");
-        route = new Route("TEST_ROUTEID","TEST_AGENCYID","TEST_RTSHORTNAME",
-                "TEST_RTLONGNAME","TEST_ROUTEDESC","TEST_ROUTETYPE","TEST_ROUTEURL","TEST_ROUTECOLOR","TEST_ROUTETEXTCOLOR");
+    void startUp() {
+        trip = new Trip("trip_1", " ", " ", " ", " ", "", " ");
     }
 
     /**
-     * Author: Joseph Heinz - heinzja@msoe.edu
-     * Description: tests addStop method functionality
+     * Tests if the addStop(0 method functions properly
+     * :author: hoffmanjc
      */
     @Test
     void addStop() {
-        //TestCase1: checks to see if addStop can add valid stop
-        assertTrue(trip.addStop(new Stop(0,0,"TEST_STOPNAME","TEST_STOPID","TEST_STOPDESC"),1));
-        //TestCase2: checks to see if addStop returns false from adding stop to same location in list
-        assertFalse(trip.addStop(new Stop(0,0,"TEST_STOPNAME","TEST_STOPID","TEST_STOPDESC"),1));
+        //Test if a stop cannot be added without setting route first.
+        assertFalse(trip.addStop(new Stop(12, 11, "Stop", "stop_0", "Stop"), 0));
+
+        //Test if all stops can be found with a valid route assigned in the trip
+        trip.setRoute(new Route("route_1", " ", " ", " ", " ",
+                " ", " ", " ", " "));
+        for (int i = 1; i <= 10; i++) {
+            Stop stop = new Stop(12, 11, "Stop", "stop_" + i, "Stop");
+            assertTrue(trip.addStop(stop, i));
+        }
+
+        //add a null stop
+        assertFalse(trip.addStop(null, 3));
     }
 
+
     /**
-     * Author: Joseph Heinz - heinzja@msoe.edu
-     * Description: tests getStop method functionality
+     * Tests if get stop can handle all possible errors that may occur.
+     * :author: hoffmanjc
      */
     @Test
     void getStop() {
-        Stop testStop = new Stop(0,0,"TEST_STOPNAME","TEST_STOPID","TEST_STOPDESC");
-        trip.addStop(testStop,1);
+        //set route for trip
+        trip.setRoute(new Route("route_1", " ", " ", " ", " ",
+                " ", " ", " ", " "));
+        //Makes sure searching for stops before adding doesnt create error
+        assertEquals(trip.getStop("stop_3"), null);
 
-        //TestCase1: checks to see if getStop returns correct stop
-        assertSame(trip.getStop("TEST_STOPID"),testStop);
-        //TestCase2: checks to see if getStop returns null from non-existent stopID
-        assertNull(trip.getStop(null));
+        //Add stops
+        for(int i = 1; i <= 10; i++) {
+            Stop stop = new Stop(12, 11, "Stop", "stop_" + i, "Stop");
+            trip.addStop(stop, i);
+        }
+
+        //Test if all stops can be found
+        for(int i = 10; i >= 1; i--) {
+            assertEquals(trip.getStop("stop_" + i).getStopID(), ("stop_" + i));
+        }
+
+        //search for a stop id not in trips
+        assertEquals(trip.getStop("stop_15"), null);
+
+        //search with a null stop id
+        trip.addStop(null, 11);
+        assertEquals(trip.getStop(null), null);
     }
 
 }
