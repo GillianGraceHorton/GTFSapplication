@@ -2,8 +2,6 @@
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -12,60 +10,15 @@ import java.util.*;
  * Created: 03-Oct-2017 4:57:25 PM
  */
 public class FileManager {
-
-	private Collection<File> validFileList;
-	private NavigableMap<String, String> validFileTypes;
+	private NavigableMap<String,String> validFileTypes;
 
 	/**
 	 * @author Joseph Heinz - heinzja@msoe.edu
 	 * Description: initializes validFileList and validFileTypes
 	 */
 	public FileManager(){
-		validFileList = new ArrayList<File>();
 		validFileTypes = new TreeMap<>();
 		addValidType();
-	}
-
-	/**
-	 * @author hortong
-	 * @return
-	 */
-	public ArrayList<Object> loadFromValidFiles(){
-		ArrayList<Object> itemsToReturn = new ArrayList<Object>();
-		File validFiles = new File("validfiles");
-		//TODO: validFiles.list() may cause a NullPointerException
-		try {
-			if (validFiles.exists()) {
-				for (String fileName : validFiles.list()) {
-					itemsToReturn.addAll(parseFile(new File(validFiles, fileName)));
-				}
-			}
-		}catch (Exception e){
-			System.out.println("TEST: loadFromValidFiles -> " + e);
-		}
-		return itemsToReturn;
-	}
-
-	/**
-	 * @author
-	 *	Description: removes file from 'validfiles' directory
-	 * @param filename the name of the file to remove
-	 */
-	public boolean rmFile(String filename){
-		boolean result = false;
-		//TODO: Complete rmFile
-		return result;
-	}
-
-	/**
-	 *	Description: returns specified file stored in Collection validFileList
-	 * @param filename - name of the file to return
-	 * @return File - file found in list, returns NULL if file does not exist
-	 */
-	private File getFile(String filename){
-		File result = null;
-		//TODO: Complete getFile
-		return result;
 	}
 
 	/**

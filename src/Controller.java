@@ -41,8 +41,6 @@ public class Controller implements Initializable {
 			mainVBox.getChildren().add(listView);
             listView.setPrefWidth(mainVBox.getPrefWidth());
             listView.adjustSizes(mainVBox.getPrefHeight(), mainVBox.getPrefWidth());
-
-            dataStorage.notifyObservers(fileManager.loadFromValidFiles());
 		}catch (Exception e){
 			System.out.println(e);
 		}
