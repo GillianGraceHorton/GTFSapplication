@@ -87,7 +87,11 @@ public class Controller implements Initializable {
 	public void exportStopFileHandler(){
 		FileChooser fileChooser = new FileChooser();
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
-		fileManager.exportStopFile(exportDir, dataStorage);
+		try {
+			fileManager.exportStopFile(exportDir, dataStorage);
+		} catch (Exception e) {
+			writeErrorMessage(e.getMessage());
+		}
 	}
 
 	/**
@@ -97,7 +101,11 @@ public class Controller implements Initializable {
 	public void exportStopTimesFileHandler(){
 		FileChooser fileChooser = new FileChooser();
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
-		fileManager.exportStopTimesFile(exportDir, dataStorage);
+		try {
+			fileManager.exportStopTimesFile(exportDir, dataStorage);
+		} catch (Exception e) {
+			writeErrorMessage(e.getMessage());
+		}
 	}
 
 	/**
@@ -107,7 +115,11 @@ public class Controller implements Initializable {
 	public void exportRouteFileHandler(){
 		FileChooser fileChooser = new FileChooser();
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
-		fileManager.exportRouteFile(exportDir, dataStorage);
+		try {
+			fileManager.exportRouteFile(exportDir, dataStorage);
+		} catch (Exception e) {
+			writeErrorMessage(e.getMessage());
+		}
 	}
 
 	/**
@@ -117,7 +129,11 @@ public class Controller implements Initializable {
 	public void exportTripFileHandler(){
 		FileChooser fileChooser = new FileChooser();
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
-		fileManager.exportTripFile(exportDir, dataStorage);
+		try {
+			fileManager.exportTripFile(exportDir, dataStorage);
+		} catch (Exception e) {
+			writeErrorMessage(e.getMessage());
+		}
 	}
 
 	public void searchRouteForStopHandler(ActionEvent actionEvent) {
@@ -163,5 +179,9 @@ public class Controller implements Initializable {
 	}
 
 	public void importTripFileHandler() {
+	}
+
+	private void writeErrorMessage(String message){
+		JOptionPane.showMessageDialog(null, message);
 	}
 }
