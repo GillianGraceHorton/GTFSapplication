@@ -36,6 +36,9 @@ public class Trip {
     /**
      * @param route
      */
+    public Trip(Route route) {
+
+    }
 
     public void setRoute(Route route) {
         this.route = route;
@@ -107,9 +110,9 @@ public class Trip {
         if(tripList == null){
             tripList = new TreeMap<>();
         }
-        if(stop != null && route != null) {
-            tripList.put(stopNum, stop);
-            return route.addStop(stop, stopNum);
+        tripList.put(stopNum, stop);
+        if(route != null && route.addStop(stop, stopNum)) {
+            return true;
         }
         return false;
     }

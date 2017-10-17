@@ -23,7 +23,7 @@ class TripTest {
         //Test if all stops can be found with a valid route assigned in the trip
         trip.setRoute(new Route("route_1", " ", " ", " ", " ",
                 " ", " ", " ", " "));
-        for(int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 10; i++) {
             Stop stop = new Stop(12, 11, "Stop", "stop_" + i, "Stop");
             assertTrue(trip.addStop(stop, i));
         }
@@ -32,13 +32,13 @@ class TripTest {
         assertFalse(trip.addStop(null, 3));
     }
 
+
     /**
      * Tests if get stop can handle all possible errors
      * :author: hoffmanjc
      */
     @Test
     void getStop() {
-
         //set route for trip
         trip.setRoute(new Route("route_1", " ", " ", " ", " ",
                 " ", " ", " ", " "));
