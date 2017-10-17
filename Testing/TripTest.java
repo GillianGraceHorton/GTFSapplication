@@ -34,7 +34,7 @@ class TripTest {
 
 
     /**
-     * Tests if get stop can handle all possible errors that may occur
+     * Tests if get stop can handle all possible errors that may occur.
      * :author: hoffmanjc
      */
     @Test
