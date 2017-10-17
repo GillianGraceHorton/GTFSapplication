@@ -12,9 +12,9 @@ import java.util.TreeMap;
  */
 public class Route {
 
+	private NavigableMap<Integer, Stop> stops;
 	private Color color;
 	private String routeID;
-	private NavigableMap<Integer, Stop> stops;
 	private String agencyID;
 	private String routeShortName;
 	private String routeLongName;
@@ -35,6 +35,8 @@ public class Route {
 		this.routeUrl = route_url;
 		this.routeColor = route_color;
 		this.routeTextColor = route_text_color;
+
+		stops = new TreeMap<>();
 	}
 
 	/**
@@ -70,14 +72,14 @@ public class Route {
 	}
 
 	public boolean addStop(Stop stop, int stopNum) {
+		boolean result = false;
 		if(stop != null) {
-			if (stops == null) {
-				stops = new TreeMap<>();
+			if(!stops.containsKey(stopNum)) {
+				stops.put(stopNum, stop);
+				result = true;
 			}
-			stops.put(stopNum, stop);
-			return true;
 		}
-		return false;
+		return result;
 	}
 
 	public Color getColor() {

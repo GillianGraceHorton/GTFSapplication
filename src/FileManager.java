@@ -1,11 +1,8 @@
+
+
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * @author heinzja
@@ -13,117 +10,15 @@ import java.util.Scanner;
  * Created: 03-Oct-2017 4:57:25 PM
  */
 public class FileManager {
-
-	private Collection<File> validFileList;
-	private ArrayList<String> validFileTypes;
+	private NavigableMap<String,String> validFileTypes;
 
 	/**
 	 * @author Joseph Heinz - heinzja@msoe.edu
 	 * Description: initializes validFileList and validFileTypes
 	 */
 	public FileManager(){
-		validFileList = new ArrayList<File>();
-		validFileTypes = new ArrayList<String>();
+		validFileTypes = new TreeMap<>();
 		addValidType();
-	}
-
-	/**
-	 * @author hortong
-	 * @return
-	 */
-	public ArrayList<Object> loadFromValidFiles(){
-		ArrayList<Object> itemsToReturn = new ArrayList<Object>();
-		File validFiles = new File("validfiles");
-		//TODO: validFiles.list() may cause a NullPointerException
-		try {
-			if (validFiles.exists()) {
-				for (String fileName : validFiles.list()) {
-					itemsToReturn.addAll(parseFile(new File(validFiles, fileName)));
-				}
-			}
-		}catch (Exception e){
-			System.out.println("TEST: loadFromValidFiles -> " + e);
-		}
-		return itemsToReturn;
-	}
-
-	/**
-	 * @author joseph heinz heinzja@msoe.edu
-	 * Description: current implementation only checks if first line follows valid list of formats
-	 * @param file - file which is to be checked for validity
-	 */
-	private boolean isValid(File file) throws Exception {
-		boolean result = false;
-		try {
-			String firstLine = getFirstLine(file);
-			for(int i=0;i<validFileTypes.size();i++){ //checks if valid file type
-				if(firstLine.equals(validFileTypes.get(i))){
-					//TODO: Future implementation/testing, iterate through entire file before valid
-					result = true;
-				}
-			}
-
-		} catch (Exception e) {
-			throw new Exception("There was a problem reading from the file: " + file.getName(), e);
-		}
-		return result;
-	}
-
-	/**
-	 * @author joseph heinz - heinzja@msoe.edu
-     * Description: Checks if file is of valid format before adding it to the 'validfiles' directory.
-     *              If the directory 'validfiles' does not exist, its creates the directory and add the file to it.
-	 * @param file File which is to be added to validFileList
-	 */
-	public boolean addFile(File file) throws Exception {
-        boolean result = false;                                                                            //initializes result, false by default
-		if(isValid(file)) {                                                                                     //checks if file is valid
-            File newDir = new File("validfiles");                                                        //makes temp file with validfiles folder dir
-            File newFile = new File(newDir,file.getName());                                                        //makes temp file with passed in files name
-            try {
-                if (!newDir.exists()) {                                                                         //checks to see if validfiles dir exists
-                    newDir.mkdir();                                                                      			//if not, creates folder directory
-                } else {
-                    System.out.println("TEST: directory path already exist");
-                }
-
-                if (!newFile.exists()) {                                                                        //checks if passed file already exists in dir
-                    Path dir = Paths.get(System.getProperty("user.dir") + "/validfiles");        //if not, gets users directory to application
-                    Files.copy(file.toPath(), dir.resolve(file.getName()));                                      //copies file data from passed file to new directory
-                    result = true;
-                } else {
-                    System.out.println("TEST: " + newFile.getName() + " already exists");
-                }
-
-            } catch (IOException io) {
-                System.out.println("TEST: addFile -> " + io);
-            }
-        }else{
-		    System.out.println("Error: File is not valid format.");
-        }
-		return result;                                                                                        //returns result true - file added, false - file not added
-	}
-
-	/**
-	 * @author
-	 *	Description: removes file from 'validfiles' directory
-	 * @param filename the name of the file to remove
-	 */
-	public boolean rmFile(String filename){
-		boolean result = false;
-		//TODO: Complete rmFile
-		return result;
-	}
-
-	/**
-	 *	Description: returns specified file stored in Collection validFileList
-	 * @param filename - name of the file to return
-	 * @return File - file found in list, returns NULL if file does not exist
-	 */
-	private File getFile(String filename){
-		File result = null;
-		//TODO: Complete getFile
-		return result;
 	}
 
 	/**
@@ -138,7 +33,11 @@ public class FileManager {
 			String stop_id, stop_desc, stop_name;
 			double stop_lat, stop_lon;
 			Scanner scanner = new Scanner(file);
-			scanner.nextLine();
+			String firstLine = scanner.nextLine();
+			if(!firstLine.equals(validFileTypes.get("stops"))){
+				throw new Exception("the file: " + file.getName() + ", was not " +
+						"formatted correctly for a stop file");
+			}
 			String line;
 			while (scanner.hasNext()) {
 				line = scanner.nextLine();
@@ -165,13 +64,17 @@ public class FileManager {
      * @param file containing route objects
      * @return Array containing all the route objects
 	 */
-	private ArrayList<Object> parseRouteFile(File file) throws Exception {
+	public ArrayList<Object> parseRouteFile(File file) throws Exception {
 		ArrayList<Object> toReturn = new ArrayList<>();
 		try {
 			String route_id, agency_id, route_short_name, route_long_name;
 			String route_desc, route_type, route_url, route_color, route_text_color;
 			Scanner scanner = new Scanner(file);
-			scanner.nextLine();
+			String firstLine = scanner.nextLine();
+			if(!firstLine.equals(validFileTypes.get("routes"))){
+				throw new Exception("the file: " + file.getName() + ", was not " +
+						"formatted correctly for a route file");
+			}
 			String line;
 			while (scanner.hasNext()) {
 				line = scanner.nextLine();
@@ -202,12 +105,16 @@ public class FileManager {
 	 * @param file - file to parse for Trip data
 	 * @return - returns ArrayList full of parsed data from trip file.
 	 */
-	private ArrayList<Object> parseTripFile(File file) throws Exception {
+	public ArrayList<Object> parseTripFile(File file) throws Exception {
 		ArrayList<Object> toReturn= new ArrayList<>();
 		try {
 			String route_id, service_id, trip_id, trip_head_sign, direction_id, block_id, shape_id;
 			Scanner scanner = new Scanner(file);
-			scanner.nextLine();
+			String firstLine = scanner.nextLine();
+			if(!firstLine.equals(validFileTypes.get("trips"))){
+				throw new Exception("the file: " + file.getName() + ", was not " +
+						"formatted correctly for a trips file");
+			}
 			String line;
 			while (scanner.hasNext()) {
 				line = scanner.nextLine();
@@ -230,25 +137,24 @@ public class FileManager {
 		return toReturn;
 	}
 
-	private ArrayList<Object> parseStopTimesFile(File file) throws Exception {
+	public ArrayList<Object> parseStopTimesFile(File file) throws Exception {
 	    ArrayList<Object> toReturn = new ArrayList<>();
 	    try {
 			String trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign,
 					pickup_type, drop_off_type;
 			Scanner scanner = new Scanner(file);
-			scanner.nextLine();
+			String firstLine = scanner.nextLine();
+			if(!firstLine.equals(validFileTypes.get("stop_times"))){
+				throw new Exception("the file: " + file.getName() + ", was not " +
+						"formatted correctly for a stopTimes file");
+			}
 			String line;
 
 			while (scanner.hasNext()) {
 				line = scanner.nextLine();
 				String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
 				trip_id = items[0];
-
 				arrival_time = items[1];
-				//if(!arrival_time.equals("[0-5][0-9]:[0-5][0-9]:[0-5][0-9]")) {
-				//	throw new IllegalArgumentException("Arrival time for stop_time in trip " + trip_id + "not valid");
-				//}
-
 				departure_time = items[2];
 				stop_id = items[3];
 				stop_sequence = items[4];
@@ -269,53 +175,31 @@ public class FileManager {
 
 	/**
 	 * @author Joseph Heinz - heinzja@msoe.edu
-	 * Description: Checks what type of file is to be parsed, and sends it to the correct parse method.
-	 * @param  file - the file to parse for data
-	 * @return returns an ArrayList of objects which contain the parsed data from the file.
-	 */
-	public ArrayList<Object> parseFile(File file){
-		ArrayList<Object> result = null;
-		try {
-			//TODO: as we add more functionality, add specific parse for each valid file type.
-			switch (getFirstLine(file)) {
-				case "stop_id,stop_name,stop_desc,stop_lat,stop_lon":
-					result = parseStopFile(file);
-					break;
-				case "route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color":
-					result = parseRouteFile(file);
-					break;
-				case "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id":
-					result = parseTripFile(file);
-					break;
-				case "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type":
-					result = parseStopTimesFile(file);
-					break;
-				default:
-					System.out.println("TEST: parseFile -> parse format of valid file not supported yet");
-			}
-		}catch (Exception e){
-			System.out.println("TEST: parseFile -> " + e);
-		}
-		return result; 													//returns result of if the file was parsed correctly.
-	}
-
-	/**
-	 * @author Joseph Heinz - heinzja@msoe.edu
 	 * Temporary valid file type arraylist will be changed to be less static in the future.
 	 * Description: adds valid file types to an arraylist of valid file types.
 	 */
 	private void addValidType(){
-		validFileTypes.add("agency_id,agency_name,agency_url,agency_timezone,agency_phone");
-		validFileTypes.add("service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date");
-		validFileTypes.add("service_id,date,exception_type");
-		validFileTypes.add("fare_id,price,currency_type,payment_method,transfers,transfer_duration,agency_id");
-		validFileTypes.add("feed_publisher_name,feed_publisher_url,feed_lang");
-		validFileTypes.add("route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color");
-		validFileTypes.add("shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence");
-		validFileTypes.add("trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type");
-		validFileTypes.add("stop_id,stop_name,stop_desc,stop_lat,stop_lon");
-		validFileTypes.add("from_stop_id,to_stop_id,transfer_type");
-		validFileTypes.add("route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id");
+		validFileTypes.put("agency", "agency_id,agency_name,agency_url,agency_timezone," +
+				"agency_phone");
+		validFileTypes.put("calender", "service_id,monday,tuesday,wednesday,thursday,friday," +
+				"saturday," +
+				"sunday,start_date,end_date");
+		validFileTypes.put("calender_dates", "service_id,date,exception_type");
+		validFileTypes.put("fare_attributes", "fare_id,price,currency_type,payment_method," +
+				"transfers,transfer_duration,agency_id");
+		validFileTypes.put("feed_info", "feed_publisher_name,feed_publisher_url,feed_lang");
+		validFileTypes.put("routes", "route_id,agency_id,route_short_name,route_long_name," +
+				"route_desc," +
+				"route_type,route_url,route_color,route_text_color");
+		validFileTypes.put("shapes", "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence");
+		validFileTypes.put("stop_times", "trip_id,arrival_time,departure_time,stop_id," +
+				"stop_sequence," +
+				"stop_headsign,pickup_type,drop_off_type");
+		validFileTypes.put("stops", "stop_id,stop_name,stop_desc,stop_lat,stop_lon");
+		validFileTypes.put("transfers", "from_stop_id,to_stop_id,transfer_type");
+		validFileTypes.put("trips", "route_id,service_id,trip_id,trip_headsign,direction_id," +
+				"block_id," +
+				"shape_id");
 	}
 
 	/**
