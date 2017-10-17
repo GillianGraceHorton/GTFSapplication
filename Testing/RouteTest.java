@@ -16,7 +16,6 @@ class RouteTest {
 
     /**
      * Checks if a stop can be ucessfully added
-     *
      * :author: hoffmanjc
      */
     @Test
@@ -33,7 +32,6 @@ class RouteTest {
 
     /**
      * Checks if a stop can be successfully searched in a route
-     *
      * :author: hoffmanjc
      */
     @Test

@@ -36,9 +36,6 @@ public class Trip {
     /**
      * @param route
      */
-    public Trip(Route route) {
-
-    }
 
     public void setRoute(Route route) {
         this.route = route;
@@ -110,15 +107,15 @@ public class Trip {
         if(tripList == null){
             tripList = new TreeMap<>();
         }
-        tripList.put(stopNum, stop);
-        if(route != null){
-            route.addStop(stop, stopNum);
+        if(stop != null && route != null) {
+            tripList.put(stopNum, stop);
+            return route.addStop(stop, stopNum);
         }
-        return true;
+        return false;
     }
 
     public Stop getStop(String stopId){
-        if(tripList != null) {
+        if(tripList != null && stopId != null) {
             NavigableSet<Integer> nav = tripList.navigableKeySet();
             for (Integer num : nav) {
                 if (tripList.get(num).getStopID().equals(stopId)) {
