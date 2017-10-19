@@ -159,4 +159,9 @@ public class Route {
 		return this.getRouteID().equalsIgnoreCase(route.getRouteID());
 	}
 
+	public String toStringExport(){
+		//returns Route format: route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color"
+		return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s",getRouteID(),getAgencyID(),getRouteShortName(),
+				getRouteLongName(),getRouteDescription(),getRouteType(),getRouteUrl(),getRouteColor(),getRouteTextColor());
+	}
 }

@@ -1,5 +1,3 @@
-
-
 import java.io.*;
 import java.nio.file.Files;
 import java.util.*;
@@ -50,10 +48,7 @@ public class FileManager {
 				toReturn.add(new Stop(stop_lon, stop_lat, stop_name, stop_id, stop_desc));
 			}
 		}catch(NullPointerException e){
-			throw new Exception("the file: " + file.getName() + ", was formatted incorrectly for " +
-					"a stop file", e);
-		}catch(Exception e){
-			throw new Exception("there was a problem reading from the file: " + file.getName(), e);
+			throw new NullPointerException("ERROR: Invalid Stop File Format: " + e);
 		}
 		return toReturn;
 	}
@@ -92,10 +87,7 @@ public class FileManager {
 						route_desc, route_type, route_url, route_color, route_text_color));
 			}
 		}catch(NullPointerException e){
-			throw new Exception("the file: " + file.getName() + ", was formatted incorrectly for " +
-					"a route file", e);
-		}catch(Exception e){
-			throw new Exception("there was a problem reading from the file: " + file.getName(), e);
+			throw new NullPointerException("ERROR: Invalid Route File Format: " + e);
 		}
 		return toReturn;
 	}
@@ -129,10 +121,7 @@ public class FileManager {
 				toReturn.add(new Trip(trip_id, service_id, route_id, trip_head_sign, direction_id, block_id, shape_id));
 			}
 		}catch(NullPointerException e){
-			throw new Exception("the file: " + file.getName() + ", was formatted incorrectly for " +
-					"a trip file", e);
-		}catch(Exception e){
-			throw new Exception("there was a problem reading from the file: " + file.getName(), e);
+			throw new NullPointerException("ERROR: Invalid Trip File Format: " + e);
 		}
 		return toReturn;
 	}
@@ -164,11 +153,8 @@ public class FileManager {
 				toReturn.add(new StopTime(trip_id, arrival_time, departure_time, stop_id,
 						stop_sequence, stop_headsign, pickup_type, drop_off_type));
 			}
-		}catch(NullPointerException e){
-			throw new Exception("the file: " + file.getName() + ", was formatted incorrectly for " +
-					"a stopTimes file", e);
-		}catch(Exception e){
-			throw new Exception("there was a problem reading from the file: " + file.getName(), e);
+		}catch(NullPointerException e) {
+			throw new NullPointerException("ERROR: Invalid StopTimes File Format: " + e);
 		}
         return toReturn;
     }
@@ -208,15 +194,14 @@ public class FileManager {
 	 * @param file - the file to get the first line of text from.
 	 * @return returns string of first line of text from file.
 	 */
-	private String getFirstLine(File file) throws Exception {
+	private String getFirstLine(File file) throws IOException {
 		String firstLine = null;
 		try{
 			InputStream in = Files.newInputStream(file.toPath());
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			firstLine = reader.readLine();
-		}catch (Exception e){
-			throw new Exception("there was a problem reading the first line of the file: " + file
-					.getName(), e);
+		}catch (IOException e){
+			throw new IOException("ERROR: Unable to read first line of file: " + file.getName(), e);
 		}
 		return firstLine;
 	}
@@ -271,6 +256,7 @@ public class FileManager {
 		try {
 			if(!exportDir.exists()){
 				exportDir.mkdir();
+				System.out.println("TEST: exportRouteFile -> exports file created");
 			}
 			File exportFile = new File(exportDir.getPath(),exportName.getName() + ".txt");
 			if (!exportFile.exists()) {
@@ -279,20 +265,8 @@ public class FileManager {
 
 			PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
 			pw.println("route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color");
-			Iterator<Route> itr = ds.getRoutes().iterator();
-			while(itr.hasNext()){
-				Route tmp = itr.next();
-				String routeID,agencyID,routeShort,routeLong,routeDesc,routeType,routeURL,routeColor,routeTextColor;
-				routeID = tmp.getRouteID();
-				agencyID = tmp.getAgencyID();
-				routeShort = tmp.getRouteShortName();
-				routeLong = tmp.getRouteLongName();
-				routeDesc = tmp.getRouteDescription();
-				routeType = tmp.getRouteType();
-				routeURL = tmp.getRouteUrl();
-				routeColor = tmp.getRouteColor();
-				routeTextColor = tmp.getRouteTextColor();
-				pw.format("%s,%s,%s,%s,%s,%s,%s,%s,%s\n",routeID,agencyID,routeShort,routeLong,routeDesc,routeType,routeURL,routeColor,routeTextColor);
+			for (Route tmp : ds.getRoutes()) {
+				pw.println(tmp.toStringExport());
 			}
 			pw.close();
 		}catch (Exception e){
@@ -313,6 +287,7 @@ public class FileManager {
 		try {
 			if(!exportDir.exists()){
 				exportDir.mkdir();
+				System.out.println("TEST: exportTripFile -> exports file created");
 			}
 			File exportFile = new File(exportDir.getPath(),exportName.getName() + ".txt");
 			if (!exportFile.exists()) {
@@ -321,18 +296,8 @@ public class FileManager {
 
 			PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
 			pw.println("route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id");
-			Iterator<Trip> itr = ds.getTrips().iterator();
-			while(itr.hasNext()){
-				Trip tmp = itr.next();
-				String routeID,serviceID,tripID,tripHeadsign,directionID,blockID,shapeID;
-				routeID = tmp.getRouteID();
-				serviceID = tmp.getServiceID();
-				tripID = tmp.getTripID();
-				tripHeadsign = tmp.getTripHeadsign();
-				directionID = tmp.getDirectionID();
-				blockID = tmp.getBlockID();
-				shapeID = tmp.getShapeID();
-				pw.format("%s,%s,%s,%s,%s,%s,%s\n",routeID,serviceID,tripID,tripHeadsign,directionID,blockID,shapeID);
+			for (Trip tmp : ds.getTrips()) {
+				pw.println(tmp.toStringExport());
 			}
 			pw.close();
 		}catch (Exception e){
@@ -352,6 +317,7 @@ public class FileManager {
 		try {
 			if(!exportDir.exists()){
 				exportDir.mkdir();
+				System.out.println("TEST: exportStopTimesFile -> exports file created");
 			}
 			File exportFile = new File(exportDir.getPath(),exportName.getName() + ".txt");
 			if (!exportFile.exists()) {

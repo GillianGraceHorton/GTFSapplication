@@ -174,4 +174,10 @@ public class Trip {
     public boolean equals(Trip trip) {
         return (this.getTripID().equals(trip.getTripID()));
     }
+
+    public String toStringExport(){
+        //returns Trip format: route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id
+        return String.format("%s,%s,%s,%s,%s,%s,%s",getRouteID(),getServiceID(),getTripID(),getTripHeadsign(),
+                getDirectionID(),getBlockID(),getShapeID());
+    }
 }
