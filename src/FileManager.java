@@ -165,45 +165,29 @@ public class FileManager {
 	 * Description: adds valid file types to an arraylist of valid file types.
 	 */
 	private void addValidType(){
-		validFileTypes.put("agency", "agency_id,agency_name,agency_url,agency_timezone," +
-				"agency_phone");
-		validFileTypes.put("calender", "service_id,monday,tuesday,wednesday,thursday,friday," +
-				"saturday," +
-				"sunday,start_date,end_date");
-		validFileTypes.put("calender_dates", "service_id,date,exception_type");
-		validFileTypes.put("fare_attributes", "fare_id,price,currency_type,payment_method," +
-				"transfers,transfer_duration,agency_id");
-		validFileTypes.put("feed_info", "feed_publisher_name,feed_publisher_url,feed_lang");
-		validFileTypes.put("routes", "route_id,agency_id,route_short_name,route_long_name," +
-				"route_desc," +
-				"route_type,route_url,route_color,route_text_color");
-		validFileTypes.put("shapes", "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence");
-		validFileTypes.put("stop_times", "trip_id,arrival_time,departure_time,stop_id," +
-				"stop_sequence," +
-				"stop_headsign,pickup_type,drop_off_type");
-		validFileTypes.put("stops", "stop_id,stop_name,stop_desc,stop_lat,stop_lon");
-		validFileTypes.put("transfers", "from_stop_id,to_stop_id,transfer_type");
-		validFileTypes.put("trips", "route_id,service_id,trip_id,trip_headsign,direction_id," +
-				"block_id," +
-				"shape_id");
-	}
+		String agencyFormat = "agency_id,agency_name,agency_url,agency_timezone,agency_phone";
+		String calenderFormat = "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date";
+		String calenderDatesFormat = "service_id,date,exception_type";
+		String fairAttributedFormat ="fare_id,price,currency_type,payment_method,transfers,transfer_duration,agency_id";
+		String feedInfoFormat = "feed_publisher_name,feed_publisher_url,feed_lang";
+		String routesFormat = "route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color";
+		String shapesFormat = "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence";
+		String stopTimesFormat = "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type";
+		String stopsFormat = "stop_id,stop_name,stop_desc,stop_lat,stop_lon";
+		String transfersFormat = "from_stop_id,to_stop_id,transfer_type";
+		String tripsFormat = "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id";
 
-	/**
-	 * @author Joseph Heinz - heinzja@msoe.edu
-	 * Description: Returns the first line of a given file, used for file validity check
-	 * @param file - the file to get the first line of text from.
-	 * @return returns string of first line of text from file.
-	 */
-	private String getFirstLine(File file) throws IOException {
-		String firstLine = null;
-		try{
-			InputStream in = Files.newInputStream(file.toPath());
-			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-			firstLine = reader.readLine();
-		}catch (IOException e){
-			throw new IOException("ERROR: Unable to read first line of file: " + file.getName(), e);
-		}
-		return firstLine;
+		validFileTypes.put("agency", agencyFormat);
+		validFileTypes.put("calender", calenderFormat);
+		validFileTypes.put("calender_dates", calenderDatesFormat);
+		validFileTypes.put("fare_attributes", fairAttributedFormat);
+		validFileTypes.put("feed_info",feedInfoFormat);
+		validFileTypes.put("routes", routesFormat);
+		validFileTypes.put("shapes", shapesFormat);
+		validFileTypes.put("stop_times", stopTimesFormat);
+		validFileTypes.put("stops", stopsFormat);
+		validFileTypes.put("transfers", transfersFormat);
+		validFileTypes.put("trips", tripsFormat);
 	}
 
 	/**
