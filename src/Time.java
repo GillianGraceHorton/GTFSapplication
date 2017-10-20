@@ -1,31 +1,58 @@
 public class Time {
 
-    int time;
+    private int hour;
+    private int min;
+    private int sec;
+
+
 
     /**
-     * returns the integer value of the time.
-     * @return
+     * constructor that checks for invalid times and throws IllegalArgumentException if the time
+     * is of invalid format of an invalid time
+     * @param time
      */
-    public int getTime() {
-        return time;
-    }
-
-    
     public Time(String time){
-        String tempTime = time.replaceAll(":", "");
-        int convertedTime;
-        try{
-            if(tempTime.length() != 6){
-                throw new NumberFormatException();
-            }
-            convertedTime = Integer.parseInt(tempTime);
-            if (convertedTime > 120000 || convertedTime < 0){
-                throw new NumberFormatException();
-            }
-        }catch(NumberFormatException e){
+        try {
+            String[] times = time.split(":");
+            setHour(Integer.parseInt(times[0]));
+            setMin(Integer.parseInt(times[1]));
+            setSec(Integer.parseInt(times[2]));
+        }catch(IndexOutOfBoundsException | NumberFormatException e){
             throw new IllegalArgumentException("the time: " + time + " is not correctly formatted");
         }
-            this.time = convertedTime;
+    }
+
+    public Time(int hour, int min, int sec){
+        this(String.format("%02d:%02d:%02d", hour, min, sec));
+    }
+
+    /**
+     * returns an integer value of the time for comparison purposes.
+     * @return integer value of the time (from 0 to 239999)
+     */
+    public int getTime() {
+        return (hour*10000) + (min*100) + sec;
+    }
+
+    public void setHour(int hour) {
+        if(hour>=24 || hour < 0){
+            throw new NumberFormatException();
+        }
+        this.hour = hour;
+    }
+
+    public void setMin(int min) {
+        if(min>=60||min<0){
+            throw new NumberFormatException();
+        }
+        this.min = min;
+    }
+
+    public void setSec(int sec) {
+        if(sec>=60 || min < 0){
+            throw new NumberFormatException();
+        }
+        this.sec = sec;
     }
 
     /**
@@ -33,13 +60,7 @@ public class Time {
      * @return string of this objects time value
      */
     public String toString(){
-        String time = "" + this.time;
-        for(int i = time.length(); i < 6; i++){
-            time = "0" + time;
-        }
-        time = time.substring(0, 2) + ":" + time.substring(2);
-        time = time.substring(0, 5) + ":" + time.substring(5);
-        return time;
+        return String.format("%02d:%02d:%02d", hour, min, sec);
     }
 
     /**
@@ -51,13 +72,12 @@ public class Time {
      * 1 if the value of this time object is greater
      * 0 if they are equal.
      */
-    private int comparteTo(Time time){
-        if(this.getTime() > time.getTime()){
-            return 1;
-        }else if (this.getTime() < time.getTime()){
-            return -1;
-        }else{
+     public int compareTo(Time time){
+        if(this.getTime() == time.getTime()){
             return 0;
+        }else if(this.getTime() < time.getTime()){
+            return -1;
         }
+        return 1;
     }
 }
