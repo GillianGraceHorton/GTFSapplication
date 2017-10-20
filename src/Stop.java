@@ -133,4 +133,7 @@ public class Stop {
 				"Departure Time: " + getDepartureTime() + "\n";
 	}
 
+	public String toStringExport(){
+		return String.format("%s,%s,%s,%f,%f,%s,%s,",getStopID(),getName(),getStopDescription(),getLocation().getLat(),getLocation().getLon(),getArrivalTime(),getDepartureTime());
+	}
 }

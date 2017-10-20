@@ -8,7 +8,6 @@ public class Location {
 
 	public Location(double lon, double lat) throws IllegalArgumentException {
 		if(validLongitude(lon) && validLatitude(lat)){
-
 			this.longitude = lon;
 			this.latitude = lat;
 		}
