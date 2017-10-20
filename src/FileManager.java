@@ -209,18 +209,9 @@ public class FileManager {
 
 			PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
 			pw.println("stop_id,stop_name,stop_desc,stop_lat,stop_lon");
-			Iterator<Stop> itr = ds.getStops().iterator();
-			while(itr.hasNext()){
-				Stop tmp = itr.next();
-				String stopID,stopName,stopDescription;
-				double stopLat,stopLon;
-				stopID = tmp.getStopID();
-				stopName = tmp.getName();
-				stopDescription = tmp.getStopDescription();
-				stopLat = tmp.getLocation().getLat();
-				stopLon = tmp.getLocation().getLon();
-				pw.format("%s,%s,%s,%f,%f\n",stopID,stopName,stopDescription,stopLat,stopLon);
-			}
+            for (Stop tmp : ds.getStops()) {
+                pw.println(tmp.toStringExport());
+            }
 			pw.close();
 		}catch (Exception e){
 			throw new Exception("there was a problem writing the stop objects to the specified " +
