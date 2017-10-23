@@ -19,8 +19,7 @@ public class StopTime {
         this.arrival_time = new Time(arrival_time);
         this.departure_time = new Time(departure_time);
         if(this.arrival_time.compareTo(this.departure_time) == 1){
-            throw new IllegalArgumentException("the arrival time must be less than or equal to " +
-                    "the departure time");
+            throw new IllegalArgumentException("the arrival time must be less than or equal to the departure time");
         }
         this.stop_id = stop_id;
         this.stop_sequence = stop_sequence;
@@ -102,5 +101,9 @@ public class StopTime {
                 "Drop Off Type: " + getDropoffType() + "\n" +
                 "Arrival Time: " + getArrivalTime() + "\n" +
                 "Departure Time: " + getDepartureTime() + "\n";
+    }
+
+    public String toStringExport(){
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s",getTripID(),getStopID(),getStopSequence(),getStopHeadsign(),getPickupType(),getDropoffType(),getArrivalTime(),getDepartureTime());
     }
 }

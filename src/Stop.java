@@ -7,19 +7,13 @@ import java.util.ArrayList;
  */
 public class Stop {
 
-	/**
-	 * arrival time for the bus at given stop. to be set when the stop is part of a trip.
-	 */
+	/* arrival time for the bus at given stop. to be set when the stop is part of a trip. */
 	private Time arrivalTime;
 
-	/**
-	 * departure time for the bus at given stop. to be set when the stop is part of a trip.
-	 */
+	/* departure time for the bus at given stop. to be set when the stop is part of a trip. */
 	private Time departureTime;
 
-	/**
-	 * gps location of the stop
-	 */
+	/* gps location of the stop */
 	private Location location;
 
 	/**
@@ -135,5 +129,19 @@ public class Stop {
 
 	public String toStringExport(){
 		return String.format("%s,%s,%s,%f,%f,%s,%s,",getStopID(),getName(),getStopDescription(),getLocation().getLat(),getLocation().getLon(),getArrivalTime(),getDepartureTime());
+	}
+
+	/**
+	 * Author: Joseph Heinz - heinzja@msoe.edu
+	 * Description: Checks if this Stop Object contains a location and name, if not, then the stop
+	 * 				is a place holder for future stop information to added to.
+	 * @return returns result of if this Stop Object is a placeholder (empty) or valid
+	 */
+	public boolean isEmpty(){
+		boolean result = true;
+		if(this.location != null && this.name != null){
+			result = false;
+		}
+		return result;
 	}
 }
