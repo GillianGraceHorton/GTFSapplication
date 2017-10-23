@@ -168,4 +168,17 @@ public class Route {
 		return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s",getRouteID(),getAgencyID(),getRouteShortName(),
 				getRouteLongName(),getRouteDescription(),getRouteType(),getRouteUrl(),getRouteColor(),getRouteTextColor());
 	}
+
+	/**
+	 * Author: Joseph Heinz - heinzja@msoe.edu
+	 * Description: checks to see if Route Object is empty and a placeholder, or a valid Route Object
+	 * @return result of if the Route Object is used as a place holder (empty) or is a valid Route Object (not empty)
+	 */
+	public boolean isEmpty(){
+		boolean result = true;
+		if(getRouteDescription() != null && getRouteShortName() != null && getRouteLongName() != null && getRouteType() != null){
+			result = false;
+		}
+		return result;
+	}
 }

@@ -1,3 +1,6 @@
+import com.sun.tools.internal.ws.wsdl.framework.DuplicateEntityException;
+
+import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.*;
 
 /**
@@ -37,10 +40,19 @@ public class DataStorage implements Subject {
      *
      * @param itemsToSend an arrayList of the objects that were added.
      */
-    public void notifyObservers(ArrayList<Object> itemsToSend) {
+    public void notifyObservers(ArrayList<Object> itemsToSend) throws KeyAlreadyExistsException {
         for (Object item : itemsToSend) {
             if (item instanceof Stop) {
-                stops.put(((Stop) item).getStopID(), (Stop) item);
+                if(stops.containsKey(((Stop) item).getStopID())){
+                    if(stops.get(((Stop) item).getStopID()).isEmpty()){
+                        stops.replace(((Stop) item).getStopID(),(Stop)item);
+                    }else{
+                        throw new KeyAlreadyExistsException();
+                    }
+                }else {
+                    stops.put(((Stop) item).getStopID(), (Stop) item);
+                }
+
             } else if (item instanceof Route) {
                 routes.put(((Route) item).getRouteID(), (Route) item);
             } else if (item instanceof Trip) {

@@ -185,4 +185,18 @@ public class Trip {
         return String.format("%s,%s,%s,%s,%s,%s,%s",getRouteID(),getServiceID(),getTripID(),getTripHeadsign(),
                 getDirectionID(),getBlockID(),getShapeID());
     }
+
+    /**
+     * Author: Joseph Heinz - heinzja@msoe.edu
+     * Description: checks to see if the Trip Object is a placeholder (empty) or is a valid Trip Object
+     * @return result of if Trip Object is empty or not
+     */
+    public boolean isEmpty(){
+        boolean result = true;
+        if(getRouteID() != null && getServiceID() != null){
+            result = false;
+        }
+        return result;
+    }
+
 }
