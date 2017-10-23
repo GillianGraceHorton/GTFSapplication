@@ -10,12 +10,12 @@ public class Stop {
 	/**
 	 * arrival time for the bus at given stop. to be set when the stop is part of a trip.
 	 */
-	private String arrivalTime;
+	private Time arrivalTime;
 
 	/**
 	 * departure time for the bus at given stop. to be set when the stop is part of a trip.
 	 */
-	private String departureTime;
+	private Time departureTime;
 
 	/**
 	 * gps location of the stop
@@ -55,11 +55,11 @@ public class Stop {
 	}
 
 	public void setArrivalTime(String arrivalTime) {
-		this.arrivalTime = arrivalTime;
+		this.arrivalTime = new Time(arrivalTime);
 	}
 
 	public void setDepartureTime(String departureTime) {
-		this.departureTime = departureTime;
+		this.departureTime =  new Time(departureTime);
 	}
 
 	public void setLocation(Location location) {
@@ -70,11 +70,11 @@ public class Stop {
 		this.stopDescription = stopDescription;
 	}
 
-	public String getArrivalTime() {
+	public Time getArrivalTime() {
 		return arrivalTime;
 	}
 
-	public String getDepartureTime() {
+	public Time getDepartureTime() {
 		return departureTime;
 	}
 

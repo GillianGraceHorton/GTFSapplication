@@ -109,13 +109,14 @@ public class Trip {
      */
     public boolean addStop(Stop stop, int stopNum) {
         boolean result = false;
-        if(stop != null && route != null) {
+        if(stop != null) {
             if (!tripList.containsKey(stopNum)) {
-                if(route.addStop(stop, stopNum)) {
-                    tripList.put(stopNum, stop);
-                    result = true;
-                }
+                tripList.put(stopNum, stop);
+                result = true;
             }
+        }
+        if(route != null){
+            route.addStop(stop, stopNum);
         }
         return result;
     }
@@ -172,7 +173,7 @@ public class Trip {
      * @param trip
      */
     public boolean equals(Trip trip) {
-        return (this.getTripID().equals(trip.getTripID()));
+        return (this.getTripID().equalsIgnoreCase(trip.getTripID()));
     }
 
     public String toStringExport(){

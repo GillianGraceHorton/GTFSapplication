@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -43,13 +45,13 @@ class DataStorageTest {
     @Test
     void searchStops() {
         //creates the stops to add to the dataStorage object
-        ArrayList<Stop> stops = new ArrayList<>();
+        NavigableMap<String, Stop> stops = new TreeMap<>();
         Stop stop1 = new Stop(0,0,"", "1A", "");
-        stops.add(stop1);
+        stops.put(stop1.getStopID(), stop1);
         Stop stop2 = new Stop(0,0,"", "2b", "");
-        stops.add(stop2);
+        stops.put(stop2.getStopID(), stop2);
         Stop stop3 = new Stop(0,0,"", "3c", "");
-        stops.add(stop3);
+        stops.put(stop3.getStopID(), stop3);
 
         //Test Case 1: tests that the method returns null when when the stops collection is empty
         assertNull(dataStorage.searchStops("1A"));
@@ -97,13 +99,13 @@ class DataStorageTest {
     @Test
     void searchRoutes() {
         //creates the routes to add to the dataStorage object
-        ArrayList<Route> routes = new ArrayList<>();
+        NavigableMap<String, Route> routes = new TreeMap<>();
         Route route1 = new Route("1A", "", "", "", "", "", "", "", "");
-        routes.add(route1);
+        routes.put(route1.getRouteID(), route1);
         Route route2 = new Route("2B", "", "", "", "", "", "", "", "");
-        routes.add(route2);
+        routes.put(route2.getRouteID(), route2);
         Route route3 = new Route("3c", "", "", "", "", "", "", "", "");
-        routes.add(route3);
+        routes.put(route3.getRouteID(), route3);
 
         //Test Case 1: tests that the method returns null when when the routes collection is empty
         assertNull(dataStorage.searchRoutes("1A"));
@@ -151,13 +153,13 @@ class DataStorageTest {
     @Test
     void searchTrips() {
         //creates the trips to add to the dataStorage object
-        ArrayList<Trip> trips = new ArrayList<>();
+        NavigableMap<String, Trip> trips = new TreeMap<>();
         Trip trip1 = new Trip("1A", "", "", "", "", "", "");
-        trips.add(trip1);
+        trips.put(trip1.getTripID(), trip1);
         Trip trip2 = new Trip("2B", "", "", "", "", "", "");
-        trips.add(trip2);
+        trips.put(trip2.getTripID(), trip2);
         Trip trip3 = new Trip("3C", "", "", "", "", "", "");
-        trips.add(trip3);
+        trips.put(trip3.getTripID(), trip3);
 
         //Test Case 1: tests that the method returns null when when the trips collection is empty
         assertNull(dataStorage.searchTrips("1A"));
@@ -178,11 +180,11 @@ class DataStorageTest {
      */
     @Test
     void searchTripsForStop() {
-        ArrayList<Trip> trips = new ArrayList<>();
+        NavigableMap<String, Trip> trips = new TreeMap<>();
         Trip trip1 = new Trip("1A", "", "","","","","");
-        trips.add(trip1);
+        trips.put(trip1.getTripID(), trip1);
         Trip trip2 = new Trip("2A", "", "","","","","");
-        trips.add(trip2);
+        trips.put(trip2.getTripID(), trip2);
         Stop stop1 = new Stop(0, 0, "", "1B", "");
         Stop stop2 = new Stop(0, 0, "", "2B", "");
         Stop stop3 = new Stop(0, 0, "", "3B", "");
@@ -201,7 +203,10 @@ class DataStorageTest {
         trip1.addStop(stop2, 2);
         trip1.addStop(stop3, 3);
         trip2.addStop(stop1, 1);
-        assertEquals(dataStorage.searchTripsForStop("1B"), trips);
+        ArrayList<Trip> check = new ArrayList<>();
+        check.add(trip1);
+        check.add(trip2);
+        assertEquals(dataStorage.searchTripsForStop("1B"), check);
 
         //Test Case 4: test that the method returns null if the stop is not found in any of the
         // trips
@@ -214,11 +219,11 @@ class DataStorageTest {
      */
     @Test
     void searchRoutesForStop() {
-        ArrayList<Route> routes = new ArrayList<>();
+        NavigableMap<String, Route> routes = new TreeMap<>();
         Route route1 = new Route("1A", "", "", "", "", "", "", "", "");
-        routes.add(route1);
+        routes.put(route1.getRouteID(), route1);
         Route route2 = new Route("1B", "", "", "", "", "", "", "", "");
-        routes.add(route2);
+        routes.put(route2.getRouteID(), route2);
         Stop stop1 = new Stop(0, 0, "", "1B", "");
         Stop stop2 = new Stop(0, 0, "", "2B", "");
         Stop stop3 = new Stop(0, 0, "", "3B", "");
@@ -237,7 +242,10 @@ class DataStorageTest {
         route1.addStop(stop2, 2);
         route1.addStop(stop3, 3);
         route2.addStop(stop1, 1);
-        assertEquals(dataStorage.searchRoutesForStop("1B"), routes);
+        ArrayList<Route> check = new ArrayList<>();
+        check.add(route1);
+        check.add(route2);
+        assertEquals(dataStorage.searchRoutesForStop("1B"), check);
 
         //Test Case 4: test that the method returns null if the stop is not found in any of the
         // routes

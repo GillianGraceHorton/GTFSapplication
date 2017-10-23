@@ -209,9 +209,11 @@ public class FileManager {
 
 			PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
 			pw.println("stop_id,stop_name,stop_desc,stop_lat,stop_lon");
-            for (Stop tmp : ds.getStops()) {
-                pw.println(tmp.toStringExport());
-            }
+			NavigableMap<String, Stop> stops = ds.getStops();
+			NavigableSet<String> nav = stops.navigableKeySet();
+			for (String id : nav) {
+				pw.println(stops.get(id).toStringExport());
+			}
 			pw.close();
 		}catch (Exception e){
 			throw new Exception("there was a problem writing the stop objects to the specified " +
@@ -240,8 +242,10 @@ public class FileManager {
 
 			PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
 			pw.println("route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color");
-			for (Route tmp : ds.getRoutes()) {
-				pw.println(tmp.toStringExport());
+			NavigableMap<String, Route> routes = ds.getRoutes();
+			NavigableSet<String> nav = routes.navigableKeySet();
+			for (String id : nav) {
+				pw.println(routes.get(id).toStringExport());
 			}
 			pw.close();
 		}catch (Exception e){
@@ -271,8 +275,10 @@ public class FileManager {
 
 			PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
 			pw.println("route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id");
-			for (Trip tmp : ds.getTrips()) {
-				pw.println(tmp.toStringExport());
+			NavigableMap<String, Trip> trips = ds.getTrips();
+			NavigableSet<String> nav = trips.navigableKeySet();
+			for (String id : nav) {
+				pw.println(trips.get(id).toStringExport());
 			}
 			pw.close();
 		}catch (Exception e){

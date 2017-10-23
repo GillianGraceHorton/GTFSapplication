@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * @author Gracie Horton
@@ -8,9 +7,9 @@ import java.util.Collection;
  */
 public class DataStorage implements Subject {
 
-	private Collection<Stop> stops;
-	private Collection<Route> routes;
-	private Collection<Trip> trips;
+	private NavigableMap<String, Stop> stops;
+	private NavigableMap<String, Route> routes;
+	private NavigableMap<String, Trip> trips;
 	private Collection<Trip> tripsWithTimes;
 	private Collection<StopTime> stopTimes;
 	private Collection<Observer> observers;
@@ -18,9 +17,9 @@ public class DataStorage implements Subject {
 
 
 	public DataStorage(){
-		stops = new ArrayList<>();
-		routes = new ArrayList<>();
-		trips = new ArrayList<>();
+		stops = new TreeMap<>();
+		routes = new TreeMap<>();
+		trips = new TreeMap<>();
 		stopTimes = new ArrayList<>();
 		tripsWithTimes = new ArrayList<>();
 		observers = new ArrayList<>();
@@ -47,9 +46,12 @@ public class DataStorage implements Subject {
 	 * @param stopID
 	 */
 	public Stop searchStops(String stopID){
-		for (Stop stop: stops) {
-			if (stop.getStopID().equals(stopID)){
-				return stop;
+		if(stops != null) {
+			NavigableSet<String> nav = stops.navigableKeySet();
+			for (String id : nav) {
+				if (id.equalsIgnoreCase(stopID)) {
+					return stops.get(id);
+				}
 			}
 		}
 		return null;
@@ -69,13 +71,15 @@ public class DataStorage implements Subject {
 	 * @param routeID
 	 */
 	public Route searchRoutes(String routeID) {
-		Route result = null;
-		for (Route route : routes) {
-			if (route.getRouteID().equalsIgnoreCase(routeID)) {
-				result = route;
+		if(routes != null) {
+			NavigableSet<String> nav = routes.navigableKeySet();
+			for (String id : nav) {
+				if (id.equalsIgnoreCase(routeID)) {
+					return routes.get(id);
+				}
 			}
 		}
-		return result;
+		return null;
 	}
 
 	/**
@@ -85,11 +89,11 @@ public class DataStorage implements Subject {
 	public void notifyObservers(ArrayList<Object> itemsToSend){
 		for (Object item: itemsToSend) {
 			if(item instanceof Stop){
-				stops.add((Stop)item);
+				stops.put(((Stop)item).getStopID(), (Stop)item);
 			}else if(item instanceof Route){
-				routes.add((Route)item);
+				routes.put(((Route)item).getRouteID(), (Route)item);
 			}else if(item instanceof Trip){
-				trips.add((Trip)item);
+				trips.put(((Trip)item).getTripID(), (Trip)item);
 			}else if(item instanceof StopTime){
 				stopTimes.add((StopTime)item);
 			}
@@ -110,9 +114,14 @@ public class DataStorage implements Subject {
 	 * @author hortong
 	 */
 	private void addRoutesToTrips() {
-		for (Trip trip:trips) {
-			if(trip.getRoute() == null) {
-				trip.setRoute(searchRoutes(trip.getRouteID()));
+		if(routes != null && trips != null) {
+			NavigableSet<String> nav = trips.navigableKeySet();
+			Trip thisTrip;
+			for (String id : nav) {
+				thisTrip = trips.get(id);
+				if (thisTrip == null) {
+					thisTrip.setRoute(searchRoutes(thisTrip.getRouteID()));
+				}
 			}
 		}
 	}
@@ -139,9 +148,12 @@ public class DataStorage implements Subject {
 	 * @param tripID
 	 */
 	public Trip searchTrips(String tripID){
-		for (Trip trip: trips) {
-			if (trip.getTripID().equalsIgnoreCase(tripID)){
-				return trip;
+		if(trips != null) {
+			NavigableSet<String> nav = trips.navigableKeySet();
+			for (String id : nav) {
+				if (id.equalsIgnoreCase(tripID)) {
+					return trips.get(id);
+				}
 			}
 		}
 		return null;
@@ -154,51 +166,57 @@ public class DataStorage implements Subject {
 	public Collection<Trip> searchTripsForStop(String stopID)
 	{
 		ArrayList<Trip> tripsToReturn = new ArrayList<>();
-		for (Trip trip: trips) {
-			if(trip.getStop(stopID) != null){
-				tripsToReturn.add(trip);
+		if(trips != null) {
+			NavigableSet<String> nav = trips.navigableKeySet();
+			for (String id : nav) {
+				if (trips.get(id).getStop(stopID) != null) {
+					tripsToReturn.add(trips.get(id));
+				}
 			}
 		}
-		if(tripsToReturn.size() > 0){
-			return tripsToReturn;
+		if(tripsToReturn.size() == 0){
+			return null;
 		}
-		return null;
+		return tripsToReturn;
 	}
 
 	public ArrayList<Route> searchRoutesForStop(String stopID){
 		ArrayList<Route> routesToReturn = new ArrayList<>();
-		for (Route route: routes) {
-			if(route.searchRoute(stopID) != null){
-				routesToReturn.add(route);
+		if(routes != null) {
+			NavigableSet<String> nav = routes.navigableKeySet();
+			for (String id : nav) {
+				if (routes.get(id).searchRoute(stopID) != null) {
+					routesToReturn.add(routes.get(id));
+				}
 			}
 		}
-		if(routesToReturn.size() > 0){
-			return routesToReturn;
+		if(routesToReturn.size() == 0){
+			return null;
 		}
-		return null;
+		return routesToReturn;
 	}
 
-	public Collection<Stop> getStops() {
+	public NavigableMap<String, Stop> getStops() {
 		return stops;
 	}
 
-	public void setStops(Collection<Stop> stops) {
+	public void setStops(NavigableMap<String, Stop> stops) {
 		this.stops = stops;
 	}
 
-	public Collection<Route> getRoutes() {
+	public NavigableMap<String, Route> getRoutes() {
 		return routes;
 	}
 
-	public void setRoutes(Collection<Route> routes) {
+	public void setRoutes(NavigableMap<String, Route> routes) {
 		this.routes = routes;
 	}
 
-	public Collection<Trip> getTrips() {
+	public NavigableMap<String, Trip> getTrips() {
 		return trips;
 	}
 
-	public void setTrips(Collection<Trip> trips) {
+	public void setTrips(NavigableMap<String, Trip> trips) {
 		this.trips = trips;
 	}
 
