@@ -1,8 +1,10 @@
+import java.security.InvalidParameterException;
+
 public class StopTime {
 
     private String trip_id;
-    private String arrival_time;
-    private String departure_time;
+    private Time arrival_time;
+    private Time departure_time;
     private String stop_id;
     private String stop_sequence;
     private String stop_headsign;
@@ -14,8 +16,12 @@ public class StopTime {
                     String drop_off_type){
 
         this.trip_id = trip_id;
-        this.arrival_time = arrival_time;
-        this.departure_time = departure_time;
+        this.arrival_time = new Time(arrival_time);
+        this.departure_time = new Time(departure_time);
+        if(this.arrival_time.compareTo(this.departure_time) == 1){
+            throw new IllegalArgumentException("the arrival time must be less than or equal to " +
+                    "the departure time");
+        }
         this.stop_id = stop_id;
         this.stop_sequence = stop_sequence;
         this.stop_headsign = stop_headsign;
@@ -27,11 +33,11 @@ public class StopTime {
         return trip_id;
     }
 
-    public String getArrivalTime() {
+    public Time getArrivalTime() {
         return arrival_time;
     }
 
-    public String getDepartureTime() {
+    public Time getDepartureTime() {
         return departure_time;
     }
 
@@ -59,11 +65,11 @@ public class StopTime {
         this.trip_id = trip_id;
     }
 
-    public void setArrivalTime(String arrival_time) {
+    public void setArrivalTime(Time arrival_time) {
         this.arrival_time = arrival_time;
     }
 
-    public void setDepartureTime(String departure_time) {
+    public void setDepartureTime(Time departure_time) {
         this.departure_time = departure_time;
     }
 

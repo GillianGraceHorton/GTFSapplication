@@ -54,12 +54,12 @@ public class Stop {
 		this.stopDescription = stopDesc;
 	}
 
-	public void setArrivalTime(String arrivalTime) {
-		this.arrivalTime = new Time(arrivalTime);
+	public void setArrivalTime(Time arrivalTime) {
+		this.arrivalTime = arrivalTime;
 	}
 
-	public void setDepartureTime(String departureTime) {
-		this.departureTime =  new Time(departureTime);
+	public void setDepartureTime(Time departureTime) {
+		this.departureTime =  departureTime;
 	}
 
 	public void setLocation(Location location) {
