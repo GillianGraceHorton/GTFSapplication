@@ -79,6 +79,27 @@ public class DataStorage implements Subject {
         }
     }
 
+    private void createIDReferencesfromTrips(){
+        NavigableSet<String> nav = trips.navigableKeySet();
+        Trip thisTrip;
+        for (String id : nav) {
+            if(!routes.containsKey(trips.get(id).getRouteID())){
+                routes.put(trips.get(id).getRouteID(), new Route(trips.get(id).getRouteID()));
+            }
+        }
+    }
+
+    private void createIDReferencesfromStopTimes(){
+        for (StopTime stopTime: stopTimes) {
+            if(!stops.containsKey(stopTime.getStopID())){
+                stops.put(stopTime.getStopID(), new Stop(stopTime.getStopID()));
+            }
+            if(!trips.containsKey(stopTime.getTripID())){
+                trips.put(stopTime.getTripID(), new Trip(stopTime.getTripID()));
+            }
+        }
+    }
+
     /**
      * updates the trip object with the route objects that they have ID's for but only if the
      * trips and routes maps are not empty

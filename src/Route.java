@@ -39,6 +39,10 @@ public class Route {
 		stops = new TreeMap<>();
 	}
 
+	public Route(String routeId) {
+		this.routeID = routeId;
+	}
+
 	/**
 	 * 
 	 * @param stops

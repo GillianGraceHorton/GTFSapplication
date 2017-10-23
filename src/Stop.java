@@ -54,6 +54,10 @@ public class Stop {
 		this.stopDescription = stopDesc;
 	}
 
+	public Stop(String stopID){
+	    this.stopID = stopID;
+    }
+
 	public void setArrivalTime(Time arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	}

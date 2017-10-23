@@ -41,6 +41,10 @@ public class Trip {
 
     }
 
+    public Trip(String tripID) {
+        this.tripID = tripID;
+    }
+
     public void setRoute(Route route) {
         this.route = route;
     }
