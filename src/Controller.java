@@ -1,6 +1,7 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -79,6 +80,8 @@ public class Controller implements Initializable {
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
+		writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
+				"Successfully Exported StopsFile.");
 	}
 
 	/**
@@ -93,6 +96,8 @@ public class Controller implements Initializable {
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
+		writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
+				"Successfully Exported StopTimesFile.");
 	}
 
 	/**
@@ -107,6 +112,8 @@ public class Controller implements Initializable {
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
+		writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
+				"Successfully Exported TripsFile.");
 	}
 
 	/**
@@ -121,6 +128,8 @@ public class Controller implements Initializable {
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
+		writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
+				"Successfully Exported TripFile.");
 	}
 
 	public void searchRouteForStopHandler(ActionEvent actionEvent) {
@@ -159,6 +168,8 @@ public class Controller implements Initializable {
 			System.out.println("TEST: importStopFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
 		}
+		writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+				"Successfully Imported StopsFile.");
 	}
 
 	public void importStopTimesFileHandler() {
@@ -173,6 +184,8 @@ public class Controller implements Initializable {
             System.out.println("TEST: importFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
         }
+		writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+				"Successfully Imported StopTimesFile.");
 	}
 
 	public void importRouteFileHandler() {
@@ -186,6 +199,8 @@ public class Controller implements Initializable {
             System.out.println("TEST: importFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
         }
+		writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+				"Successfully Imported RouteFile.");
 	}
 
 	public void importTripFileHandler() {
@@ -199,9 +214,18 @@ public class Controller implements Initializable {
             System.out.println("TEST: importFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
         }
+        writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+				"Successfully Imported TripFile.");
 	}
 
 	private void writeErrorMessage(String message){
 		JOptionPane.showMessageDialog(null, message);
+	}
+
+	private void writeInformationMessage(Alert.AlertType type, String header, String context) {
+		Alert alert = new Alert(type);
+		alert.setHeaderText(header);
+		alert.setContentText(context);
+		alert.showAndWait();
 	}
 }
