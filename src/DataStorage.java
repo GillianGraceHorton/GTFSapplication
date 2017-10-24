@@ -163,7 +163,7 @@ public class DataStorage implements Subject {
             Trip thisTrip;
             for (String id : nav) {
                 thisTrip = trips.get(id);
-                if (thisTrip == null) {
+                if (!thisTrip.isEmpty()) {
                     thisTrip.setRoute(searchRoutes(thisTrip.getRouteID()));
                 }
             }

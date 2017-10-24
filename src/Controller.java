@@ -156,7 +156,14 @@ public class Controller implements Initializable {
 	}
 
 	public void searchForRouteHandler() {
+        TextInputDialog input = new TextInputDialog();
+        input.setHeaderText("Search for a route by routeID and display all of the stops on the " +
+                "route");
+        input.setContentText("please enter the RouteID");
+        Optional<String> result = input.showAndWait();
+        String routeID = result.get();
 
+        listView.displayRouteWithStops(dataStorage.searchRoutes(routeID));
 	}
 
 	public void importStopFileHandler() {

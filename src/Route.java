@@ -193,9 +193,14 @@ public class Route {
 	public String stopsToString() {
 		String toReturn = "";
 		toReturn += toString() + "Stops: \n";
-		for(int num: stops.keySet()){
-			toReturn += "    " + num + ".) " + stops.get(num).getStopID() + "\n";
-		}
+		if(stops.size() != 0){
+		    toReturn += "    No stops loaded yet";
+        }else {
+            for (int num : stops.keySet()) {
+                toReturn += "    " + num + ".) StopID: " + stops.get(num).getStopID() + " " +
+                        "StopName: " + stops.get(num).getName() + "\n";
+            }
+        }
 		return toReturn;
 	}
 }
