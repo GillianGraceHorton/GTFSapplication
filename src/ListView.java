@@ -1,7 +1,6 @@
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
-
 import java.util.ArrayList;
 
 /**

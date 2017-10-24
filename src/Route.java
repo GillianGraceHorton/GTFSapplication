@@ -1,5 +1,5 @@
+import com.sun.jdi.request.DuplicateRequestException;
 import javafx.scene.paint.Color;
-
 import java.util.Collection;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
@@ -75,12 +75,14 @@ public class Route {
 		this.routeUrl = routeUrl;
 	}
 
-	public boolean addStop(Stop stop, int stopNum) {
+	public boolean addStop(Stop stop, int stopNum) throws DuplicateRequestException {
 		boolean result = false;
 		if(stop != null) {
 			if(!stops.containsKey(stopNum)) {
 				stops.put(stopNum, stop);
 				result = true;
+			}else{
+				throw new DuplicateRequestException("Attempted To Add Duplicate Stop");
 			}
 		}
 		return result;

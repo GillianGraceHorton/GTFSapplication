@@ -1,5 +1,3 @@
-import javafx.scene.control.TabPane;
-import javafx.scene.layout.Pane;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

@@ -353,19 +353,8 @@ public class FileManager {
             }
             PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
             pw.println("trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type");
-            Iterator<StopTime> itr = ds.getStopTimes().iterator();
-            while (itr.hasNext()) {
-                StopTime tmp = itr.next();
-                String tripID, arrivalTime, departureTime, stopID, stopSeq, stopHeadsign, pickupType, dropoffType;
-                tripID = tmp.getTripID();
-                arrivalTime = tmp.getArrivalTime().toString();
-                departureTime = tmp.getDepartureTime().toString();
-                stopID = tmp.getStopID();
-                stopSeq = tmp.getStopSequence();
-                stopHeadsign = tmp.getStopHeadsign();
-                pickupType = tmp.getPickupType();
-                dropoffType = tmp.getDropoffType();
-                pw.format("%s,%s,%s,%s,%s,%s,%s,%s\n", tripID, arrivalTime, departureTime, stopID, stopSeq, stopHeadsign, pickupType, dropoffType);
+            for (StopTime tmp : ds.getStopTimes()) {
+                pw.println(tmp.toStringExport());
             }
             pw.close();
             //TODO change from generic exception

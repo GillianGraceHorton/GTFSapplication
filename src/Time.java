@@ -1,16 +1,14 @@
-public class Time {
+ public class Time {
 
     private int hour;
     private int min;
     private int sec;
 
-
-
     /**
      * constructor that checks for invalid times and throws IllegalArgumentException if the time
      * is of invalid format of an invalid time
      * @param time
-     */
+     */ 
     public Time(String time){
         try {
             String[] times = time.split(":");
@@ -34,6 +32,9 @@ public class Time {
         return (hour*10000) + (min*100) + sec;
     }
 
+    /**
+     * Description: sets hour location of time
+     */
     public void setHour(int hour) {
         if(hour>=24 || hour < 0){
             throw new NumberFormatException();
@@ -41,6 +42,9 @@ public class Time {
         this.hour = hour;
     }
 
+     /**
+      * Description: sets min location of time
+      */
     public void setMin(int min) {
         if(min>=60||min<0){
             throw new NumberFormatException();
@@ -48,6 +52,9 @@ public class Time {
         this.min = min;
     }
 
+     /**
+      * Description: sets seconds location of time
+      */
     public void setSec(int sec) {
         if(sec>=60 || min < 0){
             throw new NumberFormatException();

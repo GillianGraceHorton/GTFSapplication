@@ -1,3 +1,4 @@
+import com.sun.jdi.request.DuplicateRequestException;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
 import java.util.TreeMap;
@@ -38,7 +39,7 @@ public class Trip {
      * @param route
      */
     public Trip(Route route) {
-
+        //TODO: Implement if needed, remove if not
     }
 
     public Trip(String tripID) {
@@ -111,35 +112,39 @@ public class Trip {
      * @param stopNum number indicating when the stop will be reached on the trip
      * @return true after the stop is added
      */
-    public boolean addStop(Stop stop, int stopNum) {
+    public boolean addStop(Stop stop, int stopNum) throws DuplicateRequestException {
         boolean result = false;
         if(stop != null) {
             if (!tripList.containsKey(stopNum)) {
                 tripList.put(stopNum, stop);
                 result = true;
+            }else{
+                throw new DuplicateRequestException("Attempted To Add Duplicate Stop");
             }
         }
         if(route != null){
             route.addStop(stop, stopNum);
         }
+
         return result;
     }
 
     /**
      * Gets the stop associated to the trip from the specified trip id.
      * @param stopId
-     * @return
+     * @return the stop object connected to the given stopID
      */
     public Stop getStop(String stopId){
+        Stop result = null;
         if(tripList != null && stopId != null) {
             NavigableSet<Integer> nav = tripList.navigableKeySet();
             for (Integer num : nav) {
                 if (tripList.get(num).getStopID().equalsIgnoreCase(stopId)) {
-                    return tripList.get(num);
+                    result = tripList.get(num);
                 }
             }
         }
-        return null;
+        return result;
     }
 
     public NavigableMap<Integer, Stop> getTripList() {
