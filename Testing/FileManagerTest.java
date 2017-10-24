@@ -2,9 +2,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class FileManagerTest {
     /**
@@ -23,17 +22,6 @@ class FileManagerTest {
 
     @Test
     void loadFromValidFiles() {
-    }
-
-    /**
-     * @author Joseph Heinz - heinzja@msoe.edu
-     * Description: used to test the addFile() method.
-     */
-    @Test
-    void addFile() throws Exception {
-        FileManager fm = new FileManager();
-        //TestCase1: checks to see if addFile returns false if file is not valid.
-        assertFalse(fm.addFile(new File("notValidFile")));
     }
 
     @Test

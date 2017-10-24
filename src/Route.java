@@ -1,5 +1,5 @@
+import com.sun.jdi.request.DuplicateRequestException;
 import javafx.scene.paint.Color;
-
 import java.util.Collection;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
@@ -12,9 +12,9 @@ import java.util.TreeMap;
  */
 public class Route {
 
+	private NavigableMap<Integer, Stop> stops;
 	private Color color;
 	private String routeID;
-	private NavigableMap<Integer, Stop> stops;
 	private String agencyID;
 	private String routeShortName;
 	private String routeLongName;
@@ -35,6 +35,12 @@ public class Route {
 		this.routeUrl = route_url;
 		this.routeColor = route_color;
 		this.routeTextColor = route_text_color;
+
+		stops = new TreeMap<>();
+	}
+
+	public Route(String routeId) {
+		this.routeID = routeId;
 	}
 
 	/**
@@ -69,15 +75,20 @@ public class Route {
 		this.routeUrl = routeUrl;
 	}
 
-	public boolean addStop(Stop stop, int stopNum) {
+	public boolean addStop(Stop stop, int stopNum) throws DuplicateRequestException {
+		boolean result = false;
 		if(stop != null) {
-			if (stops == null) {
-				stops = new TreeMap<>();
+			if(!stops.containsKey(stopNum)) {
+				stops.put(stopNum, stop);
+				result = true;
+			}else if(stops.get(stopNum).isEmpty()){
+				stops.replace(stopNum, stop);
+			}else if(!stops.get(stopNum).equals(stop)){
+				throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Route: "
+						+ routeID);
 			}
-			stops.put(stopNum, stop);
-			return true;
 		}
-		return false;
+		return result;
 	}
 
 	public Color getColor() {
@@ -137,6 +148,9 @@ public class Route {
 	 * @return returns string of data stored in route class
 	 */
 	public String toString(){
+		if(isEmpty()){
+			return  "RouteID: " + getRouteID() +"\nNo data";
+		}
 		return  "RouteID: " + getRouteID() +"\n" +
 				"AgencyID: " + getAgencyID() +"\n" +
 				"ShortName: " + getRouteShortName() +"\n" +
@@ -157,4 +171,36 @@ public class Route {
 		return this.getRouteID().equalsIgnoreCase(route.getRouteID());
 	}
 
+	public String toStringExport(){
+		//returns Route format: route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color"
+		return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s",getRouteID(),getAgencyID(),getRouteShortName(),
+				getRouteLongName(),getRouteDescription(),getRouteType(),getRouteUrl(),getRouteColor(),getRouteTextColor());
+	}
+
+	/**
+	 * Author: Joseph Heinz - heinzja@msoe.edu
+	 * Description: checks to see if Route Object is empty and a placeholder, or a valid Route Object
+	 * @return result of if the Route Object is used as a place holder (empty) or is a valid Route Object (not empty)
+	 */
+	public boolean isEmpty(){
+		boolean result = true;
+		if(getRouteDescription() != null && getRouteShortName() != null && getRouteLongName() != null && getRouteType() != null){
+			result = false;
+		}
+		return result;
+	}
+
+	public String stopsToString() {
+		String toReturn = "";
+		toReturn += toString() + "Stops: \n";
+		if(stops.size() != 0){
+		    toReturn += "    No stops loaded yet";
+        }else {
+            for (int num : stops.keySet()) {
+                toReturn += "    " + num + ".) StopID: " + stops.get(num).getStopID() + " " +
+                        "StopName: " + stops.get(num).getName() + "\n";
+            }
+        }
+		return toReturn;
+	}
 }

@@ -1,49 +1,46 @@
-
-
-
 /**
- * @author hortong
- * @version 1.0
- * @created 03-Oct-2017 4:57:28 PM
+ * @author hortong & joseph heinz - heinzja@msoe.edu
+ * Description: creates new Location class which holds a latitude and longitude
  */
 public class Location {
+	private double latitude;
+	private double longitude;
 
-	private double lat;
-	private double lon;
+	public Location(double lon, double lat) throws IllegalArgumentException {
+		setLat(lat);
+		setLon(lon);
+	}
 
 	public double getLat() {
-		return lat;
+		return latitude;
 	}
 
 	public double getLon() {
-		return lon;
+		return longitude;
 	}
 
-	/**
-	 *
-
-	 * @param lon
-	 * @param lat
-	 */
-	public Location(double lon, double lat){
-		this.lon = lon;
-		this.lat = lat;
+	public void setLon(double lon) throws IllegalArgumentException {
+		if(validLongitude(lon)){ this.longitude = lon; }
+		else { throw new IllegalArgumentException("The longitude must fall within the range: " +
+				"-180 <= x <= 180\n    Invalid: " + lon); }
 	}
 
-	/**
-	 * 
-	 * @param lon
-	 */
-	public void setLon(double lon){
-
+	public void setLat(double lat) throws IllegalArgumentException {
+		if(validLatitude(lat)){ this.latitude = lat; }
+		else{ throw new IllegalArgumentException("the latitude must fall withing the range: -90 " +
+				"<= y <= 90\n    Invalid: " + lat); }
 	}
 
-	/**
-	 * 
-	 * @param lan
-	 */
-	public void setLan(double lan){
+	private boolean validLongitude(double lon){
+		boolean result = false;
+		if(lon <= 180 && lon >= -180){ result = true; }
+		return result;
+	}
 
+	private boolean validLatitude(double lat){
+		boolean result = false;
+		if(lat <= 90 && lat >= -90){ result = true; }
+		return result;
 	}
 
 }

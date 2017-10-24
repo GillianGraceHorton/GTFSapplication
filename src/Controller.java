@@ -1,11 +1,11 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
-import javax.swing.*;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -41,10 +41,9 @@ public class Controller implements Initializable {
 			mainVBox.getChildren().add(listView);
             listView.setPrefWidth(mainVBox.getPrefWidth());
             listView.adjustSizes(mainVBox.getPrefHeight(), mainVBox.getPrefWidth());
-
-            dataStorage.notifyObservers(fileManager.loadFromValidFiles());
 		}catch (Exception e){
 			System.out.println(e);
+			writeErrorMessage(e.getMessage());
 		}
 	}
 
@@ -64,18 +63,6 @@ public class Controller implements Initializable {
 
 	}
 
-	public void importFilesHandler() {
-		FileChooser fileChooser = new FileChooser();
-		File fileToAdd = fileChooser.showOpenDialog(null);
-		try {
-			fileManager.addFile(fileToAdd);
-			ArrayList<Object> stops = fileManager.parseFile(fileToAdd);
-			dataStorage.notifyObservers(stops);
-		}catch (Exception e){
-			System.out.println("TEST: importFilesHandler -> " + e);
-		}
-	}
-
 	public void exportFileHandler(){
 		//TODO: remove exportFileHandler if not needed in future implementation
 	}
@@ -89,6 +76,8 @@ public class Controller implements Initializable {
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
 		try {
 			fileManager.exportStopFile(exportDir, dataStorage);
+			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
+					"Successfully exported StopsFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
@@ -103,6 +92,8 @@ public class Controller implements Initializable {
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
 		try {
 			fileManager.exportStopTimesFile(exportDir, dataStorage);
+			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
+					"Successfully exported StopTimesFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
@@ -117,6 +108,8 @@ public class Controller implements Initializable {
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
 		try {
 			fileManager.exportRouteFile(exportDir, dataStorage);
+			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
+					"Successfully exported RoutesFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
@@ -131,6 +124,8 @@ public class Controller implements Initializable {
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
 		try {
 			fileManager.exportTripFile(exportDir, dataStorage);
+			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
+					"Successfully exported TripsFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
@@ -160,28 +155,90 @@ public class Controller implements Initializable {
 	public void searchForTripHandler() {
 	}
 
+	public void searchForRouteHandler() {
+        TextInputDialog input = new TextInputDialog();
+        input.setHeaderText("Search for a route by routeID and display all of the stops on the " +
+                "route");
+        input.setContentText("please enter the RouteID");
+        Optional<String> result = input.showAndWait();
+        String routeID = result.get();
+
+        listView.displayRouteWithStops(dataStorage.searchRoutes(routeID));
+	}
+
 	public void importStopFileHandler() {
 		FileChooser fileChooser = new FileChooser();
 		File fileToAdd = fileChooser.showOpenDialog(null);
-		try {
-			fileManager.addFile(fileToAdd);
-			ArrayList<Object> stops = fileManager.parseFile(fileToAdd);
+        System.out.println();
+        try {
+			//fileManager.addFile(fileToAdd);
+			ArrayList<Object> stops = fileManager.parseStopFile(fileToAdd);
 			dataStorage.notifyObservers(stops);
+			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+					"Successfully imported " + fileToAdd.getName() + ".");
 		}catch (Exception e){
-			System.out.println("TEST: importFilesHandler -> " + e);
+			System.out.println("TEST: importStopFilesHandler -> " + e);
+			writeErrorMessage(e.getMessage());
 		}
 	}
 
 	public void importStopTimesFileHandler() {
+        FileChooser fileChooser = new FileChooser();
+        File fileToAdd = fileChooser.showOpenDialog(null);
+        try {
+            //fileManager.addFile(fileToAdd);
+            ArrayList<Object> stops = fileManager.parseStopTimesFile(fileToAdd);
+            dataStorage.notifyObservers(stops);
+            System.out.println("finished");
+			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+					"Successfully imported " + fileToAdd.getName() + ".");
+        }catch (Exception e){
+            System.out.println("TEST: importFilesHandler -> " + e);
+			writeErrorMessage(e.getMessage());
+        }
 	}
 
 	public void importRouteFileHandler() {
+        FileChooser fileChooser = new FileChooser();
+        File fileToAdd = fileChooser.showOpenDialog(null);
+        try {
+            //fileManager.addFile(fileToAdd);
+            ArrayList<Object> stops = fileManager.parseRouteFile(fileToAdd);
+            dataStorage.notifyObservers(stops);
+			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+					"Successfully imported " + fileToAdd.getName() + ".");
+        }catch (Exception e){
+            System.out.println("TEST: importFilesHandler -> " + e);
+			writeErrorMessage(e.getMessage());
+        }
 	}
 
 	public void importTripFileHandler() {
+        FileChooser fileChooser = new FileChooser();
+        File fileToAdd = fileChooser.showOpenDialog(null);
+        try {
+            //fileManager.addFile(fileToAdd);
+            ArrayList<Object> stops = fileManager.parseTripFile(fileToAdd);
+            dataStorage.notifyObservers(stops);
+            writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+					"Successfully imported " + fileToAdd.getName() + ".");
+        }catch (Exception e){
+            System.out.println("TEST: importFilesHandler -> " + e);
+			writeErrorMessage(e.getMessage());
+        }
 	}
 
 	private void writeErrorMessage(String message){
-		JOptionPane.showMessageDialog(null, message);
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setHeaderText("Error");
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
+
+	private void writeInformationMessage(Alert.AlertType alertType, String header, String context) {
+		Alert alert = new Alert(alertType);
+		alert.setHeaderText(header);
+		alert.setContentText(context);
+		alert.showAndWait();
 	}
 }
