@@ -110,7 +110,7 @@ public class Controller implements Initializable {
 		try {
 			fileManager.exportRouteFile(exportDir, dataStorage);
 			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
-					"Successfully Exported TripsFile.");
+					"Successfully Exported RoutesFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
@@ -126,7 +126,7 @@ public class Controller implements Initializable {
 		try {
 			fileManager.exportTripFile(exportDir, dataStorage);
 			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
-					"Successfully Exported TripFile.");
+					"Successfully Exported TripsFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
@@ -196,7 +196,7 @@ public class Controller implements Initializable {
             ArrayList<Object> stops = fileManager.parseRouteFile(fileToAdd);
             dataStorage.notifyObservers(stops);
 			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
-					"Successfully Imported RouteFile.");
+					"Successfully Imported RoutesFile.");
         }catch (Exception e){
             System.out.println("TEST: importFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
@@ -211,7 +211,7 @@ public class Controller implements Initializable {
             ArrayList<Object> stops = fileManager.parseTripFile(fileToAdd);
             dataStorage.notifyObservers(stops);
 			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
-					"Successfully Imported TripFile.");
+					"Successfully Imported TripsFile.");
         }catch (Exception e){
             System.out.println("TEST: importFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
