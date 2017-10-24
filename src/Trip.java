@@ -43,6 +43,7 @@ public class Trip {
 
     public Trip(String tripID) {
         this.tripID = tripID;
+        tripList = new TreeMap<>();
     }
 
     public void setRoute(Route route) {
@@ -151,6 +152,9 @@ public class Trip {
      * @author Joseph Heinz - heinzja@msoe.edu
      */
     public String toString() {
+        if(isEmpty()){
+            return "TripID: " + getTripID() + "\nNo data";
+        }
         String toReturn = "RouteID: " + getRouteID() + "\n" +
                 "ServiceID: " + getServiceID() + "\n" +
                 "TripID: " + getTripID() + "\n" +

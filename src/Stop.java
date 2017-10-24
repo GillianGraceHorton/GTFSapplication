@@ -122,6 +122,9 @@ public class Stop {
 	 * @return returns formatted string of data stored in stop class.
 	 */
 	public String toString(){
+		if(isEmpty()){
+			return "StopID: " + getStopID() + "\nNo Data";
+		}
 		return  "StopID: " + getStopID() + "\n" +
 				"Name: " + getName() + "\n" +
 				"Description: " + getStopDescription() + "\n" +

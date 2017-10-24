@@ -143,6 +143,9 @@ public class Route {
 	 * @return returns string of data stored in route class
 	 */
 	public String toString(){
+		if(isEmpty()){
+			return  "RouteID: " + getRouteID() +"\nNo data";
+		}
 		return  "RouteID: " + getRouteID() +"\n" +
 				"AgencyID: " + getAgencyID() +"\n" +
 				"ShortName: " + getRouteShortName() +"\n" +

@@ -1,4 +1,4 @@
-import com.sun.tools.internal.ws.wsdl.framework.DuplicateEntityException;
+
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.*;
@@ -38,10 +38,10 @@ public class DataStorage implements Subject {
     /**
      * sends updates to all observers after adding each object to its own dataStructures
      *
-     * @param itemsToSend an arrayList of the objects that were added.
+     * @param updates an arrayList of the objects that were added.
      */
-    public void notifyObservers(ArrayList<Object> itemsToSend) throws KeyAlreadyExistsException {
-        for (Object item : itemsToSend) {
+    public void notifyObservers(ArrayList<Object> updates) throws KeyAlreadyExistsException {
+        for (Object item : updates) {
             if (item instanceof Stop) {
                 if(stops.containsKey(((Stop) item).getStopID())){
                     if(stops.get(((Stop) item).getStopID()).isEmpty()){
@@ -54,22 +54,50 @@ public class DataStorage implements Subject {
                 }
 
             } else if (item instanceof Route) {
-                routes.put(((Route) item).getRouteID(), (Route) item);
+                if(routes.containsKey(((Route) item).getRouteID())){
+                    if(routes.get(((Route) item).getRouteID()).isEmpty()){
+                        routes.replace(((Route) item).getRouteID(),(Route)item);
+                    }else{
+                        throw new KeyAlreadyExistsException();
+                    }
+                }else {
+                    routes.put(((Route) item).getRouteID(), (Route) item);
+                }
+
             } else if (item instanceof Trip) {
-                trips.put(((Trip) item).getTripID(), (Trip) item);
+                if(trips.containsKey(((Trip) item).getTripID())){
+                    if(trips.get(((Trip) item).getTripID()).isEmpty()){
+                        trips.replace(((Trip) item).getTripID(),(Trip)item);
+                    }else{
+                        throw new KeyAlreadyExistsException();
+                    }
+                }else {
+                    trips.put(((Trip) item).getTripID(), (Trip) item);
+                }
+
             } else if (item instanceof StopTime) {
                 stopTimes.add((StopTime) item);
             }
         }
-        if (trips.size() != 0 && routes.size() != 0) {
-            addRoutesToTrips();
+        ArrayList<Object> dataStructures = new ArrayList<>();
+        dataStructures.addAll(stops.values());
+        dataStructures.addAll(routes.values());
+        dataStructures.addAll(trips.values());
+        dataStructures.addAll(stopTimes);
+        if(stopTimes.size()!=0){
+            dataStructures.addAll(createIDReferencesFromStopTimes());
         }
-        if (trips.size() != 0 && stopTimes.size() != 0) {
-            updateTripsWithStopTimes();
+        if (trips.size() != 0){
+            dataStructures.addAll(createIDReferencesFromTrips());
+            if(routes.size() != 0) {
+                addRoutesToTrips();
+            }
+            if(stopTimes.size()!=0){
+                updateTripsWithStopTimes();
+            }
         }
-
         for (Observer observer : observers) {
-            observer.update(itemsToSend);
+            observer.update(dataStructures);
         }
     }
 
@@ -91,25 +119,34 @@ public class DataStorage implements Subject {
         }
     }
 
-    private void createIDReferencesfromTrips(){
+    private ArrayList<Object> createIDReferencesFromTrips(){
+        ArrayList<Object> created = new ArrayList<>();
         NavigableSet<String> nav = trips.navigableKeySet();
-        Trip thisTrip;
         for (String id : nav) {
-            if(!routes.containsKey(trips.get(id).getRouteID())){
-                routes.put(trips.get(id).getRouteID(), new Route(trips.get(id).getRouteID()));
+            if(!trips.get(id).isEmpty() && !routes.containsKey(trips.get(id).getRouteID())){
+                Route newRoute = new Route(trips.get(id).getRouteID());
+                routes.put(trips.get(id).getRouteID(), newRoute);
+                created.add(newRoute);
             }
         }
+        return created;
     }
 
-    private void createIDReferencesfromStopTimes(){
+    private ArrayList<Object> createIDReferencesFromStopTimes(){
+        ArrayList<Object> created = new ArrayList<>();
         for (StopTime stopTime: stopTimes) {
             if(!stops.containsKey(stopTime.getStopID())){
-                stops.put(stopTime.getStopID(), new Stop(stopTime.getStopID()));
+                Stop newStop = new Stop(stopTime.getStopID());
+                stops.put(stopTime.getStopID(), newStop);
+                created.add(newStop);
             }
             if(!trips.containsKey(stopTime.getTripID())){
-                trips.put(stopTime.getTripID(), new Trip(stopTime.getTripID()));
+                Trip newTrip = new Trip(stopTime.getTripID());
+                trips.put(stopTime.getTripID(), newTrip);
+                created.add(newTrip);
             }
         }
+        return created;
     }
 
     /**
