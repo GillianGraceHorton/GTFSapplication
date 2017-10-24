@@ -83,7 +83,7 @@ public class Route {
 				result = true;
 			}else if(stops.get(stopNum).isEmpty()){
 				stops.replace(stopNum, stop);
-			}else{
+			}else if(!stops.get(stopNum).equals(stop)){
 				throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Route: "
 						+ routeID);
 			}
@@ -188,5 +188,14 @@ public class Route {
 			result = false;
 		}
 		return result;
+	}
+
+	public String stopsToString() {
+		String toReturn = "";
+		toReturn += toString() + "Stops: \n";
+		for(int num: stops.keySet()){
+			toReturn += "    " + num + ".) " + stops.get(num).getStopID() + "\n";
+		}
+		return toReturn;
 	}
 }

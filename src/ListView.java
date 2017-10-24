@@ -16,12 +16,14 @@ public class ListView extends TabPane implements Observer {
     private Tab tripsTab;
     private Tab stopTimesTab;
     private Tab routesContainingStopTab;
+    private Tab routeWithStopsTab;
 
     private TextArea stops;
     private TextArea routes;
     private TextArea trips;
     private TextArea stopTimes;
     private TextArea routesContainingStop;
+    private TextArea routeWithStops;
 
 
     public ListView() {
@@ -109,5 +111,15 @@ public class ListView extends TabPane implements Observer {
         }
         routesContainingStop.setText(toAdd);
         routesContainingStop.setEditable(false);
+    }
+
+    public void displayRouteWithStops(Route route) {
+        if(routeWithStopsTab == null){
+            routeWithStopsTab = new Tab("Route With its Stops");
+            routeWithStops = new TextArea();
+            routeWithStopsTab.setContent(routeWithStops);
+            this.getTabs().add(routeWithStopsTab);
+        }
+        routeWithStops.setText(route.stopsToString());
     }
 }

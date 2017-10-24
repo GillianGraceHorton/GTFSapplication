@@ -122,7 +122,7 @@ public class Trip {
                 result = true;
             } else if(tripList.get(stopNum).isEmpty()) {
                 tripList.replace(stopNum, stop);
-            } else {
+            }else if(!tripList.get(stopNum).equals(stop)){
                 throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Trip: " +
                         tripID);
             }
