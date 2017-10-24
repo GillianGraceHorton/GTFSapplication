@@ -47,7 +47,9 @@ public class DataStorage implements Subject {
                     if(stops.get(((Stop) item).getStopID()).isEmpty()){
                         stops.replace(((Stop) item).getStopID(),(Stop)item);
                     }else{
-                        throw new KeyAlreadyExistsException();
+                        throw new KeyAlreadyExistsException("the stop: " + item.toString() +
+                                "\ncannot bee added because it has the same ID as the stop: " +
+                                stops.get(((Stop)item).getStopID()));
                     }
                 }else {
                     stops.put(((Stop) item).getStopID(), (Stop) item);

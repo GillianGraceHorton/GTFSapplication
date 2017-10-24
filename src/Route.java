@@ -81,8 +81,11 @@ public class Route {
 			if(!stops.containsKey(stopNum)) {
 				stops.put(stopNum, stop);
 				result = true;
+			}else if(stops.get(stopNum).isEmpty()){
+				stops.replace(stopNum, stop);
 			}else{
-				throw new DuplicateRequestException("Attempted To Add Duplicate Stop");
+				throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Route: "
+						+ routeID);
 			}
 		}
 		return result;
