@@ -7,19 +7,13 @@ import java.util.ArrayList;
  */
 public class Stop {
 
-	/**
-	 * arrival time for the bus at given stop. to be set when the stop is part of a trip.
-	 */
-	private String arrivalTime;
+	/* arrival time for the bus at given stop. to be set when the stop is part of a trip. */
+	private Time arrivalTime;
 
-	/**
-	 * departure time for the bus at given stop. to be set when the stop is part of a trip.
-	 */
-	private String departureTime;
+	/* departure time for the bus at given stop. to be set when the stop is part of a trip. */
+	private Time departureTime;
 
-	/**
-	 * gps location of the stop
-	 */
+	/* gps location of the stop */
 	private Location location;
 
 	/**
@@ -54,12 +48,16 @@ public class Stop {
 		this.stopDescription = stopDesc;
 	}
 
-	public void setArrivalTime(String arrivalTime) {
+	public Stop(String stopID){
+	    this.stopID = stopID;
+    }
+
+	public void setArrivalTime(Time arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	}
 
-	public void setDepartureTime(String departureTime) {
-		this.departureTime = departureTime;
+	public void setDepartureTime(Time departureTime) {
+		this.departureTime =  departureTime;
 	}
 
 	public void setLocation(Location location) {
@@ -70,11 +68,11 @@ public class Stop {
 		this.stopDescription = stopDescription;
 	}
 
-	public String getArrivalTime() {
+	public Time getArrivalTime() {
 		return arrivalTime;
 	}
 
-	public String getDepartureTime() {
+	public Time getDepartureTime() {
 		return departureTime;
 	}
 
@@ -124,6 +122,9 @@ public class Stop {
 	 * @return returns formatted string of data stored in stop class.
 	 */
 	public String toString(){
+		if(isEmpty()){
+			return "StopID: " + getStopID() + "\nNo Data";
+		}
 		return  "StopID: " + getStopID() + "\n" +
 				"Name: " + getName() + "\n" +
 				"Description: " + getStopDescription() + "\n" +
@@ -133,4 +134,21 @@ public class Stop {
 				"Departure Time: " + getDepartureTime() + "\n";
 	}
 
+	public String toStringExport(){
+		return String.format("%s,%s,%s,%f,%f,%s,%s,",getStopID(),getName(),getStopDescription(),getLocation().getLat(),getLocation().getLon(),getArrivalTime(),getDepartureTime());
+	}
+
+	/**
+	 * Author: Joseph Heinz - heinzja@msoe.edu
+	 * Description: Checks if this Stop Object contains a location and name, if not, then the stop
+	 * 				is a place holder for future stop information to added to.
+	 * @return returns result of if this Stop Object is a placeholder (empty) or valid
+	 */
+	public boolean isEmpty(){
+		boolean result = true;
+		if(this.location != null && this.name != null){
+			result = false;
+		}
+		return result;
+	}
 }

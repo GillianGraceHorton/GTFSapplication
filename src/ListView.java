@@ -1,7 +1,6 @@
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
-
 import java.util.ArrayList;
 
 /**
@@ -11,92 +10,116 @@ import java.util.ArrayList;
  */
 public class ListView extends TabPane implements Observer {
 
-	private Subject dataStorage;
-	private Tab stopsTab;
-	private Tab routesTab;
-	private Tab tripsTab;
-	private Tab stopTimesTab;
-	private Tab routesContainingStopTab;
+    private Subject dataStorage;
+    private Tab stopsTab;
+    private Tab routesTab;
+    private Tab tripsTab;
+    private Tab stopTimesTab;
+    private Tab routesContainingStopTab;
+    private Tab routeWithStopsTab;
 
-	private TextArea stops;
-	private TextArea routes;
-	private TextArea trips;
-	private TextArea stopTimes;
-	private TextArea routesContainingStop;
+    private TextArea stops;
+    private TextArea routes;
+    private TextArea trips;
+    private TextArea stopTimes;
+    private TextArea routesContainingStop;
+    private TextArea routeWithStops;
 
 
-	public ListView(){
-		stopsTab = new Tab("STOPS");
-		routesTab = new Tab("ROUTES");
-		tripsTab = new Tab("TRIPS");
-		stopTimesTab = new Tab("STOP TIMES");
-		this.getTabs().addAll(stopsTab, routesTab, tripsTab, stopTimesTab);
+    public ListView() {
+        stopsTab = new Tab("STOPS");
+        routesTab = new Tab("ROUTES");
+        tripsTab = new Tab("TRIPS");
+        stopTimesTab = new Tab("STOP TIMES");
+        this.getTabs().addAll(stopsTab, routesTab, tripsTab, stopTimesTab);
 
-		stops = new TextArea();
-		stops.setEditable(false);
-		routes = new TextArea();
-		routes.setEditable(false);
-		trips = new TextArea();
-		trips.setEditable(false);
-		stopTimes = new TextArea();
-		stopTimes.setEditable(false);
+        stops = new TextArea();
+        stops.setEditable(false);
+        routes = new TextArea();
+        routes.setEditable(false);
+        trips = new TextArea();
+        trips.setEditable(false);
+        stopTimes = new TextArea();
+        stopTimes.setEditable(false);
 
-		stopsTab.setContent(stops);
-		routesTab.setContent(routes);
-		tripsTab.setContent(trips);
-		stopTimesTab.setContent(stopTimes);
-	}
+        stopsTab.setContent(stops);
+        routesTab.setContent(routes);
+        tripsTab.setContent(trips);
+        stopTimesTab.setContent(stopTimes);
 
-	/**
-	 * adjusts the sizes of the javaFX objects
-	 * @param height height of the object
-	 * @param width width of the object
-	 */
-	public void adjustSizes(double height, double width){
-		stops.setPrefWidth(width/3);
-		stops.setPrefHeight(height);
-		routes.setPrefWidth(width/3);
-		routes.setPrefHeight(height);
-		trips.setPrefWidth(width/3);
-		trips.setPrefHeight(height);
-	}
+        this.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
+    }
 
-	public void setSubject(Subject dataStorage){
-		this.dataStorage = dataStorage;
-	}
+    /**
+     * adjusts the sizes of the javaFX objects
+     *
+     * @param height height of the object
+     * @param width  width of the object
+     */
+    public void adjustSizes(double height, double width) {
+        stops.setPrefWidth(width / 3);
+        stops.setPrefHeight(height);
+        routes.setPrefWidth(width / 3);
+        routes.setPrefHeight(height);
+        trips.setPrefWidth(width / 3);
+        trips.setPrefHeight(height);
+    }
 
-	/**
-	 * receives update from the subject
-	 * @param addedItems items that have been updated
-	 */
-	public void update(ArrayList<Object> addedItems){
-		for (Object item: addedItems) {
-			if(item instanceof Stop){
-				stops.setText(stops.getText() + "\n" + item.toString());
-			}else if(item instanceof Route){
-				routes.setText(routes.getText() + "\n" + item.toString());
-			}else if(item instanceof Trip){
-				trips.setText(trips.getText() + "\n" + item.toString());
-				if (((Trip)item).getTripList() != null){
-					stopTimes.setText(stopTimes.getText() + "\n" + ((Trip)item).tripListToString());
-				}
-			}
-		}
-	}
+    public void setSubject(Subject dataStorage) {
+        this.dataStorage = dataStorage;
+    }
 
-	public void displayRoutesContainingStop(ArrayList<Route> routes){
-		if(routesContainingStopTab == null){
-			routesContainingStopTab = new Tab("Routes containing Stop");
-			routesContainingStop = new TextArea();
-			routesContainingStopTab.setContent(routesContainingStop);
-			this.getTabs().add(routesContainingStopTab);
-		}
-		String toAdd = "";
-		for (Route route: routes) {
-			toAdd += "RouteID: " + route.getRouteID() + ", Route Name: " + route
-					.getRouteLongName() + "\n";
-		}
-		routesContainingStop.setText(toAdd);
-		routesContainingStop.setEditable(false);
-	}
+    /**
+     * receives update from the subject
+     *
+     * @param addedItems items that have been updated
+     */
+    public void update(ArrayList<Object> addedItems) {
+        clearDataTabs();
+        for (Object item : addedItems) {
+            if (item instanceof Stop) {
+                stops.setText(stops.getText() + "\n" + item.toString());
+            } else if (item instanceof Route) {
+                routes.setText(routes.getText() + "\n" + item.toString());
+            } else if (item instanceof Trip) {
+                trips.setText(trips.getText() + "\n" + item.toString());
+				if (((Trip)item).getTripList() != null) {
+                    stopTimes.setText(stopTimes.getText() + "\n" + ((Trip) item).tripListToString());
+                }
+            }
+        }
+    }
+
+    private void clearDataTabs() {
+        stops.clear();
+        routes.clear();
+        trips.clear();
+        stopTimes.clear();
+    }
+
+    public void displayRoutesContainingStop(ArrayList<Route> routes) {
+        if (routesContainingStopTab == null) {
+            routesContainingStopTab = new Tab("Routes containing Stop");
+            routesContainingStop = new TextArea();
+            routesContainingStopTab.setContent(routesContainingStop);
+            this.getTabs().add(routesContainingStopTab);
+        }
+        String toAdd = "";
+        for (Route route : routes) {
+            toAdd += "RouteID: " + route.getRouteID() + ", Route Name: " + route
+                    .getRouteLongName() + "\n";
+        }
+        routesContainingStop.setText(toAdd);
+        routesContainingStop.setEditable(false);
+    }
+
+    public void displayRouteWithStops(Route route) {
+        if(routeWithStopsTab == null){
+            routeWithStopsTab = new Tab("Route With its Stops");
+            routeWithStops = new TextArea();
+            routeWithStopsTab.setContent(routeWithStops);
+            this.getTabs().add(routeWithStopsTab);
+        }
+        routeWithStops.setText(route.stopsToString());
+    }
 }

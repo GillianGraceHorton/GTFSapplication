@@ -7,12 +7,8 @@ public class Location {
 	private double longitude;
 
 	public Location(double lon, double lat) throws IllegalArgumentException {
-		if(validLongitude(lon) && validLatitude(lat)){
-
-			this.longitude = lon;
-			this.latitude = lat;
-		}
-		else{ throw new IllegalArgumentException(); }
+		setLat(lat);
+		setLon(lon);
 	}
 
 	public double getLat() {
@@ -25,12 +21,14 @@ public class Location {
 
 	public void setLon(double lon) throws IllegalArgumentException {
 		if(validLongitude(lon)){ this.longitude = lon; }
-		else { throw new IllegalArgumentException(); }
+		else { throw new IllegalArgumentException("The longitude must fall within the range: " +
+				"-180 <= x <= 180\n    Invalid: " + lon); }
 	}
 
 	public void setLat(double lat) throws IllegalArgumentException {
 		if(validLatitude(lat)){ this.latitude = lat; }
-		else{ throw new IllegalArgumentException(); }
+		else{ throw new IllegalArgumentException("the latitude must fall withing the range: -90 " +
+				"<= y <= 90\n    Invalid: " + lat); }
 	}
 
 	private boolean validLongitude(double lon){

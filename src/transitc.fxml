@@ -7,9 +7,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.121"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
    <children>
       <VBox fx:id="mainVBox" prefHeight="700.0" prefWidth="900.0">
          <children>
@@ -19,18 +17,13 @@
                   <items>
                         <Menu mnemonicParsing="false" text="Import">
                           <items>
-                            <MenuItem mnemonicParsing="false" onAction="#importStopFileHandler"
-                                      text="StopFile" />
+                            <MenuItem mnemonicParsing="false" onAction="#importStopFileHandler" text="StopFile" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false"
-                                        onAction="#importStopTimesFileHandler"
-                                        text="StopTimesFile" />
+                              <MenuItem mnemonicParsing="false" onAction="#importStopTimesFileHandler" text="StopTimesFile" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#importRouteFileHandler"
-                                        text="RouteFile" />
+                              <MenuItem mnemonicParsing="false" onAction="#importRouteFileHandler" text="RouteFile" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#importTripFileHandler"
-                                        text="TripFile" />
+                              <MenuItem mnemonicParsing="false" onAction="#importTripFileHandler" text="TripFile" />
                           </items>
                         </Menu>
                         <SeparatorMenuItem mnemonicParsing="false" />
@@ -58,20 +51,17 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Search">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#searchRouteForStopHandler"
-                              text="Routes for Stop" />
+                    <MenuItem mnemonicParsing="false" onAction="#searchRouteForStopHandler" text="Routes for Stop" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#searchForStopHandler"
-                                  text="for Stop" />
+                        <MenuItem mnemonicParsing="false" onAction="#searchForStopHandler" text="for Stop" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#searchForTripHandler"
-                                  text="for Trip" />
+                        <MenuItem mnemonicParsing="false" onAction="#searchForTripHandler" text="for Trip" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#searchTripsForRouteHandler"
-                                  text="Trips for Route" />
+                        <MenuItem mnemonicParsing="false" onAction="#searchTripsForRouteHandler" text="Trips for Route" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#searchTripsForStopHandler"
-                                  text="Trips for Stop" />
+                        <MenuItem mnemonicParsing="false" onAction="#searchTripsForStopHandler" text="Trips for Stop" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#searchForRouteHandler" text="for Route" />
                   </items>
                 </Menu>
                   <Menu mnemonicParsing="false" text="Update" />

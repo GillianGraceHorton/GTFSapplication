@@ -78,7 +78,7 @@ public class Controller implements Initializable {
 		try {
 			fileManager.exportStopFile(exportDir, dataStorage);
 			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
-					"Successfully Exported StopsFile.");
+					"Successfully exported StopsFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
@@ -94,7 +94,7 @@ public class Controller implements Initializable {
 		try {
 			fileManager.exportStopTimesFile(exportDir, dataStorage);
 			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
-					"Successfully Exported StopTimesFile.");
+					"Successfully exported StopTimesFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
@@ -110,7 +110,7 @@ public class Controller implements Initializable {
 		try {
 			fileManager.exportRouteFile(exportDir, dataStorage);
 			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
-					"Successfully Exported RoutesFile.");
+					"Successfully exported RoutesFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
@@ -126,7 +126,7 @@ public class Controller implements Initializable {
 		try {
 			fileManager.exportTripFile(exportDir, dataStorage);
 			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
-					"Successfully Exported TripsFile.");
+					"Successfully exported TripsFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
@@ -156,6 +156,10 @@ public class Controller implements Initializable {
 	public void searchForTripHandler() {
 	}
 
+	public void searchForRouteHandler() {
+
+	}
+
 	public void importStopFileHandler() {
 		FileChooser fileChooser = new FileChooser();
 		File fileToAdd = fileChooser.showOpenDialog(null);
@@ -165,7 +169,7 @@ public class Controller implements Initializable {
 			ArrayList<Object> stops = fileManager.parseStopFile(fileToAdd);
 			dataStorage.notifyObservers(stops);
 			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
-					"Successfully Imported StopsFile.");
+					"Successfully imported " + fileToAdd.getName() + ".");
 		}catch (Exception e){
 			System.out.println("TEST: importStopFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
@@ -181,7 +185,7 @@ public class Controller implements Initializable {
             dataStorage.notifyObservers(stops);
             System.out.println("finished");
 			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
-					"Successfully Imported StopTimesFile.");
+					"Successfully imported " + fileToAdd.getName() + ".");
         }catch (Exception e){
             System.out.println("TEST: importFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
@@ -196,7 +200,7 @@ public class Controller implements Initializable {
             ArrayList<Object> stops = fileManager.parseRouteFile(fileToAdd);
             dataStorage.notifyObservers(stops);
 			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
-					"Successfully Imported RoutesFile.");
+					"Successfully imported " + fileToAdd.getName() + ".");
         }catch (Exception e){
             System.out.println("TEST: importFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
@@ -210,8 +214,8 @@ public class Controller implements Initializable {
             //fileManager.addFile(fileToAdd);
             ArrayList<Object> stops = fileManager.parseTripFile(fileToAdd);
             dataStorage.notifyObservers(stops);
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
-					"Successfully Imported TripsFile.");
+            writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+					"Successfully imported " + fileToAdd.getName() + ".");
         }catch (Exception e){
             System.out.println("TEST: importFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
@@ -219,11 +223,14 @@ public class Controller implements Initializable {
 	}
 
 	private void writeErrorMessage(String message){
-		JOptionPane.showMessageDialog(null, message);
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setHeaderText("Error");
+		alert.setContentText(message);
+		alert.showAndWait();
 	}
 
-	private void writeInformationMessage(Alert.AlertType type, String header, String context) {
-		Alert alert = new Alert(type);
+	private void writeInformationMessage(Alert.AlertType alertType, String header, String context) {
+		Alert alert = new Alert(alertType);
 		alert.setHeaderText(header);
 		alert.setContentText(context);
 		alert.showAndWait();
