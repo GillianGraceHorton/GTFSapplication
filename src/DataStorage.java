@@ -13,7 +13,6 @@ public class DataStorage implements Subject {
     private NavigableMap<String, Stop> stops;
     private NavigableMap<String, Route> routes;
     private NavigableMap<String, Trip> trips;
-    private Collection<Trip> tripsWithTimes;
     private Collection<StopTime> stopTimes;
     private Collection<Observer> observers;
 
@@ -23,7 +22,6 @@ public class DataStorage implements Subject {
         routes = new TreeMap<>();
         trips = new TreeMap<>();
         stopTimes = new ArrayList<>();
-        tripsWithTimes = new ArrayList<>();
         observers = new ArrayList<>();
     }
 
@@ -112,7 +110,6 @@ public class DataStorage implements Subject {
     private void updateTripsWithStopTimes() {
         for (StopTime stopTime : stopTimes) {
             Trip tripToUpdate = searchTrips(stopTime.getTripID());
-            tripsWithTimes.add(tripToUpdate);
             tripToUpdate.addStop(searchStops(stopTime.getStopID()), Integer.parseInt(stopTime
                     .getStopSequence()));
             tripToUpdate.getStop(stopTime.getStopID()).setArrivalTime(stopTime.getArrivalTime());
@@ -302,14 +299,6 @@ public class DataStorage implements Subject {
 
     public void setTrips(NavigableMap<String, Trip> trips) {
         this.trips = trips;
-    }
-
-    public Collection<Trip> getTripsWithTimes() {
-        return tripsWithTimes;
-    }
-
-    public void setTripsWithTimes(Collection<Trip> tripsWithTimes) {
-        this.tripsWithTimes = tripsWithTimes;
     }
 
     public Collection<StopTime> getStopTimes() {

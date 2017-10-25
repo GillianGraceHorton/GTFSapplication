@@ -55,13 +55,17 @@ public class FileManager {
                     toReturn.add(new Stop(stop_lon, stop_lat, stop_name, stop_id, stop_desc));
                 }catch(IllegalArgumentException e){
                     errors.add("Error at line: " + line + "\n    " + e.getMessage());
+                }catch (NullPointerException e) {
+                    throw new NullPointerException("ERROR: Invalid Stop File Format at the " +
+                            "following line:\n    " + line);
                 }
             }
             if(!errors.isEmpty()){
                 errorsInParsing(file.getName(), errors);
             }
-        } catch (NullPointerException e) {
-            throw new NullPointerException("ERROR: Invalid Stop File Format: " + e);
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException("ERROR: The following file could not be found: " +
+                    file.getName() + "\n" + e.getMessage());
         }
         return toReturn;
     }
@@ -103,13 +107,17 @@ public class FileManager {
                         route_desc, route_type, route_url, route_color, route_text_color));
                 }catch(IllegalArgumentException e){
                     errors.add("Error at line: " + line + "\n    " + e.getMessage());
+                }catch (NullPointerException e) {
+                    throw new NullPointerException("ERROR: Invalid Route File Format at the " +
+                            "following line:\n    " + line);
                 }
             }
             if(!errors.isEmpty()){
                 errorsInParsing(file.getName(), errors);
             }
-        } catch (NullPointerException e) {
-            throw new NullPointerException("ERROR: Invalid Route File Format: " + e);
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException("ERROR: The following file could not be found: " +
+                    file.getName() + "\n" + e.getMessage());
         }
         return toReturn;
     }
@@ -145,13 +153,17 @@ public class FileManager {
                     toReturn.add(new Trip(trip_id, service_id, route_id, trip_head_sign, direction_id, block_id, shape_id));
                 }catch(IllegalArgumentException e){
                     errors.add("Error at line: " + line + "\n    " + e.getMessage());
+                } catch (NullPointerException e) {
+                    throw new NullPointerException("ERROR: Invalid Trip File Format at the " +
+                            "following line:\n    " + line);
                 }
             }
             if(!errors.isEmpty()){
                 errorsInParsing(file.getName(), errors);
             }
-        } catch (NullPointerException e) {
-            throw new NullPointerException("ERROR: Invalid Trip File Format: " + e);
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException("ERROR: The following file could not be found: " +
+                    file.getName() + "\n" + e.getMessage());
         }
         return toReturn;
     }
@@ -191,13 +203,17 @@ public class FileManager {
                     // file.
                 } catch (IllegalArgumentException e) {
                     errors.add("Error at line: " + line + "\n\t" + e.getMessage());
+                }catch (NullPointerException e) {
+                    throw new NullPointerException("ERROR: Invalid StopTimes File Format at the " +
+                            "following line:\n    " + line);
                 }
             }
             if(!errors.isEmpty()){
                 errorsInParsing(file.getName(), errors);
             }
-        } catch (NullPointerException e) {
-            throw new NullPointerException("ERROR: Invalid StopTimes File Format: " + e);
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException("ERROR: The following file could not be found: " +
+                    file.getName() + "\n" + e.getMessage());
         }
         return toReturn;
     }
