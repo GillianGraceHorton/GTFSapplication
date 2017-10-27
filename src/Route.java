@@ -1,4 +1,6 @@
 import com.sun.jdi.request.DuplicateRequestException;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import java.util.Collection;
 import java.util.NavigableMap;
@@ -18,11 +20,12 @@ public class Route {
 	private String agencyID;
 	private String routeShortName;
 	private String routeLongName;
-    private String routeDescription;
+	private String routeDescription;
 	private String routeType;
 	private String routeUrl;
 	private String routeColor;
 	private String routeTextColor;
+	private GTFSLabel routeLabel;
 
 	public Route(String route_id, String agency_id,String route_short_name, String route_long_name,
 				 String route_desc,String route_type, String route_url,String route_color, String route_text_color){
@@ -35,16 +38,17 @@ public class Route {
 		this.routeUrl = route_url;
 		this.routeColor = route_color;
 		this.routeTextColor = route_text_color;
-
-		stops = new TreeMap<>();
+		this.stops = new TreeMap<>();
+		this.routeLabel = new GTFSLabel(this);
 	}
 
 	public Route(String routeId) {
 		this.routeID = routeId;
+		this.routeLabel = new GTFSLabel(this);
 	}
 
 	/**
-	 * 
+	 *
 	 * @param stops
 	 */
 	public void Route(Collection<Stop> stops){
@@ -96,12 +100,12 @@ public class Route {
 	}
 
 	public NavigableMap<Integer, Stop> getStops() {
-        return stops;
-    }
+		return stops;
+	}
 
-    public void setStops(NavigableMap<Integer, Stop> stops) {
-        this.stops = stops;
-    }
+	public void setStops(NavigableMap<Integer, Stop> stops) {
+		this.stops = stops;
+	}
 
 	public String getRouteID() {
 		return routeID;
@@ -173,7 +177,7 @@ public class Route {
 	/**
 	 * compares two route objects based on their routeIDs
 	 * @param route to compare to
-     * @return true if their routeIDs are the same and false if they are not
+	 * @return true if their routeIDs are the same and false if they are not
 	 */
 	public boolean equals(Route route){
 		return this.getRouteID().equalsIgnoreCase(route.getRouteID());
@@ -202,25 +206,42 @@ public class Route {
 		String toReturn = "";
 		toReturn += toString() + "Stops: \n";
 		if(stops.size() != 0){
-		    toReturn += "    No stops loaded yet";
-        }else {
-            for (int num : stops.keySet()) {
-                toReturn += "    " + num + ".) StopID: " + stops.get(num).getStopID() + " " +
-                        "StopName: " + stops.get(num).getName() + "\n";
-            }
-        }
+			toReturn += "    No stops loaded yet";
+		}else {
+			for (int num : stops.keySet()) {
+				toReturn += "    " + num + ".) StopID: " + stops.get(num).getStopID() + " " +
+						"StopName: " + stops.get(num).getName() + "\n";
+			}
+		}
 		return toReturn;
 	}
 
-    public void copyInstanceVariables(Route route) {
-        this.color = route.getColor();
-        this.agencyID = route.getAgencyID();
-        this.routeShortName = route.getRouteShortName();
-        this.routeLongName = route.getRouteLongName();
-        this.routeDescription = route.getRouteDescription();
-        this.routeType = route.getRouteType();
-        this.routeUrl = route.getRouteUrl();
-        this.routeColor = route.getRouteColor();
-        this.routeTextColor = route.getRouteTextColor();
-    }
+	public void copyInstanceVariables(Route route) throws IllegalArgumentException{
+		if(!this.getRouteID().equalsIgnoreCase(route.getRouteID())){
+			throw new IllegalArgumentException("This trip's ID: " + this.getRouteID() + ", does " +
+					"not match the ID of the argument: " + route.getRouteID());
+		}
+		this.color = route.getColor();
+		this.agencyID = route.getAgencyID();
+		this.routeShortName = route.getRouteShortName();
+		this.routeLongName = route.getRouteLongName();
+		this.routeDescription = route.getRouteDescription();
+		this.routeType = route.getRouteType();
+		this.routeUrl = route.getRouteUrl();
+		this.routeColor = route.getRouteColor();
+		this.routeTextColor = route.getRouteTextColor();
+		updateLabelName();
+	}
+
+	public void addEventHandler(EventHandler<MouseEvent> eventHandler){
+		routeLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+	}
+
+	public GTFSLabel getRouteLabel() {
+		return routeLabel;
+	}
+
+	public void updateLabelName(){
+		routeLabel.setText("RouteID: " + routeID + "\n  Route Name: " + routeLongName);
+	}
 }
