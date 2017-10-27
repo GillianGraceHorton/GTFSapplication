@@ -1,6 +1,10 @@
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+
 import java.util.ArrayList;
 
 /**
@@ -8,9 +12,11 @@ import java.util.ArrayList;
  * @version 1.0
  * Created: 03-Oct-2017 4:57:27 PM
  */
-public class ListView extends TabPane implements Observer {
+public class ListView extends HBox implements Observer {
 
     private Subject dataStorage;
+    private TextArea details;
+    private TabPane tabPane;
     private Tab stopsTab;
     private Tab routesTab;
     private Tab tripsTab;
@@ -18,36 +24,53 @@ public class ListView extends TabPane implements Observer {
     private Tab routesContainingStopTab;
     private Tab routeWithStopsTab;
 
-    private TextArea stops;
-    private TextArea routes;
-    private TextArea trips;
-    private TextArea stopTimes;
+    private VBox stops;
+    private VBox routes;
+    private VBox trips;
+    private VBox stopTimes;
     private TextArea routesContainingStop;
     private TextArea routeWithStops;
 
+    private EventHandler<MouseEvent> labelClicked;
+
 
     public ListView() {
+        tabPane = new TabPane();
         stopsTab = new Tab("STOPS");
         routesTab = new Tab("ROUTES");
         tripsTab = new Tab("TRIPS");
         stopTimesTab = new Tab("STOP TIMES");
-        this.getTabs().addAll(stopsTab, routesTab, tripsTab, stopTimesTab);
+        tabPane.getTabs().addAll(stopsTab, routesTab, tripsTab, stopTimesTab);
+        details = new TextArea();
+        details.setEditable(false);
+        this.getChildren().addAll(tabPane, details);
 
-        stops = new TextArea();
-        stops.setEditable(false);
-        routes = new TextArea();
-        routes.setEditable(false);
-        trips = new TextArea();
-        trips.setEditable(false);
-        stopTimes = new TextArea();
-        stopTimes.setEditable(false);
 
-        stopsTab.setContent(stops);
-        routesTab.setContent(routes);
-        tripsTab.setContent(trips);
-        stopTimesTab.setContent(stopTimes);
+        stops = new VBox();
+        ScrollPane stopScroll = new ScrollPane(stops);
+        routes = new VBox();
+        ScrollPane routeScroll = new ScrollPane(routes);
+        trips = new VBox();
+        ScrollPane tripScroll = new ScrollPane(trips);
+        stopTimes = new VBox();
+        ScrollPane timeScroll = new ScrollPane(stopTimes);
 
-        this.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
+        stopsTab.setContent(stopScroll);
+        routesTab.setContent(routeScroll);
+        tripsTab.setContent(tripScroll);
+        stopTimesTab.setContent(timeScroll);
+
+        tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+
+        labelClicked = event -> {
+            details.clear();
+            GTFSLabel label = (GTFSLabel)event.getSource();
+            if(label.isStopTime()){
+                details.setText(((Trip)label.getItem()).tripListToString());
+            }else {
+                details.setText(label.getItem().toString());
+            }
+        };
     }
 
     /**
@@ -57,12 +80,9 @@ public class ListView extends TabPane implements Observer {
      * @param width  width of the object
      */
     public void adjustSizes(double height, double width) {
-        stops.setPrefWidth(width / 3);
-        stops.setPrefHeight(height);
-        routes.setPrefWidth(width / 3);
-        routes.setPrefHeight(height);
-        trips.setPrefWidth(width / 3);
-        trips.setPrefHeight(height);
+        tabPane.setPrefWidth(width*(2.0/3.0));
+        details.setPrefWidth(width/3.0);
+        details.setPrefHeight(height);
     }
 
     public void setSubject(Subject dataStorage) {
@@ -78,23 +98,32 @@ public class ListView extends TabPane implements Observer {
         clearDataTabs();
         for (Object item : addedItems) {
             if (item instanceof Stop) {
-                stops.setText(stops.getText() + "\n" + item.toString());
+                Stop stop = (Stop)item;
+                stop.updateLabelName();
+                stop.addEventHandler(labelClicked);
+                stops.getChildren().addAll(stop.getStopLabel(), new Separator());
             } else if (item instanceof Route) {
-                routes.setText(routes.getText() + "\n" + item.toString());
+                Route route = (Route)item;
+                route.updateLabelName();
+                route.addEventHandler(labelClicked);
+                routes.getChildren().addAll(route.getRouteLabel(), new Separator());
             } else if (item instanceof Trip) {
-                trips.setText(trips.getText() + "\n" + item.toString());
-				if (((Trip)item).getTripList() != null) {
-                    stopTimes.setText(stopTimes.getText() + "\n" + ((Trip) item).tripListToString());
+                Trip trip = (Trip)item;
+                trip.updateLabelName();
+                trip.addEventHandler(labelClicked);
+                trips.getChildren().addAll(trip.getTripLabel(), new Separator());
+                if (trip.getTripList() != null) {
+                    stopTimes.getChildren().addAll(trip.getTripListLabel(), new Separator());
                 }
             }
         }
     }
 
     private void clearDataTabs() {
-        stops.clear();
-        routes.clear();
-        trips.clear();
-        stopTimes.clear();
+        stops.getChildren().clear();
+        routes.getChildren().clear();
+        trips.getChildren().clear();
+        stopTimes.getChildren().clear();
     }
 
     public void displayRoutesContainingStop(ArrayList<Route> routes) {
@@ -102,7 +131,7 @@ public class ListView extends TabPane implements Observer {
             routesContainingStopTab = new Tab("Routes containing Stop");
             routesContainingStop = new TextArea();
             routesContainingStopTab.setContent(routesContainingStop);
-            this.getTabs().add(routesContainingStopTab);
+            tabPane.getTabs().add(routesContainingStopTab);
         }
         String toAdd = "";
         for (Route route : routes) {
@@ -118,7 +147,7 @@ public class ListView extends TabPane implements Observer {
             routeWithStopsTab = new Tab("Route With its Stops");
             routeWithStops = new TextArea();
             routeWithStopsTab.setContent(routeWithStops);
-            this.getTabs().add(routeWithStopsTab);
+            tabPane.getTabs().add(routeWithStopsTab);
         }
         routeWithStops.setText(route.stopsToString());
     }
