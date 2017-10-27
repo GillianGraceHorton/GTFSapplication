@@ -19,6 +19,6 @@ public interface Subject {
 	 */
     boolean detach(Observer observer);
 
-	void notifyObservers(ArrayList<Object> itemsToSend);
+	void notifyObservers();
 
 }

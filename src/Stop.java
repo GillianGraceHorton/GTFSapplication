@@ -7,13 +7,9 @@ import java.util.ArrayList;
  */
 public class Stop {
 
-	/* arrival time for the bus at given stop. to be set when the stop is part of a trip. */
-	private Time arrivalTime;
-
-	/* departure time for the bus at given stop. to be set when the stop is part of a trip. */
-	private Time departureTime;
-
-	/* gps location of the stop */
+	/**
+	 * gps location of the stop
+	 */
 	private Location location;
 
 	/**
@@ -30,6 +26,8 @@ public class Stop {
 	 * short description of stop and/or where it is located
 	 */
 	private String stopDescription;
+
+
 
 	private ArrayList<StopTime> stopTimes;
 
@@ -52,14 +50,6 @@ public class Stop {
 	    this.stopID = stopID;
     }
 
-	public void setArrivalTime(Time arrivalTime) {
-		this.arrivalTime = arrivalTime;
-	}
-
-	public void setDepartureTime(Time departureTime) {
-		this.departureTime =  departureTime;
-	}
-
 	public void setLocation(Location location) {
 		this.location = location;
 	}
@@ -68,20 +58,15 @@ public class Stop {
 		this.stopDescription = stopDescription;
 	}
 
-	public Time getArrivalTime() {
-		return arrivalTime;
-	}
-
-	public Time getDepartureTime() {
-		return departureTime;
-	}
-
 	public Location getLocation() {
 		return location;
 	}
 
 	public String getStopID() {
 		return stopID;
+	}
+	public ArrayList<StopTime> getStopTimes() {
+		return stopTimes;
 	}
 
 	public String getName() {
@@ -129,13 +114,11 @@ public class Stop {
 				"Name: " + getName() + "\n" +
 				"Description: " + getStopDescription() + "\n" +
 				"Latitude: " + location.getLat() + "\n" +
-				"Longitude: " + location.getLon() + "\n" +
-				"Arrival Time: " + getArrivalTime() + "\n" +
-				"Departure Time: " + getDepartureTime() + "\n";
+				"Longitude: " + location.getLon() + "\n";
 	}
 
 	public String toStringExport(){
-		return String.format("%s,%s,%s,%f,%f,%s,%s,",getStopID(),getName(),getStopDescription(),getLocation().getLat(),getLocation().getLon(),getArrivalTime(),getDepartureTime());
+		return String.format("%s,%s,%s,%f,%f,",getStopID(),getName(),getStopDescription(),getLocation().getLat(),getLocation().getLon());
 	}
 
 	/**
@@ -150,5 +133,12 @@ public class Stop {
 			result = false;
 		}
 		return result;
+	}
+
+	public void copyInstanceVariables(Stop stop){
+		this.name = stop.getName();
+		this.stopDescription = stop.getStopDescription();
+		this.location = stop.getLocation();
+		this.stopTimes = stop.getStopTimes();
 	}
 }

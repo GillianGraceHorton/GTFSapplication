@@ -23,7 +23,8 @@ class ListViewTest {
         DataStorage dataStorage = new DataStorage();
         dataStorage.attach(listView);
 
-        dataStorage.notifyObservers(updates);
+        dataStorage.updateFromFiles(updates);
+        dataStorage.notifyObservers();
         assertEquals(listView.getTabs().get(0).getContent().getAccessibleText(), "");
 
         updates.add(stop);
