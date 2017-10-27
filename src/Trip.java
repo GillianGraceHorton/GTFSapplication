@@ -16,7 +16,7 @@ public class Trip {
     private String directionID;
     private String tripHeadsign;
     private String serviceID;
-    private NavigableMap<Integer, Stop> tripList;
+    private NavigableMap<Integer, StopTime> tripList;
     private Route route;
     private String routeID;
     private String tripID;
@@ -71,6 +71,14 @@ public class Trip {
         this.serviceID = serviceID;
     }
 
+    public void setTripList(NavigableMap<Integer, StopTime> tripList) {
+        this.tripList = tripList;
+    }
+
+    public NavigableMap<Integer, StopTime> getTripList() {
+        return tripList;
+    }
+
     public String getShapeID() {
         return shapeID;
     }
@@ -110,26 +118,22 @@ public class Trip {
     /**
      * added the specified stop at the specified index in the tripList.
      *
-     * @param stop    stop to add to the tripList
-     * @param stopNum number indicating when the stop will be reached on the trip
+     * @param stopTime to be added to the tripList
      * @return true after the stop is added
      */
-    public boolean addStop(Stop stop, int stopNum) throws DuplicateRequestException {
+    public boolean addStopTime(StopTime stopTime) throws DuplicateRequestException {
         boolean result = false;
-        if (stop != null) {
-            if (!tripList.containsKey(stopNum)) {
-                tripList.put(stopNum, stop);
+        if (stopTime != null) {
+            if (!tripList.containsKey(stopTime.getStopSequence())) {
+                tripList.put(stopTime.getStopSequence(), stopTime);
                 result = true;
-            } else if(tripList.get(stopNum).isEmpty()) {
-                tripList.replace(stopNum, stop);
-            }else if(!tripList.get(stopNum).equals(stop)){
+            }else {
                 throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Trip: " +
                         tripID);
             }
-
         }
         if (route != null) {
-            route.addStop(stop, stopNum);
+            route.addStop(stopTime.getStop(), stopTime.getStopSequence());
         }
 
         return result;
@@ -144,19 +148,16 @@ public class Trip {
     public Stop getStop(String stopId) {
         Stop result = null;
         if (tripList != null && stopId != null) {
-            NavigableSet<Integer> nav = tripList.navigableKeySet();
-            for (Integer num : nav) {
-                if (tripList.get(num).getStopID().equalsIgnoreCase(stopId)) {
-                    result = tripList.get(num);
+            for (StopTime stopTime:tripList.values()) {
+                if(stopTime.getStopID().equals(stopId)){
+                    return stopTime.getStop();
                 }
             }
         }
         return result;
     }
 
-    public NavigableMap<Integer, Stop> getTripList() {
-        return tripList;
-    }
+
 
     /**
      * @return returns string of data stored in trip class
@@ -181,8 +182,9 @@ public class Trip {
         toReturn += "TripID: " + this.getTripID() + "\n" + "Stops: " + "\n";
         NavigableSet<Integer> nav = tripList.navigableKeySet();
         for (Integer num : nav) {
-            toReturn += "  " + num + " ID : " + tripList.get(num).getStopID() + ", " +
-                    "Arrival: " + tripList.get(num).getArrivalTime() +
+            toReturn += "  " + num + ".) StopID: " + tripList.get(num).getStopID() +
+                    ", Name: " + tripList.get(num).getStop().getName() +
+                    ", Arrival: " + tripList.get(num).getArrivalTime() +
                     ", Departure: " + tripList.get(num).getDepartureTime() + "\n";
         }
         return toReturn;
@@ -215,4 +217,13 @@ public class Trip {
         return result;
     }
 
+    public void copyInstanceVariables(Trip trip) {
+        this.shapeID = trip.getShapeID();
+        this.blockID = trip.getBlockID();
+        this.directionID = trip.getDirectionID();
+        this.tripHeadsign = trip.getTripHeadsign();
+        this.serviceID = trip.getServiceID();
+        this.route = trip.getRoute();
+        this.routeID = trip.getRouteID();
+    }
 }

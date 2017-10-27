@@ -5,8 +5,12 @@ public class StopTime {
     private String trip_id;
     private Time arrival_time;
     private Time departure_time;
+
+
+
+    private Stop stop;
     private String stop_id;
-    private String stop_sequence;
+    private int stop_sequence;
     private String stop_headsign;
     private String pickup_type;
     private String dropoff_type;
@@ -22,10 +26,17 @@ public class StopTime {
             throw new IllegalArgumentException("the arrival time must be less than or equal to the departure time");
         }
         this.stop_id = stop_id;
-        this.stop_sequence = stop_sequence;
+        this.stop_sequence = Integer.parseInt(stop_sequence);
         this.stop_headsign = stop_headsign;
         this.pickup_type = pickup_type;
         this.dropoff_type = drop_off_type;
+    }
+    public Stop getStop() {
+        return stop;
+    }
+
+    public void setStop(Stop stop) {
+        this.stop = stop;
     }
 
     public String getTripID() {
@@ -44,7 +55,7 @@ public class StopTime {
         return stop_id;
     }
 
-    public String getStopSequence() {
+    public int getStopSequence() {
         return stop_sequence;
     }
 
@@ -76,7 +87,7 @@ public class StopTime {
         this.stop_id = stop_id;
     }
 
-    public void setStopSequence(String stop_sequence) {
+    public void setStopSequence(int stop_sequence) {
         this.stop_sequence = stop_sequence;
     }
 
