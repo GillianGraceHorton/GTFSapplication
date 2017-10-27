@@ -135,11 +135,12 @@ class DataStorageTest {
 
         //tests that the notifyObservers method does not throw an exception when there are no
         // observers loaded yet
-        dataStorage.notifyObservers(updates);
+        dataStorage.updateFromFiles(updates);
+        dataStorage.notifyObservers();
 
         //tests that the correct update is passed to the observers
         dataStorage.setObservers(observers);
-        dataStorage.notifyObservers(updates);
+        dataStorage.notifyObservers();
         assertEquals(stop, ((BusMap)observer1).getStops().get(0));
         assertEquals(stop, ((BusMap)observer2).getStops().get(0));
     }
@@ -183,9 +184,18 @@ class DataStorageTest {
         trips.put(trip1.getTripID(), trip1);
         Trip trip2 = new Trip("2A", "", "","","","","");
         trips.put(trip2.getTripID(), trip2);
+        StopTime stopTime1 = new StopTime("1C", "", "",
+                "stop_0", "0", "", "", "");
         Stop stop1 = new Stop(0, 0, "", "1B", "");
+        stopTime1.setStop(stop1);
+        StopTime stopTime2 = new StopTime("2C", "", "",
+                "stop_0", "0", "", "", "");
         Stop stop2 = new Stop(0, 0, "", "2B", "");
+        stopTime2.setStop(stop2);
+        StopTime stopTime3 = new StopTime("3C", "", "",
+                "stop_0", "0", "", "", "");
         Stop stop3 = new Stop(0, 0, "", "3B", "");
+        stopTime3.setStop(stop3);
 
         //Test Case 1: tests that the method returns null when the collection of trips in
         // dataStorage is empty
@@ -197,10 +207,10 @@ class DataStorageTest {
         assertNull(dataStorage.searchTripsForStop("1B"));
 
         //Test Case 3: tests that the method return the correct collection of trips
-        trip1.addStop(stop1, 1);
-        trip1.addStop(stop2, 2);
-        trip1.addStop(stop3, 3);
-        trip2.addStop(stop1, 1);
+        trip1.addStopTime(stopTime1);
+        trip1.addStopTime(stopTime2);
+        trip1.addStopTime(stopTime3);
+        trip2.addStopTime(stopTime1);
         ArrayList<Trip> check = new ArrayList<>();
         check.add(trip1);
         check.add(trip2);

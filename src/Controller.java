@@ -168,13 +168,14 @@ public class Controller implements Initializable {
 
 	public void importStopFileHandler() {
 		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Import Stops");
 		File fileToAdd = fileChooser.showOpenDialog(null);
         System.out.println();
         try {
-			//fileManager.addFile(fileToAdd);
 			ArrayList<Object> stops = fileManager.parseStopFile(fileToAdd);
-			dataStorage.notifyObservers(stops);
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+            dataStorage.updateFromFiles(stops);
+            dataStorage.notifyObservers();
+            writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
 					"Successfully imported " + fileToAdd.getName() + ".");
 		}catch (Exception e){
 			System.out.println("TEST: importStopFilesHandler -> " + e);
@@ -184,46 +185,51 @@ public class Controller implements Initializable {
 
 	public void importStopTimesFileHandler() {
         FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Stop Times");
         File fileToAdd = fileChooser.showOpenDialog(null);
         try {
-            //fileManager.addFile(fileToAdd);
-            ArrayList<Object> stops = fileManager.parseStopTimesFile(fileToAdd);
-            dataStorage.notifyObservers(stops);
-            System.out.println("finished");
+            ArrayList<Object> stopTimes = fileManager.parseStopTimesFile(fileToAdd);
+			System.out.println("read from stopTimes correctly");
+			dataStorage.updateFromFiles(stopTimes);
+			System.out.println("updated dataStorage with stopTimes correctly");
+			dataStorage.notifyObservers();
+			System.out.println("printed stopTimes correctly");
 			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
 					"Successfully imported " + fileToAdd.getName() + ".");
         }catch (Exception e){
-            System.out.println("TEST: importFilesHandler -> " + e);
+            System.out.println("TEST: importStopTimesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
         }
 	}
 
 	public void importRouteFileHandler() {
         FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Routes");
         File fileToAdd = fileChooser.showOpenDialog(null);
         try {
-            //fileManager.addFile(fileToAdd);
-            ArrayList<Object> stops = fileManager.parseRouteFile(fileToAdd);
-            dataStorage.notifyObservers(stops);
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+            ArrayList<Object> routes = fileManager.parseRouteFile(fileToAdd);
+            dataStorage.updateFromFiles(routes);
+            dataStorage.notifyObservers();
+            writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
 					"Successfully imported " + fileToAdd.getName() + ".");
         }catch (Exception e){
-            System.out.println("TEST: importFilesHandler -> " + e);
+            System.out.println("TEST: importRouteFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
         }
 	}
 
 	public void importTripFileHandler() {
         FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Trips");
         File fileToAdd = fileChooser.showOpenDialog(null);
         try {
-            //fileManager.addFile(fileToAdd);
             ArrayList<Object> stops = fileManager.parseTripFile(fileToAdd);
-            dataStorage.notifyObservers(stops);
+            dataStorage.updateFromFiles(stops);
+            dataStorage.notifyObservers();
             writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
 					"Successfully imported " + fileToAdd.getName() + ".");
         }catch (Exception e){
-            System.out.println("TEST: importFilesHandler -> " + e);
+            System.out.println("TEST: importTripFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
         }
 	}

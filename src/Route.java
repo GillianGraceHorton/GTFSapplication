@@ -18,7 +18,7 @@ public class Route {
 	private String agencyID;
 	private String routeShortName;
 	private String routeLongName;
-	private String routeDescription;
+    private String routeDescription;
 	private String routeType;
 	private String routeUrl;
 	private String routeColor;
@@ -94,6 +94,14 @@ public class Route {
 	public Color getColor() {
 		return color;
 	}
+
+	public NavigableMap<Integer, Stop> getStops() {
+        return stops;
+    }
+
+    public void setStops(NavigableMap<Integer, Stop> stops) {
+        this.stops = stops;
+    }
 
 	public String getRouteID() {
 		return routeID;
@@ -203,4 +211,16 @@ public class Route {
         }
 		return toReturn;
 	}
+
+    public void copyInstanceVariables(Route route) {
+        this.color = route.getColor();
+        this.agencyID = route.getAgencyID();
+        this.routeShortName = route.getRouteShortName();
+        this.routeLongName = route.getRouteLongName();
+        this.routeDescription = route.getRouteDescription();
+        this.routeType = route.getRouteType();
+        this.routeUrl = route.getRouteUrl();
+        this.routeColor = route.getRouteColor();
+        this.routeTextColor = route.getRouteTextColor();
+    }
 }
