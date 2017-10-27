@@ -1,3 +1,7 @@
+import javafx.event.EventHandler;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+
 import java.util.ArrayList;
 
 /**
@@ -31,6 +35,9 @@ public class Stop {
 
 	private ArrayList<StopTime> stopTimes;
 
+	private GTFSLabel stopLabel;
+
+
 	/**
 	 * creates a stop object with information loaded from a stop file
 	 * @param lon longitude for the gps location of the stop
@@ -44,11 +51,17 @@ public class Stop {
 		this.name = name;
 		this.stopID = stopID;
 		this.stopDescription = stopDesc;
+		stopLabel = new GTFSLabel(this);
 	}
 
 	public Stop(String stopID){
-	    this.stopID = stopID;
-    }
+		this.stopID = stopID;
+		stopLabel = new GTFSLabel(this);
+	}
+
+	public void updateLabelName(){
+		stopLabel.setText("Stop Name: " + name + "\n  StopID: " + stopID);
+	}
 
 	public void setLocation(Location location) {
 		this.location = location;
@@ -77,11 +90,11 @@ public class Stop {
 		return stopDescription;
 	}
 
-    /**
-     * Adds stop times to the stops object
-     * @param stopTime - The stoptime to add
-     * @return boolean - if it was successfully added or not
-     */
+	/**
+	 * Adds stop times to the stops object
+	 * @param stopTime - The stoptime to add
+	 * @return boolean - if it was successfully added or not
+	 */
 	public boolean addStopTimes(StopTime stopTime){
 		if(stopTimes == null){
 			stopTimes = new ArrayList<StopTime>();
@@ -135,10 +148,24 @@ public class Stop {
 		return result;
 	}
 
-	public void copyInstanceVariables(Stop stop){
+
+	public void copyInstanceVariables(Stop stop)throws IllegalArgumentException{
+		if(!this.getStopID().equalsIgnoreCase(stop.getStopID())){
+			throw new IllegalArgumentException("This trip's ID: " + this.getStopID() + ", does " +
+					"not match the ID of the argument: " + stop.getStopID());
+		}
 		this.name = stop.getName();
 		this.stopDescription = stop.getStopDescription();
 		this.location = stop.getLocation();
 		this.stopTimes = stop.getStopTimes();
+		updateLabelName();
+	}
+
+	public void addEventHandler(EventHandler<MouseEvent> eventHandler){
+		stopLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+	}
+
+	public GTFSLabel getStopLabel() {
+		return stopLabel;
 	}
 }
