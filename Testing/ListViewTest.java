@@ -18,17 +18,7 @@ class ListViewTest {
      */
     @Test
     void update() {
-        ArrayList<Object> updates = new ArrayList<>();
-        Stop stop = new Stop(0, 0, "test",  "1A", "");
-        DataStorage dataStorage = new DataStorage();
-        dataStorage.attach(listView);
-
-        dataStorage.updateFromFiles(updates);
-        dataStorage.notifyObservers();
-        assertEquals(listView.getTabs().get(0).getContent().getAccessibleText(), "");
-
-        updates.add(stop);
-        assertEquals(listView.getTabs().get(0).getContent().getAccessibleText(), stop.toString());
+        //TODO
     }
 
 }
