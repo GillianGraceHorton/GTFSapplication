@@ -49,7 +49,7 @@ class TripTest {
         //set route for trip
         trip.setRoute(new Route("route_1", " ", " ", " ", " ",
                 " ", " ", " ", " "));
-        //Makes sure searching for stops before adding doesnt create error
+        //Makes sure searching for stops before adding doesn't create error
         assertEquals(trip.getStop("stop_3"), null);
 
         //Add stops

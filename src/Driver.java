@@ -10,6 +10,7 @@ import java.io.IOException;
  * Description: Main method, and starting point of the application initialization and execution.
  * Date Created: 10/3/2017 - 4:57:23 PM
  */
+@SuppressWarnings("ALL")
 public class Driver extends Application {
 
 	/**
@@ -33,7 +34,7 @@ public class Driver extends Application {
 			primaryStage.setScene(new Scene(mainPane));
 			primaryStage.show();
 		}catch (IOException e){
-			System.out.println(e);
+			throw new IOException("Error: transitc.fxml not found.\n" + e);
 		}
 	}
 

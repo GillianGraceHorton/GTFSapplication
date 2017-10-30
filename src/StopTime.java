@@ -3,6 +3,7 @@
  * Description:
  * Date Created: 10/3/2017
  */
+@SuppressWarnings("SpellCheckingInspection")
 public class StopTime {
 
     private String trip_id;
@@ -12,8 +13,10 @@ public class StopTime {
     private Stop stop;
     private String stop_id;
     private int stop_sequence;
+    @SuppressWarnings("SpellCheckingInspection")
     private String stop_headsign;
     private String pickup_type;
+    @SuppressWarnings("SpellCheckingInspection")
     private String dropoff_type;
 
     /**
@@ -28,6 +31,7 @@ public class StopTime {
      * @param pickup_type
      * @param drop_off_type
      */
+    @SuppressWarnings("SpellCheckingInspection")
     public StopTime(String trip_id, String arrival_time, String departure_time, String stop_id,
                     String stop_sequence, String stop_headsign, String pickup_type, String drop_off_type) {
 
@@ -112,6 +116,7 @@ public class StopTime {
      * Description:
      * @return
      */
+    @SuppressWarnings("SpellCheckingInspection")
     public String getStopHeadsign() {
         return stop_headsign;
     }
@@ -130,6 +135,7 @@ public class StopTime {
      * Description:
      * @return
      */
+    @SuppressWarnings("SpellCheckingInspection")
     public String getDropoffType() {
         return dropoff_type;
     }
@@ -184,6 +190,7 @@ public class StopTime {
      * Description:
      * @param stop_headsign
      */
+    @SuppressWarnings("SpellCheckingInspection")
     public void setStopHeadsign(String stop_headsign) {
         this.stop_headsign = stop_headsign;
     }
@@ -202,6 +209,7 @@ public class StopTime {
      * Description:
      * @param dropoff_type
      */
+    @SuppressWarnings("SpellCheckingInspection")
     public void setDropoffType(String dropoff_type) {
         this.dropoff_type = dropoff_type;
     }
@@ -211,6 +219,7 @@ public class StopTime {
      * Description: Returns formatted String used for GUI
      * @return String - formatted string used for GUI
      */
+    @SuppressWarnings("SpellCheckingInspection")
     public String toString(){
         return  "TripID: " + getTripID() + "\n" +
                 "StopID: " + getStopID() + "\n" +

@@ -65,7 +65,7 @@ public class Route {
 	 * Description:
 	 * @param stops
 	 */
-	public void Route(Collection<Stop> stops){
+	public Route(Collection<Stop> stops){
 
 	}
 
@@ -337,17 +337,16 @@ public class Route {
 	 * @return String -
 	 */
 	public String stopsToString() {
-		String toReturn = "";
-		toReturn += toString() + "Stops: \n";
+		StringBuilder toReturn = new StringBuilder();
+		toReturn.append(toString()).append("Stops: \n");
 		if(stops.size() != 0){
-			toReturn += "    No stops loaded yet";
+			toReturn.append("    No stops loaded yet");
 		}else {
 			for (int num : stops.keySet()) {
-				toReturn += "    " + num + ".) StopID: " + stops.get(num).getStopID() + " " +
-						"StopName: " + stops.get(num).getName() + "\n";
+				toReturn.append("    ").append(num).append(".) StopID: ").append(stops.get(num).getStopID()).append(" ").append("StopName: ").append(stops.get(num).getName()).append("\n");
 			}
 		}
-		return toReturn;
+		return toReturn.toString();
 	}
 
 	/**

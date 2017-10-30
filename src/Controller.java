@@ -32,7 +32,7 @@ public class Controller implements Initializable {
 	 * @param location
 	 * @param resources
 	 */
-	public void initialize(URL location, ResourceBundle resources){
+	public void initialize(URL location, ResourceBundle resources) {
 		try {
 			fileManager = new FileManager();
 			gtfsListView = new GTFSListView();
@@ -49,7 +49,6 @@ public class Controller implements Initializable {
             gtfsListView.setPrefWidth(mainVBox.getPrefWidth());
             gtfsListView.adjustSizes(mainVBox.getPrefHeight(), mainVBox.getPrefWidth());
 		}catch (Exception e){
-			System.out.println(e);
 			writeErrorMessage(e.getMessage());
 		}
 	}
@@ -76,14 +75,14 @@ public class Controller implements Initializable {
 
 	/**
 	 * Author: Joseph Heinz - heinzja@msoe.edu
-	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 * Description: creates an exports directory in the user chosen directory, with the user chosen file name
 	 */
 	public void exportStopFileHandler(){
 		FileChooser fileChooser = new FileChooser();
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
 		try {
 			fileManager.exportStopFile(exportDir, dataStorage);
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
+			writeInformationMessage("Export Successful",
 					"Successfully exported StopsFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
@@ -92,14 +91,14 @@ public class Controller implements Initializable {
 
 	/**
 	 * Author: Joseph Heinz - heinzja@msoe.edu
-	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 * Description: creates an exports directory in the user chosen directory, with the user chosen file name
 	 */
 	public void exportStopTimesFileHandler(){
 		FileChooser fileChooser = new FileChooser();
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
 		try {
 			fileManager.exportStopTimesFile(exportDir, dataStorage);
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
+			writeInformationMessage("Export Successful",
 					"Successfully exported StopTimesFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
@@ -108,14 +107,14 @@ public class Controller implements Initializable {
 
 	/**
 	 * Author: Joseph Heinz - heinzja@msoe.edu
-	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 * Description: creates an exports directory in the user chosen directory, with the user chosen file name
 	 */
 	public void exportRouteFileHandler(){
 		FileChooser fileChooser = new FileChooser();
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
 		try {
 			fileManager.exportRouteFile(exportDir, dataStorage);
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
+			writeInformationMessage("Export Successful",
 					"Successfully exported RoutesFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
@@ -131,7 +130,7 @@ public class Controller implements Initializable {
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
 		try {
 			fileManager.exportTripFile(exportDir, dataStorage);
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
+			writeInformationMessage("Export Successful",
 					"Successfully exported TripsFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
@@ -183,7 +182,7 @@ public class Controller implements Initializable {
             stops.addAll(fileManager.parseStopFile(fileToAdd));
             dataStorage.updateFromFiles(stops);
             dataStorage.notifyObservers();
-            writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+            writeInformationMessage("Import Successful",
 					"Successfully imported " + fileToAdd.getName() + ".");
 		}catch (Exception e){
 			System.out.println("TEST: importStopFilesHandler -> " + e);
@@ -203,7 +202,7 @@ public class Controller implements Initializable {
 			System.out.println("updated dataStorage with stopTimes correctly");
 			dataStorage.notifyObservers();
 			System.out.println("printed stopTimes correctly");
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+			writeInformationMessage("Import Successful",
 					"Successfully imported " + fileToAdd.getName() + ".");
         }catch (Exception e){
             System.out.println("TEST: importStopTimesHandler -> " + e);
@@ -220,7 +219,7 @@ public class Controller implements Initializable {
             routes.addAll(fileManager.parseRouteFile(fileToAdd));
             dataStorage.updateFromFiles(routes);
             dataStorage.notifyObservers();
-            writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+            writeInformationMessage("Import Successful",
 					"Successfully imported " + fileToAdd.getName() + ".");
         }catch (Exception e){
             System.out.println("TEST: importRouteFilesHandler -> " + e);
@@ -237,7 +236,7 @@ public class Controller implements Initializable {
             stops.addAll(fileManager.parseTripFile(fileToAdd));
             dataStorage.updateFromFiles(stops);
             dataStorage.notifyObservers();
-            writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
+            writeInformationMessage("Import Successful",
 					"Successfully imported " + fileToAdd.getName() + ".");
         }catch (Exception e){
             System.out.println("TEST: importTripFilesHandler -> " + e);
@@ -252,8 +251,8 @@ public class Controller implements Initializable {
 		alert.showAndWait();
 	}
 
-	private void writeInformationMessage(Alert.AlertType alertType, String header, String context) {
-		Alert alert = new Alert(alertType);
+	private void writeInformationMessage(String header, String context) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setHeaderText(header);
 		alert.setContentText(context);
 		alert.showAndWait();

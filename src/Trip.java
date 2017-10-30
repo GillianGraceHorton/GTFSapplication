@@ -1,8 +1,4 @@
 import com.sun.jdi.request.DuplicateRequestException;
-import javafx.event.EventHandler;
-import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
-
 import java.util.NavigableMap;
 import java.util.NavigableSet;
 import java.util.TreeMap;
@@ -12,6 +8,7 @@ import java.util.TreeMap;
  * @version 1.0
  * @created 03-Oct-2017 4:57:35 PM
  */
+@SuppressWarnings("ALL")
 public class Trip {
 
     private String shapeID;
@@ -190,16 +187,13 @@ public class Trip {
     }
 
     public String tripListToString() {
-        String toReturn = "";
-        toReturn += "TripID: " + this.getTripID() + "\n" + "Stops: " + "\n";
+        StringBuilder toReturn = new StringBuilder();
+        toReturn.append("TripID: ").append(this.getTripID()).append("\n").append("Stops: ").append("\n");
         NavigableSet<Integer> nav = tripList.navigableKeySet();
         for (Integer num : nav) {
-            toReturn += "  " + num + ".) StopID: " + tripList.get(num).getStopID() +
-                    ", Name: " + tripList.get(num).getStop().getName() +
-                    ", Arrival: " + tripList.get(num).getArrivalTime() +
-                    ", Departure: " + tripList.get(num).getDepartureTime() + "\n";
+            toReturn.append("  ").append(num).append(".) StopID: ").append(tripList.get(num).getStopID()).append(", Name: ").append(tripList.get(num).getStop().getName()).append(", Arrival: ").append(tripList.get(num).getArrivalTime()).append(", Departure: ").append(tripList.get(num).getDepartureTime()).append("\n");
         }
-        return toReturn;
+        return toReturn.toString();
     }
 
     /**

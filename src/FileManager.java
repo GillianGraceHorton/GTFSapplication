@@ -165,7 +165,7 @@ public class FileManager {
             if (!firstLine.equals(validFileTypes.get("stop_times"))) {
                 throw new InputMismatchException("Error: Invalid StopTimes File format for: " + file.getName());
             }
-            String line, trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign,
+            @SuppressWarnings("SpellCheckingInspection") String line, trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign,
                     pickup_type, drop_off_type;
             //reads each of the lines in the stop_times file, creates a new stopTimes object from
             // the information, and adds it to the toReturn ArrayList of stopTime objects.
@@ -210,10 +210,10 @@ public class FileManager {
         String feedInfoFormat = "feed_publisher_name,feed_publisher_url,feed_lang";
         String routesFormat = "route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color";
         String shapesFormat = "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence";
-        String stopTimesFormat = "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type";
+        @SuppressWarnings("SpellCheckingInspection") String stopTimesFormat = "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type";
         String stopsFormat = "stop_id,stop_name,stop_desc,stop_lat,stop_lon";
         String transfersFormat = "from_stop_id,to_stop_id,transfer_type";
-        String tripsFormat = "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id";
+        @SuppressWarnings("SpellCheckingInspection") String tripsFormat = "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id";
 
         validFileTypes.put("agency", agencyFormat);
         validFileTypes.put("calender", calenderFormat);
@@ -230,7 +230,7 @@ public class FileManager {
 
     /**
      * Author: Joseph Heinz - heinzja@msoe.edu
-     * Description: exports stops to user choosen directory
+     * Description: exports stops to user chosen directory
      * @param exportName - File containing the desired directory and name of the file to export.
      * @param ds - DataStorage object which holds all stored Stop objects.
      * @throws IOException Unable to create file for export
@@ -365,11 +365,11 @@ public class FileManager {
      * @param errors
      */
     private void errorsInParsing(String fileName, ArrayList<String> errors){
-        String warning = "";
+        StringBuilder warning = new StringBuilder();
         for (String error:errors) {
-            warning += error;
+            warning.append(error);
         }
-        JOptionPane.showMessageDialog(null, warning, "Errors from parsing the file: " + fileName,
+        JOptionPane.showMessageDialog(null, warning.toString(), "Errors from parsing the file: " + fileName,
                 JOptionPane.ERROR_MESSAGE);
     }
 }

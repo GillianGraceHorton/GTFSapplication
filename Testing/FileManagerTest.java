@@ -15,9 +15,7 @@ class FileManagerTest {
         FileManager fm = new FileManager();
         File testFile = new File("TEST_FILENAME");
         //TestCase1: checks to see if parseStopFile throws correct exception type for invalid file
-        assertThrows(FileNotFoundException.class, () -> {
-            fm.parseStopFile(testFile);
-        });
+        assertThrows(FileNotFoundException.class, () -> fm.parseStopFile(testFile));
     }
 
     @Test

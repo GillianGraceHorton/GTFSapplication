@@ -23,10 +23,10 @@ public class GTFSListView extends HBox implements Observer {
     private Tab routesContainingStopTab;
     private Tab routeWithStopsTab;
 
-    private ListView stops;
-    private ListView routes;
-    private ListView trips;
-    private ListView stopTimes;
+    private ListView<Stop> stops;
+    private ListView<Route> routes;
+    private ListView<Trip> trips;
+    private ListView<Trip> stopTimes;
     private TextArea routesContainingStop;
     private TextArea routeWithStops;
 
@@ -49,10 +49,10 @@ public class GTFSListView extends HBox implements Observer {
         this.getChildren().addAll(tabPane, details);
 
 
-        stops = new ListView();
-        routes = new ListView();
-        trips = new ListView();
-        stopTimes = new ListView();
+        stops = new ListView<>();
+        routes = new ListView<>();
+        trips = new ListView<>();
+        stopTimes = new ListView<>();
 
         stopsTab.setContent(stops);
         routesTab.setContent(routes);
@@ -143,12 +143,12 @@ public class GTFSListView extends HBox implements Observer {
             routesContainingStopTab.setContent(routesContainingStop);
             tabPane.getTabs().add(routesContainingStopTab);
         }
-        String toAdd = "";
+        StringBuilder toAdd = new StringBuilder();
         for (Route route : routes) {
-            toAdd += "RouteID: " + route.getRouteID() + ", Route Name: " + route
-                    .getRouteLongName() + "\n";
+            toAdd.append("RouteID: ").append(route.getRouteID()).append(", Route Name: ").append(route
+                    .getRouteLongName()).append("\n");
         }
-        routesContainingStop.setText(toAdd);
+        routesContainingStop.setText(toAdd.toString());
         routesContainingStop.setEditable(false);
     }
 

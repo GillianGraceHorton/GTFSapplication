@@ -104,17 +104,18 @@ public class Stop {
 	/**
 	 * Author:
 	 * Description: Adds stop times to the stops object
-	 * @param stopTime - The stoptime to add
+	 * @param stopTime - The stopTime to add
 	 * @return boolean - if it was successfully added or not
 	 */
 	public boolean addStopTimes(StopTime stopTime){
+		boolean result = false;
 		if(stopTimes == null){
-			stopTimes = new ArrayList<StopTime>();
+			stopTimes = new ArrayList<>();
 		}
 		if(stopTime != null) {
-			return stopTimes.add(stopTime);
+			result = stopTimes.add(stopTime);
 		}
-		return false;
+		return result;
 	}
 
 	/**

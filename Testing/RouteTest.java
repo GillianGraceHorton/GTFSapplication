@@ -13,7 +13,7 @@ class RouteTest {
     }
 
     /**
-     * Checks if a stop can be ucessfully added
+     * Checks if a stop can be successfully added
      * :author: hoffmanjc
      */
     @Test
@@ -34,7 +34,7 @@ class RouteTest {
      */
     @Test
     void searchRoute() {
-        //Makes sure searching for stops before adding doesnt create error
+        //Makes sure searching for stops before adding doesn't create error
         assertEquals(route.searchRoute("stop_3"), null);
 
         //Add stops
