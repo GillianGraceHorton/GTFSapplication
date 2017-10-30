@@ -132,15 +132,14 @@ public class Trip {
             if (!tripList.containsKey(stopTime.getStopSequence())) {
                 tripList.put(stopTime.getStopSequence(), stopTime);
                 result = true;
-            }else {
-                throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Trip: " +
-                        tripID);
+            }
+            else {
+                throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Trip: " + tripID);
             }
         }
         if (route != null) {
             route.addStop(stopTime.getStop(), stopTime.getStopSequence());
         }
-
         return result;
     }
 

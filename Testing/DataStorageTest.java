@@ -126,12 +126,13 @@ class DataStorageTest {
     @Test
     void notifyObservers() {
         ArrayList<Observer> observers = new ArrayList<>();
-        Observer observer1 = new BusMap();
-        observers.add(observer1);
-        Observer observer2 = new BusMap();
-        observers.add(observer2);
-        LinkedList<Object> updates = new LinkedList<>();
+        ArrayList<Stop> updates = new ArrayList<>();
         Stop stop = new Stop(0, 0, "test",  "1A", "");
+        Observer observer1 = new BusMap();
+        Observer observer2 = new BusMap();
+
+        observers.add(observer1);
+        observers.add(observer2);
         updates.add(stop);
 
         //tests that the notifyObservers method does not throw an exception when there are no

@@ -54,7 +54,7 @@ public class DataStorage implements Subject {
      * @throws KeyAlreadyExistsException - if one of the items from updates has an ID that matches
      * one that is already in data structures and is not a placeholder.
      */
-    public void updateFromFiles(LinkedList<Object> updates) throws KeyAlreadyExistsException{
+    public void updateFromFiles(ArrayList updates) throws KeyAlreadyExistsException{
         for (Object item : updates) {
             if (item instanceof Stop) {
                 Stop thisStop = (Stop) item;
@@ -253,18 +253,17 @@ public class DataStorage implements Subject {
      * @return an Collection made of an ArrayList containing all the trips that contains
      *          the Stop with the specified stopID or null if no such trip exists.
      */
-    public Collection<Trip> searchTripsForStop(String stopID) {
-        ArrayList<Trip> tripsToReturn = new ArrayList<>();
+    public Collection<Trip> searchTripsForStop(String stopID) throws NoSuchElementException {
+        NavigableSet<String> navSet;
+        ArrayList<Trip> tripsToReturn = null;
         if (trips != null) {
-            NavigableSet<String> nav = trips.navigableKeySet();
-            for (String id : nav) {
-                if (trips.get(id).getStop(stopID) != null) {
-                    tripsToReturn.add(trips.get(id));
-                }
+            navSet = trips.navigableKeySet();
+            tripsToReturn = new ArrayList<>();
+            for (String id : navSet) {
+                final Trip tmp = trips.get(id);
+                if (tmp.getStop(stopID) != null) { tripsToReturn.add(tmp); }
             }
-        }
-        if (tripsToReturn.size() == 0) {
-            return null;
+            if (tripsToReturn.size() == 0) { throw new NoSuchElementException("Error: No Route Contains the StopID: " + stopID); }
         }
         return tripsToReturn;
     }
@@ -277,17 +276,16 @@ public class DataStorage implements Subject {
      * stopID or null if no such route exists.
      */
     public ArrayList<Route> searchRoutesForStop(String stopID) {
-        ArrayList<Route> routesToReturn = new ArrayList<>();
+        ArrayList<Route> routesToReturn = null;
+        NavigableSet<String> navSet;
         if (routes != null) {
-            NavigableSet<String> nav = routes.navigableKeySet();
-            for (String id : nav) {
-                if (routes.get(id).searchRoute(stopID) != null) {
-                    routesToReturn.add(routes.get(id));
-                }
+            navSet = routes.navigableKeySet();
+            routesToReturn = new ArrayList<>();
+            for (String id : navSet) {
+                final Route tmp = routes.get(id);
+                if (tmp.searchRoute(stopID) != null) { routesToReturn.add(tmp); }
             }
-        }
-        if (routesToReturn.size() == 0) {
-            return null;
+            if (routesToReturn.size() == 0) { routesToReturn = null; }
         }
         return routesToReturn;
     }
