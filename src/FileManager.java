@@ -1,21 +1,17 @@
-
-
 import javax.swing.*;
 import java.io.*;
-import java.security.InvalidParameterException;
 import java.util.*;
 
 /**
- * @author heinzja
- * @version 1.0
- * Created: 03-Oct-2017 4:57:25 PM
+ * @author Joseph Heinz - heinzja@msoe.edu
+ * Created: 10/3/2017 4:57:25 PM
  */
 public class FileManager {
     private NavigableMap<String, String> validFileTypes;
 
     /**
      * @author Joseph Heinz - heinzja@msoe.edu
-     * Description: initializes validFileList and validFileTypes
+     * Description: initializes FileManager and validFileTypes
      */
     public FileManager() {
         validFileTypes = new TreeMap<>();
@@ -23,8 +19,7 @@ public class FileManager {
     }
 
     /**
-     * parses the information from a file containing stop objects.
-     *
+     * Description: Parses information from a Stop file.
      * @param file containing stop objects
      * @return Array containing all the stop objects
      * @author hortong
@@ -61,15 +56,13 @@ public class FileManager {
                 errorsInParsing(file.getName(), errors);
             }
         } catch (FileNotFoundException e) {
-            throw new FileNotFoundException("ERROR: The following file could not be found: " + file.getName() + "\n"
-                    + e.getMessage());
+            throw new FileNotFoundException("ERROR: " + file.getName() + " was not found.\n" + e.getMessage());
         }
         return toReturn;
     }
 
     /**
-     * parses the information from a file containing route objects.
-     *
+     * Description: Parses information from a Route file.
      * @param file containing route objects
      * @return Array containing all the route objects
      * @author hortong
@@ -83,7 +76,7 @@ public class FileManager {
             Scanner scanner = new Scanner(file);
             String firstLine = scanner.nextLine();
             if (!firstLine.equals(validFileTypes.get("routes"))) {
-                throw new InputMismatchException("Error: Invalid file Route file format for: " + file.getName());
+                throw new InputMismatchException("Error: Invalid Route file format for: " + file.getName());
             }
             String line;
             while (scanner.hasNext()) {
@@ -111,13 +104,13 @@ public class FileManager {
                 errorsInParsing(file.getName(), errors);
             }
         } catch (FileNotFoundException e) {
-            throw new FileNotFoundException("ERROR: The following file could not be found: " + file.getName() + "\n"
-                    + e.getMessage());
+            throw new FileNotFoundException("ERROR: " + file.getName() + " was not found.\n" + e.getMessage());
         }
         return toReturn;
     }
 
     /**
+     * Description: Parses information from a Trip file.
      * @param file - file to parse for Trip data
      * @return - returns ArrayList full of parsed data from trip file.
      * @author hortong
@@ -155,14 +148,21 @@ public class FileManager {
                 errorsInParsing(file.getName(), errors);
             }
         } catch (FileNotFoundException e) {
-            throw new FileNotFoundException("ERROR: The following file could not be found: " + file.getName() + "\n"
-                    + e.getMessage());
+            throw new FileNotFoundException("ERROR: " + file.getName() + " was not found.\n" + e.getMessage());
         }
         return toReturn;
     }
 
-    public ArrayList<Object> parseStopTimesFile(File file)  throws InputMismatchException, FileNotFoundException, NullPointerException {
-        ArrayList<Object> toReturn = new ArrayList<>();
+    /**
+     * Description: Parses information from a StopTimes file.
+     * @param file - the file to parse for data
+     * @return ArrayLists of StopTimes objects
+     * @throws InputMismatchException Invalid StopTimes File format.
+     * @throws FileNotFoundException File was not found
+     * @throws NullPointerException Invalid StopTimes File Format at a specific line
+     */
+    public ArrayList<StopTime> parseStopTimesFile(File file)  throws InputMismatchException, FileNotFoundException, NullPointerException {
+        ArrayList<StopTime> toReturn = new ArrayList<>();
         ArrayList<String> errors = new ArrayList<>();
         try {
             Scanner scanner = new Scanner(file);
@@ -201,8 +201,7 @@ public class FileManager {
                 errorsInParsing(file.getName(), errors);
             }
         } catch (FileNotFoundException e) {
-            throw new FileNotFoundException("ERROR: The following file could not be found: " + file.getName() + "\n"
-                    + e.getMessage());
+            throw new FileNotFoundException("ERROR: " + file.getName() + " was not found.\n" + e.getMessage());
         }
         return toReturn;
     }
@@ -239,10 +238,11 @@ public class FileManager {
     }
 
     /**
-     * @param exportName the file containing the desired directory and name of the file to export
-     * @param ds         the DataStorage object which holds all the stops
-     * @author Joseph Heinz - heinzja@msoe.edu
+     * Author: Joseph Heinz - heinzja@msoe.edu
      * Description: exports stops to user choosen directory
+     * @param exportName - File containing the desired directory and name of the file to export.
+     * @param ds - DataStorage object which holds all stored Stop objects.
+     * @throws IOException Unable to create file for export
      */
     public void exportStopFile(File exportName, DataStorage ds) throws IOException {
         File exportDir = new File(exportName.getParent(), "exports");
@@ -270,10 +270,11 @@ public class FileManager {
     }
 
     /**
-     * @param exportName the file containing the desired directory and name of the file to export
-     * @param ds         the DataStorage object which holds all the routes
-     * @author Joseph Heinz - heinzja@msoe.edu
-     * Description: exports routes to user choosen directory
+     * Author: Joseph Heinz - heinzja@msoe.edu
+     * Description: Creates Route file in user chosen directory
+     * @param exportName - File containing the desired directory and name of the file to export
+     * @param ds - DataStorage object which holds all stored Route objects
+     * @throws IOException Unable to create file for export
      */
     public void exportRouteFile(File exportName, DataStorage ds) throws IOException {
         File exportDir = new File(exportName.getParent(), "exports");
@@ -302,10 +303,11 @@ public class FileManager {
     }
 
     /**
-     * @param exportName the file containing the desired directory and name of the file to export
-     * @param ds         the DataStorage object which holds all the trips
-     * @author Joseph Heinz - heinzja@msoe.edu
-     * Description: exports trips to user choosen directory
+     * Author: Joseph Heinz - heinzja@msoe.edu
+     * Description: Creates Trip file in user chosen directory
+     * @param exportName - File containing the desired directory and name of the file to export
+     * @param ds - DataStorage object which holds all stored Trip objects
+     * @throws IOException Unable to create file for export
      */
     public void exportTripFile(File exportName, DataStorage ds) throws IOException {
         File exportDir = new File(exportName.getParent(), "exports");
@@ -318,7 +320,6 @@ public class FileManager {
             if (!exportFile.exists()) {
                 exportFile.createNewFile();
             }
-
             PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
             pw.println(validFileTypes.get("trips"));
             NavigableMap<String, Trip> trips = ds.getTrips();
@@ -334,10 +335,11 @@ public class FileManager {
     }
 
     /**
-     * @param exportName the file containing the desired directory and name of the file to export
-     * @param ds         the DataStorage object which holds all the stop times
-     * @author Joseph Heinz - heinzja@msoe.edu
-     * Description: exports all stored stop times to user choosen directory
+     * Author: Joseph Heinz - heinzja@msoe.edu
+     * Description: Creates StopTimes file in user chosen directory
+     * @param exportName - File containing the desired directory and name of the file to export
+     * @param ds - DataStorage object which holds all stored StopTime objects
+     * @throws IOException Unable to create file for export
      */
     public void exportStopTimesFile(File exportName, DataStorage ds) throws IOException {
         File exportDir = new File(exportName.getParent(), "exports");
