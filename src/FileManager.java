@@ -10,7 +10,7 @@ import java.util.*;
  * Created: 10/3/2017 4:57:25 PM
  */
 public class FileManager {
-    private NavigableMap<String, String> validFileTypes;
+    public NavigableMap<String, String> validFileTypes;
 
     /**
      * @author Joseph Heinz - heinzja@msoe.edu
