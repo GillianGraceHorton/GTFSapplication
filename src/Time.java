@@ -36,7 +36,7 @@
      * Description: sets hour location of time
      */
     public void setHour(int hour) {
-        if(hour>=24 || hour < 0){
+        if(hour>=48 || hour < 0){
             throw new NumberFormatException();
         }
         this.hour = hour;

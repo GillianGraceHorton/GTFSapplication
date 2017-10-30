@@ -2,6 +2,7 @@
 
 import javax.swing.*;
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.security.InvalidParameterException;
 import java.util.*;
@@ -30,8 +31,8 @@ public class FileManager {
      * @return Array containing all the stop objects
      * @author hortong
      */
-    public ArrayList<Object> parseStopFile(File file) throws Exception {
-        ArrayList<Object> toReturn = new ArrayList<>();
+    public LinkedList<Object> parseStopFile(File file) throws Exception {
+        LinkedList<Object> toReturn = new LinkedList<>();
         ArrayList<String> errors = new ArrayList<>();
         try {
             String stop_id, stop_desc, stop_name;
@@ -77,8 +78,8 @@ public class FileManager {
      * @return Array containing all the route objects
      * @author hortong
      */
-    public ArrayList<Object> parseRouteFile(File file) throws Exception {
-        ArrayList<Object> toReturn = new ArrayList<>();
+    public LinkedList<Object> parseRouteFile(File file) throws Exception {
+        LinkedList<Object> toReturn = new LinkedList<>();
         ArrayList<String> errors = new ArrayList<>();
         try {
             String route_id, agency_id, route_short_name, route_long_name;
@@ -127,8 +128,8 @@ public class FileManager {
      * @return - returns ArrayList full of parsed data from trip file.
      * @author hortong
      */
-    public ArrayList<Object> parseTripFile(File file) throws Exception {
-        ArrayList<Object> toReturn = new ArrayList<>();
+    public LinkedList<Object> parseTripFile(File file) throws Exception {
+        LinkedList<Object> toReturn = new LinkedList<>();
         ArrayList<String> errors = new ArrayList<>();
         try {
             String route_id, service_id, trip_id, trip_head_sign, direction_id, block_id, shape_id;
@@ -168,9 +169,8 @@ public class FileManager {
         return toReturn;
     }
 
-    public ArrayList<Object> parseStopTimesFile(File file) throws Exception {
-        ArrayList<Object> toReturn = new ArrayList<>();
-        ArrayList<String> errors = new ArrayList<>();
+    public LinkedList<Object> parseStopTimesFile(File file) throws Exception {
+        LinkedList<Object> toReturn = new LinkedList<>();
         try {
             Scanner scanner = new Scanner(file);
             String firstLine = scanner.nextLine();
@@ -202,18 +202,18 @@ public class FileManager {
                     // ArrayList of error messages then continues going through the lines in the
                     // file.
                 } catch (IllegalArgumentException e) {
-                    errors.add("Error at line: " + line + "\n\t" + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n\t" + e
+                            .getMessage());
                 }catch (NullPointerException e) {
                     throw new NullPointerException("ERROR: Invalid StopTimes File Format at the " +
                             "following line:\n    " + line);
                 }
             }
-            if(!errors.isEmpty()){
-                errorsInParsing(file.getName(), errors);
-            }
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("ERROR: The following file could not be found: " +
                     file.getName() + "\n" + e.getMessage());
+        }catch(StackOverflowError e){
+            System.out.println("here");
         }
         return toReturn;
     }

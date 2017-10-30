@@ -2,6 +2,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.NavigableMap;
 import java.util.TreeMap;
 
@@ -129,7 +130,7 @@ class DataStorageTest {
         observers.add(observer1);
         Observer observer2 = new BusMap();
         observers.add(observer2);
-        ArrayList<Object> updates = new ArrayList<>();
+        LinkedList<Object> updates = new LinkedList<>();
         Stop stop = new Stop(0, 0, "test",  "1A", "");
         updates.add(stop);
 

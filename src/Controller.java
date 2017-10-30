@@ -9,6 +9,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -172,7 +173,7 @@ public class Controller implements Initializable {
 		File fileToAdd = fileChooser.showOpenDialog(null);
         System.out.println();
         try {
-			ArrayList<Object> stops = fileManager.parseStopFile(fileToAdd);
+			LinkedList<Object> stops = fileManager.parseStopFile(fileToAdd);
             dataStorage.updateFromFiles(stops);
             dataStorage.notifyObservers();
             writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
@@ -188,7 +189,7 @@ public class Controller implements Initializable {
         fileChooser.setTitle("Import Stop Times");
         File fileToAdd = fileChooser.showOpenDialog(null);
         try {
-            ArrayList<Object> stopTimes = fileManager.parseStopTimesFile(fileToAdd);
+            LinkedList<Object> stopTimes = fileManager.parseStopTimesFile(fileToAdd);
 			System.out.println("read from stopTimes correctly");
 			dataStorage.updateFromFiles(stopTimes);
 			System.out.println("updated dataStorage with stopTimes correctly");
@@ -207,7 +208,7 @@ public class Controller implements Initializable {
         fileChooser.setTitle("Import Routes");
         File fileToAdd = fileChooser.showOpenDialog(null);
         try {
-            ArrayList<Object> routes = fileManager.parseRouteFile(fileToAdd);
+            LinkedList<Object> routes = fileManager.parseRouteFile(fileToAdd);
             dataStorage.updateFromFiles(routes);
             dataStorage.notifyObservers();
             writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
@@ -223,7 +224,7 @@ public class Controller implements Initializable {
         fileChooser.setTitle("Import Trips");
         File fileToAdd = fileChooser.showOpenDialog(null);
         try {
-            ArrayList<Object> stops = fileManager.parseTripFile(fileToAdd);
+            LinkedList<Object> stops = fileManager.parseTripFile(fileToAdd);
             dataStorage.updateFromFiles(stops);
             dataStorage.notifyObservers();
             writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
