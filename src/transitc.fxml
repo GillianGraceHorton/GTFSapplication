@@ -64,7 +64,6 @@
                         <MenuItem mnemonicParsing="false" onAction="#searchForRouteHandler" text="for Route" />
                   </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" text="Update" />
               </menus>
             </MenuBar>
          </children>
