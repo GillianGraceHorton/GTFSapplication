@@ -41,7 +41,7 @@ public class DataStorage implements Subject {
      * one that is already in data structures and is not a placeholder.
      * @author hortong
      */
-    public void updateFromFiles(ArrayList<Object> updates) throws KeyAlreadyExistsException{
+    public void updateFromFiles(ArrayList updates) throws KeyAlreadyExistsException{
         for (Object item : updates) {
             if (item instanceof Stop) {
                 Stop thisStop = (Stop) item;
