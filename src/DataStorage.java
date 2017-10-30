@@ -1,5 +1,3 @@
-
-
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.*;
 
@@ -55,69 +53,73 @@ public class DataStorage implements Subject {
      * one that is already in data structures and is not a placeholder.
      */
     public void updateFromFiles(LinkedList updates) throws KeyAlreadyExistsException{
-        for (Object item : updates) {
-            if (item instanceof Stop) {
-                Stop thisStop = (Stop) item;
+        Object tmp = updates.get(0);
+        if(tmp instanceof Stop){
+            for (Stop cStop : (LinkedList<Stop>) updates) {
+                final String cStopID = cStop.getStopID();
                 //checks if the stops list contains a stop with the same stopID
-                if (stops.containsKey(thisStop.getStopID())) {
-                    Stop oldStop = stops.get(thisStop.getStopID());
+                if (stops.containsKey(cStopID)){
+                    Stop oldStop = stops.get(cStopID);
                     if (oldStop.isEmpty()) {
                         //gives the empty stop all the variables of the newStop
-                        oldStop.copyInstanceVariables(thisStop);
+                        oldStop.copyInstanceVariables(cStop);
                     } else {
-                        throw new KeyAlreadyExistsException("the stop: " + item.toString() +
+                        throw new KeyAlreadyExistsException("the stop: " + cStop.toString() +
                                 "\ncannot bee added because it has the same ID as the stop: " +
-                                stops.get(thisStop.getStopID()));
+                                stops.get(cStopID));
                     }
-                } else {
-                    stops.put(thisStop.getStopID(), thisStop);
+                } else{
+                    stops.put(cStopID, cStop);
                 }
-            } else if (item instanceof Route) {
-                Route thisRoute = (Route) item;
-                if (routes.containsKey(thisRoute.getRouteID())) {
-                    Route oldRoute = routes.get(thisRoute.getRouteID());
-                    if (routes.get(thisRoute.getRouteID()).isEmpty()) {
+            }
+        }
+        else if(tmp instanceof Route){
+            for(Route cRoute : (LinkedList<Route>) updates){
+                final String cRouteID = cRoute.getRouteID();
+                if (routes.containsKey(cRouteID)) {
+                    Route oldRoute = routes.get(cRouteID);
+                    if (routes.get(cRouteID).isEmpty()) {
                         //gives the empty route all the variables of the newRoute
-                        oldRoute.copyInstanceVariables(thisRoute);
+                        oldRoute.copyInstanceVariables(cRoute);
                     } else {
-                        throw new KeyAlreadyExistsException("the route: " + item.toString() +
+                        throw new KeyAlreadyExistsException("the route: " + updates.toString() +
                                 "\ncannot bee added because it has the same ID as the route: " +
-                                routes.get(thisRoute.getRouteID()));
+                                routes.get(cRouteID));
                     }
                 } else {
-                    routes.put(thisRoute.getRouteID(), thisRoute);
+                    routes.put(cRouteID, cRoute);
                 }
-            } else if (item instanceof Trip) {
-                Trip thisTrip = (Trip) item;
+            }
+        }
+        else if(tmp instanceof Trip){
+            for(Trip cTrip : (LinkedList<Trip>) updates){
+                String cTripID = cTrip.getTripID();
                 //checks if the trips list contains a trip with the same tripID
-                if (trips.containsKey(thisTrip.getTripID())) {
-                    Trip oldTrip = trips.get(thisTrip.getTripID());
+                if (trips.containsKey(cTripID)) {
+                    Trip oldTrip = trips.get(cTripID);
                     if (oldTrip.isEmpty()) {
                         //gives the empty route all the variables of the newRoute
-                        oldTrip.copyInstanceVariables(thisTrip);
-                        thisTrip = oldTrip;
+                        oldTrip.copyInstanceVariables(cTrip);
+                        cTrip = oldTrip;
                     } else {
-                        //throws an exception because there already exists a trip object with the
-                        // same ID
-                        throw new KeyAlreadyExistsException("the trip: " + item.toString() +
+                        //throws an exception because there already exists a trip object with the same ID
+                        throw new KeyAlreadyExistsException("the trip: " + cTrip.toString() +
                                 "\ncannot bee added because it has the same ID as the trip: " +
-                                trips.get(thisTrip.getTripID()));
+                                trips.get(cTrip.getTripID()));
                     }
                 } else {
                     //adds the trip to the trips list
-                    trips.put(thisTrip.getTripID(), thisTrip);
+                    trips.put(cTripID, cTrip);
                 }
                 //creates Id references from this item
-                createIDReferences(thisTrip);
-            } else if (item instanceof StopTime) {
-                try{
-                stopTimes.add((StopTime) item);
-                //creates empty object from ID references in the stopTimes Object if they don't
-                // already exist
-                createIDReferences(item);}
-                catch(NullPointerException e){
-                    e.printStackTrace();
-                }
+                createIDReferences(cTrip);
+            }
+        }
+        else if(tmp instanceof StopTime){
+            for(StopTime cStopTime : (LinkedList<StopTime>) updates) {
+                    stopTimes.add(cStopTime);
+                    //creates empty object from ID references in the stopTimes Object if they don't already exist
+                    createIDReferences(cStopTime);
             }
         }
     }

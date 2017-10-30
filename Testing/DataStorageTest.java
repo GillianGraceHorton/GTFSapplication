@@ -126,7 +126,7 @@ class DataStorageTest {
     @Test
     void notifyObservers() {
         ArrayList<Observer> observers = new ArrayList<>();
-        ArrayList<Stop> updates = new ArrayList<>();
+        LinkedList<Stop> updates = new LinkedList<>();
         Stop stop = new Stop(0, 0, "test",  "1A", "");
         Observer observer1 = new BusMap();
         Observer observer2 = new BusMap();
