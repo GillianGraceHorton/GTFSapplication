@@ -1,3 +1,5 @@
+import jdk.nashorn.internal.scripts.JO;
+
 import javax.swing.*;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -30,7 +32,6 @@ public class FileManager {
     public LinkedList<Stop> parseStopFile(File file) throws InputMismatchException,
             FileNotFoundException, NullPointerException {
         LinkedList<Stop> toReturn = new LinkedList<>();
-        ArrayList<String> errors = new ArrayList<>();
         try {
             String stop_id, stop_desc, stop_name;
             double stop_lat, stop_lon;
@@ -51,13 +52,11 @@ public class FileManager {
                     stop_lon = Double.parseDouble(items[4]);
                     toReturn.add(new Stop(stop_lon, stop_lat, stop_name, stop_id, stop_desc));
                 }catch(IllegalArgumentException e){
-                    errors.add("Error at line: " + line + "\n    " + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n    " + e
+                            .getMessage());
                 }catch (NullPointerException e) {
                     throw new NullPointerException("ERROR: Invalid Stop File Format at the following line:\n" + line);
                 }
-            }
-            if(!errors.isEmpty()){
-                errorsInParsing(file.getName(), errors);
             }
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("ERROR: " + file.getName() + " was not found.\n" + e.getMessage());
@@ -74,7 +73,6 @@ public class FileManager {
     public LinkedList<Route> parseRouteFile(File file) throws InputMismatchException,
             FileNotFoundException, NullPointerException{
         LinkedList<Route> toReturn = new LinkedList<>();
-        ArrayList<String> errors = new ArrayList<>();
         try {
             String route_id, agency_id, route_short_name, route_long_name;
             String route_desc, route_type, route_url, route_color, route_text_color;
@@ -100,13 +98,11 @@ public class FileManager {
                 toReturn.add(new Route(route_id, agency_id, route_short_name, route_long_name,
                         route_desc, route_type, route_url, route_color, route_text_color));
                 }catch(IllegalArgumentException e){
-                    errors.add("Error at line: " + line + "\n    " + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n    " + e
+                            .getMessage());
                 }catch (NullPointerException e) {
                     throw new NullPointerException("ERROR: Invalid Route File Format at the following line:\n" + line);
                 }
-            }
-            if(!errors.isEmpty()){
-                errorsInParsing(file.getName(), errors);
             }
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("ERROR: " + file.getName() + " was not found.\n" + e.getMessage());
@@ -123,7 +119,6 @@ public class FileManager {
     public LinkedList<Trip> parseTripFile(File file) throws InputMismatchException,
             FileNotFoundException, NullPointerException {
         LinkedList<Trip> toReturn = new LinkedList<>();
-        ArrayList<String> errors = new ArrayList<>();
         try {
             String route_id, service_id, trip_id, trip_head_sign, direction_id, block_id, shape_id;
             Scanner scanner = new Scanner(file);
@@ -145,13 +140,11 @@ public class FileManager {
                     shape_id = items[6];
                     toReturn.add(new Trip(trip_id, service_id, route_id, trip_head_sign, direction_id, block_id, shape_id));
                 }catch(IllegalArgumentException e){
-                    errors.add("Error at line: " + line + "\n" + e.getMessage());
+                    JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n" + e
+                            .getMessage());
                 } catch (NullPointerException e) {
                     throw new NullPointerException("ERROR: Invalid Trip File Format at the following line:\n" + line);
                 }
-            }
-            if(!errors.isEmpty()){
-                errorsInParsing(file.getName(), errors);
             }
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("ERROR: " + file.getName() + " was not found.\n" + e.getMessage());
