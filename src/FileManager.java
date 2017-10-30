@@ -1,10 +1,5 @@
-import jdk.nashorn.internal.scripts.JO;
-
 import javax.swing.*;
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
-import java.security.InvalidParameterException;
 import java.util.*;
 
 /**
@@ -111,10 +106,10 @@ public class FileManager {
     }
 
     /**
+     * Author: hortong
      * Description: Parses information from a Trip file.
      * @param file - file to parse for Trip data
      * @return - returns ArrayList full of parsed data from trip file.
-     * @author hortong
      */
     public LinkedList<Trip> parseTripFile(File file) throws InputMismatchException,
             FileNotFoundException, NullPointerException {
@@ -207,7 +202,6 @@ public class FileManager {
      * Author: Joseph Heinz - heinzja@msoe.edu
      * Description: adds valid file types to an ArrayList of valid file types.
      */
-
     private void addValidType() {
         String agencyFormat = "agency_id,agency_name,agency_url,agency_timezone,agency_phone";
         String calenderFormat = "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date";
@@ -364,9 +358,9 @@ public class FileManager {
     }
 
     /**
-     * displays message window to the user containing all the parsing errors encountered that
-     * didn't break the flow of the program
-     * @author hortong
+     * Author: hortong
+     * Description: Displays message window to the user containing all the parsing errors encountered that
+     *              didn't break the flow of the program.
      * @param fileName
      * @param errors
      */
