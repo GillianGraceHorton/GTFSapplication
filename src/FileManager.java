@@ -24,8 +24,8 @@ public class FileManager {
      * @return Array containing all the stop objects
      * @author hortong
      */
-    public ArrayList<Object> parseStopFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
-        ArrayList<Object> toReturn = new ArrayList<>();
+    public ArrayList<Stop> parseStopFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
+        ArrayList<Stop> toReturn = new ArrayList<>();
         ArrayList<String> errors = new ArrayList<>();
         try {
             String stop_id, stop_desc, stop_name;
@@ -67,8 +67,8 @@ public class FileManager {
      * @return Array containing all the route objects
      * @author hortong
      */
-    public ArrayList<Object> parseRouteFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
-        ArrayList<Object> toReturn = new ArrayList<>();
+    public ArrayList<Route> parseRouteFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
+        ArrayList<Route> toReturn = new ArrayList<>();
         ArrayList<String> errors = new ArrayList<>();
         try {
             String route_id, agency_id, route_short_name, route_long_name;
@@ -115,8 +115,8 @@ public class FileManager {
      * @return - returns ArrayList full of parsed data from trip file.
      * @author hortong
      */
-    public ArrayList<Object> parseTripFile(File file)  throws InputMismatchException, FileNotFoundException, NullPointerException {
-        ArrayList<Object> toReturn = new ArrayList<>();
+    public ArrayList<Trip> parseTripFile(File file)  throws InputMismatchException, FileNotFoundException, NullPointerException {
+        ArrayList<Trip> toReturn = new ArrayList<>();
         ArrayList<String> errors = new ArrayList<>();
         try {
             String route_id, service_id, trip_id, trip_head_sign, direction_id, block_id, shape_id;
@@ -207,10 +207,10 @@ public class FileManager {
     }
 
     /**
-     * @author Joseph Heinz - heinzja@msoe.edu
-     * Temporary valid file type arraylist will be changed to be less static in the future.
-     * Description: adds valid file types to an arraylist of valid file types.
+     * Author: Joseph Heinz - heinzja@msoe.edu
+     * Description: adds valid file types to an ArrayList of valid file types.
      */
+
     private void addValidType() {
         String agencyFormat = "agency_id,agency_name,agency_url,agency_timezone,agency_phone";
         String calenderFormat = "service_id,monday,tuesday,wednesday,thursday,friday,saturday,sunday,start_date,end_date";
@@ -320,6 +320,7 @@ public class FileManager {
             if (!exportFile.exists()) {
                 exportFile.createNewFile();
             }
+
             PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
             pw.println(validFileTypes.get("trips"));
             NavigableMap<String, Trip> trips = ds.getTrips();
@@ -352,6 +353,7 @@ public class FileManager {
             if (!exportFile.exists()) {
                 exportFile.createNewFile();
             }
+
             PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
             pw.println(validFileTypes.get("stop_times"));
             for (StopTime tmp : ds.getStopTimes()) {
