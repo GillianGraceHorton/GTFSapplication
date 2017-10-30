@@ -179,7 +179,7 @@ public class Controller implements Initializable {
      * Description:
      */
 	public void importStopFileHandler() {
-		ArrayList<Stop> stops;
+		LinkedList<Stop> stops;
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Import Stops");
 		File fileToAdd = fileChooser.showOpenDialog(null);
@@ -205,7 +205,7 @@ public class Controller implements Initializable {
      * Description:
      */
 	public void importStopTimesFileHandler() {
-		ArrayList<StopTime> stopTimes;
+		LinkedList<StopTime> stopTimes;
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Import Stop Times");
         File fileToAdd = fileChooser.showOpenDialog(null);
@@ -230,7 +230,7 @@ public class Controller implements Initializable {
      * Description:
      */
 	public void importRouteFileHandler() {
-		ArrayList<Route> routes;
+		LinkedList<Route> routes;
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Import Routes");
         File fileToAdd = fileChooser.showOpenDialog(null);
@@ -255,7 +255,7 @@ public class Controller implements Initializable {
      * Description:
      */
 	public void importTripFileHandler() {
-		ArrayList<Trip> stops;
+		LinkedList<Trip> stops;
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Import Trips");
         File fileToAdd = fileChooser.showOpenDialog(null);

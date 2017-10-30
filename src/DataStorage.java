@@ -54,7 +54,7 @@ public class DataStorage implements Subject {
      * @throws KeyAlreadyExistsException - if one of the items from updates has an ID that matches
      * one that is already in data structures and is not a placeholder.
      */
-    public void updateFromFiles(ArrayList updates) throws KeyAlreadyExistsException{
+    public void updateFromFiles(LinkedList updates) throws KeyAlreadyExistsException{
         for (Object item : updates) {
             if (item instanceof Stop) {
                 Stop thisStop = (Stop) item;

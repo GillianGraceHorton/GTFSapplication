@@ -24,8 +24,9 @@ public class FileManager {
      * @return Array containing all the stop objects
      * @author hortong
      */
-    public ArrayList<Stop> parseStopFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
-        ArrayList<Stop> toReturn = new ArrayList<>();
+    public LinkedList<Stop> parseStopFile(File file) throws InputMismatchException,
+            FileNotFoundException, NullPointerException {
+        LinkedList<Stop> toReturn = new LinkedList<>();
         try {
             String stop_id, stop_desc, stop_name;
             double stop_lat, stop_lon;
@@ -64,8 +65,9 @@ public class FileManager {
      * @return Array containing all the route objects
      * @author hortong
      */
-    public ArrayList<Route> parseRouteFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
-        ArrayList<Route> toReturn = new ArrayList<>();
+    public LinkedList<Route> parseRouteFile(File file) throws InputMismatchException,
+            FileNotFoundException, NullPointerException {
+        LinkedList<Route> toReturn = new LinkedList<>();
         try {
             String route_id, agency_id, route_short_name, route_long_name;
             String route_desc, route_type, route_url, route_color, route_text_color;
@@ -109,8 +111,10 @@ public class FileManager {
      * @param file - file to parse for Trip data
      * @return - returns ArrayList full of parsed data from trip file.
      */
-    public ArrayList<Trip> parseTripFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
-        ArrayList<Trip> toReturn = new ArrayList<>();
+    public LinkedList<Trip> parseTripFile(File file) throws InputMismatchException,
+            FileNotFoundException,
+            NullPointerException {
+        LinkedList<Trip> toReturn = new LinkedList<>();
         try {
             String route_id, service_id, trip_id, trip_head_sign, direction_id, block_id, shape_id;
             Scanner scanner = new Scanner(file);
@@ -152,9 +156,9 @@ public class FileManager {
      * @throws FileNotFoundException File was not found
      * @throws NullPointerException Invalid StopTimes File Format at a specific line
      */
-    public ArrayList<StopTime> parseStopTimesFile(File file)  throws InputMismatchException,
+    public LinkedList<StopTime> parseStopTimesFile(File file)  throws InputMismatchException,
             FileNotFoundException, NullPointerException {
-        ArrayList<StopTime> toReturn = new ArrayList<>();
+        LinkedList<StopTime> toReturn = new LinkedList<>();
         try {
             Scanner scanner = new Scanner(file);
             String firstLine = scanner.nextLine();
