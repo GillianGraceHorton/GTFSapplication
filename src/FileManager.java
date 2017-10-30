@@ -27,9 +27,9 @@ public class FileManager {
      * @return Array containing all the stop objects
      * @author hortong
      */
-    public LinkedList<Object> parseStopFile(File file) throws InputMismatchException,
+    public LinkedList<Stop> parseStopFile(File file) throws InputMismatchException,
             FileNotFoundException, NullPointerException {
-        LinkedList<Object> toReturn = new LinkedList<>();
+        LinkedList<Stop> toReturn = new LinkedList<>();
         ArrayList<String> errors = new ArrayList<>();
         try {
             String stop_id, stop_desc, stop_name;
@@ -71,8 +71,9 @@ public class FileManager {
      * @return Array containing all the route objects
      * @author hortong
      */
-    public LinkedList<Object> parseRouteFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException{
-        LinkedList<Object> toReturn = new LinkedList<>();
+    public LinkedList<Route> parseRouteFile(File file) throws InputMismatchException,
+            FileNotFoundException, NullPointerException{
+        LinkedList<Route> toReturn = new LinkedList<>();
         ArrayList<String> errors = new ArrayList<>();
         try {
             String route_id, agency_id, route_short_name, route_long_name;
@@ -119,8 +120,9 @@ public class FileManager {
      * @return - returns ArrayList full of parsed data from trip file.
      * @author hortong
      */
-    public LinkedList<Object> parseTripFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
-        LinkedList<Object> toReturn = new LinkedList<>();
+    public LinkedList<Trip> parseTripFile(File file) throws InputMismatchException,
+            FileNotFoundException, NullPointerException {
+        LinkedList<Trip> toReturn = new LinkedList<>();
         ArrayList<String> errors = new ArrayList<>();
         try {
             String route_id, service_id, trip_id, trip_head_sign, direction_id, block_id, shape_id;
