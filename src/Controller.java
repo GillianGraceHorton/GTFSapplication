@@ -134,6 +134,11 @@ public class Controller implements Initializable {
 		}
 	}
 
+    /**
+     * Author:
+     * Description:
+     * @param actionEvent
+     */
 	public void searchRouteForStopHandler(ActionEvent actionEvent) {
 		TextInputDialog input = new TextInputDialog();
 		String stopID = null;
@@ -156,6 +161,10 @@ public class Controller implements Initializable {
 	public void searchForTripHandler() {
 	}
 
+    /**
+     * Author:
+     * Description:
+     */
 	public void searchForRouteHandler() {
         TextInputDialog input = new TextInputDialog();
 		String routeID = null;
@@ -165,6 +174,10 @@ public class Controller implements Initializable {
         gtfsListView.displayRouteWithStops(dataStorage.searchRoutes(routeID));
 	}
 
+    /**
+     * Author:
+     * Description:
+     */
 	public void importStopFileHandler() {
 		ArrayList<Stop> stops;
 		FileChooser fileChooser = new FileChooser();
@@ -187,6 +200,10 @@ public class Controller implements Initializable {
 		}
 	}
 
+    /**
+     * Author:
+     * Description:
+     */
 	public void importStopTimesFileHandler() {
 		ArrayList<StopTime> stopTimes;
         FileChooser fileChooser = new FileChooser();
@@ -208,6 +225,10 @@ public class Controller implements Initializable {
         }
 	}
 
+    /**
+     * Author:
+     * Description:
+     */
 	public void importRouteFileHandler() {
 		ArrayList<Route> routes;
         FileChooser fileChooser = new FileChooser();
@@ -229,6 +250,10 @@ public class Controller implements Initializable {
         }
 	}
 
+    /**
+     * Author:
+     * Description:
+     */
 	public void importTripFileHandler() {
 		ArrayList<Trip> stops;
         FileChooser fileChooser = new FileChooser();
@@ -250,6 +275,11 @@ public class Controller implements Initializable {
         }
 	}
 
+    /**
+     * Author:
+     * Description:
+     * @param message
+     */
 	private void writeErrorMessage(String message){
 		Alert alert = new Alert(Alert.AlertType.ERROR);
 		alert.setHeaderText("Error");
@@ -257,6 +287,12 @@ public class Controller implements Initializable {
 		alert.showAndWait();
 	}
 
+    /**
+     * Author:
+     * Description:
+     * @param header
+     * @param context
+     */
 	private void writeInformationMessage(String header, String context) {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setHeaderText(header);
