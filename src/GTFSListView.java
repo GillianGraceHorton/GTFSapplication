@@ -1,10 +1,9 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 
 /**
@@ -12,7 +11,7 @@ import java.util.ArrayList;
  * @version 1.0
  * Created: 03-Oct-2017 4:57:27 PM
  */
-public class ListView extends HBox implements Observer {
+public class GTFSListView extends HBox implements Observer {
 
     private Subject dataStorage;
     private TextArea details;
@@ -24,17 +23,17 @@ public class ListView extends HBox implements Observer {
     private Tab routesContainingStopTab;
     private Tab routeWithStopsTab;
 
-    private VBox stops;
-    private VBox routes;
-    private VBox trips;
-    private VBox stopTimes;
+    private ListView stops;
+    private ListView routes;
+    private ListView trips;
+    private ListView stopTimes;
     private TextArea routesContainingStop;
     private TextArea routeWithStops;
 
-    private EventHandler<MouseEvent> labelClicked;
+    private EventHandler<MouseEvent> itemClicked;
 
 
-    public ListView() {
+    public GTFSListView() {
         tabPane = new TabPane();
         stopsTab = new Tab("STOPS");
         routesTab = new Tab("ROUTES");
@@ -46,31 +45,36 @@ public class ListView extends HBox implements Observer {
         this.getChildren().addAll(tabPane, details);
 
 
-        stops = new VBox();
-        ScrollPane stopScroll = new ScrollPane(stops);
-        routes = new VBox();
-        ScrollPane routeScroll = new ScrollPane(routes);
-        trips = new VBox();
-        ScrollPane tripScroll = new ScrollPane(trips);
-        stopTimes = new VBox();
-        ScrollPane timeScroll = new ScrollPane(stopTimes);
+        stops = new ListView();
+        routes = new ListView();
+        trips = new ListView();
+        stopTimes = new ListView();
 
-        stopsTab.setContent(stopScroll);
-        routesTab.setContent(routeScroll);
-        tripsTab.setContent(tripScroll);
-        stopTimesTab.setContent(timeScroll);
+        stopsTab.setContent(stops);
+        routesTab.setContent(routes);
+        tripsTab.setContent(trips);
+        stopTimesTab.setContent(stopTimes);
 
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-        labelClicked = event -> {
+        itemClicked = event -> {
             details.clear();
-            GTFSLabel label = (GTFSLabel)event.getSource();
-            if(label.isStopTime()){
-                details.setText(((Trip)label.getItem()).tripListToString());
-            }else {
-                details.setText(label.getItem().toString());
+            Object list = event.getSource();
+            Object item = ((ListView)event.getSource()).getSelectionModel().getSelectedItem();
+            if(list == stopTimes){
+                details.setText(((Trip)item).tripListToString());
+            }else if(item instanceof Stop){
+                details.setText(((Stop)item).toStringData());
+            }else if(item instanceof Route){
+                details.setText(((Route)item).toStringData());
+            }else if(item instanceof Trip){
+                details.setText(((Trip)item).toStringData());
             }
         };
+        stops.setOnMouseClicked(itemClicked);
+        routes.setOnMouseClicked(itemClicked);
+        trips.setOnMouseClicked(itemClicked);
+        stopTimes.setOnMouseClicked(itemClicked);
     }
 
     /**
@@ -95,35 +99,27 @@ public class ListView extends HBox implements Observer {
      * @param addedItems items that have been updated
      */
     public void update(ArrayList<Object> addedItems) {
-        clearDataTabs();
+        ObservableList<Stop> stops =  FXCollections.observableArrayList();
+        ObservableList<Route> routes =  FXCollections.observableArrayList();
+        ObservableList<Trip> trips =  FXCollections.observableArrayList();
+        ObservableList<Trip> stopTimes = FXCollections.observableArrayList();
         for (Object item : addedItems) {
             if (item instanceof Stop) {
-                Stop stop = (Stop)item;
-                stop.updateLabelName();
-                stop.addEventHandler(labelClicked);
-                stops.getChildren().addAll(stop.getStopLabel(), new Separator());
+                stops.add((Stop)item);
             } else if (item instanceof Route) {
-                Route route = (Route)item;
-                route.updateLabelName();
-                route.addEventHandler(labelClicked);
-                routes.getChildren().addAll(route.getRouteLabel(), new Separator());
+                routes.add((Route)item);
             } else if (item instanceof Trip) {
-                Trip trip = (Trip)item;
-                trip.updateLabelName();
-                trip.addEventHandler(labelClicked);
-                trips.getChildren().addAll(trip.getTripLabel(), new Separator());
-                if (trip.getTripList() != null) {
-                    stopTimes.getChildren().addAll(trip.getTripListLabel(), new Separator());
+                trips.add((Trip)item);
+                if (((Trip)item).getTripList() != null) {
+                    stopTimes.add((Trip)item);
                 }
-            }
-        }
-    }
 
-    private void clearDataTabs() {
-        stops.getChildren().clear();
-        routes.getChildren().clear();
-        trips.getChildren().clear();
-        stopTimes.getChildren().clear();
+            }
+            this.stops.setItems(stops);
+            this.routes.setItems(routes);
+            this.trips.setItems(trips);
+            this.stopTimes.setItems(stopTimes);
+        }
     }
 
     public void displayRoutesContainingStop(ArrayList<Route> routes) {

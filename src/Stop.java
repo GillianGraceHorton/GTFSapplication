@@ -35,9 +35,6 @@ public class Stop {
 
 	private ArrayList<StopTime> stopTimes;
 
-	private GTFSLabel stopLabel;
-
-
 	/**
 	 * creates a stop object with information loaded from a stop file
 	 * @param lon longitude for the gps location of the stop
@@ -51,18 +48,11 @@ public class Stop {
 		this.name = name;
 		this.stopID = stopID;
 		this.stopDescription = stopDesc;
-		stopLabel = new GTFSLabel(this);
 	}
 
 	public Stop(String stopID){
 		this.stopID = stopID;
-		stopLabel = new GTFSLabel(this);
 	}
-
-	public void updateLabelName(){
-		stopLabel.setText("Stop Name: " + name + "\n  StopID: " + stopID);
-	}
-
 	public void setLocation(Location location) {
 		this.location = location;
 	}
@@ -119,7 +109,7 @@ public class Stop {
 	 * @author Joseph Heinz - heinzja@msoe.edu
 	 * @return returns formatted string of data stored in stop class.
 	 */
-	public String toString(){
+	public String toStringData(){
 		if(isEmpty()){
 			return "StopID: " + getStopID() + "\nNo Data";
 		}
@@ -128,6 +118,10 @@ public class Stop {
 				"Description: " + getStopDescription() + "\n" +
 				"Latitude: " + location.getLat() + "\n" +
 				"Longitude: " + location.getLon() + "\n";
+	}
+
+	public String toString(){
+		return "Stop Name: " + name + "\n  StopID: " + stopID;
 	}
 
 	public String toStringExport(){
@@ -158,14 +152,6 @@ public class Stop {
 		this.stopDescription = stop.getStopDescription();
 		this.location = stop.getLocation();
 		this.stopTimes = stop.getStopTimes();
-		updateLabelName();
 	}
 
-	public void addEventHandler(EventHandler<MouseEvent> eventHandler){
-		stopLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
-	}
-
-	public GTFSLabel getStopLabel() {
-		return stopLabel;
-	}
 }

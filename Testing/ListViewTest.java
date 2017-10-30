@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ListViewTest {
-    ListView listView;
+    GTFSListView listView;
 
     @BeforeEach
     public void setUp(){
-        listView = new ListView();
+        listView = new GTFSListView();
     }
 
     /**

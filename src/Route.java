@@ -25,7 +25,6 @@ public class Route {
 	private String routeUrl;
 	private String routeColor;
 	private String routeTextColor;
-	private GTFSLabel routeLabel;
 
 	public Route(String route_id, String agency_id,String route_short_name, String route_long_name,
 				 String route_desc,String route_type, String route_url,String route_color, String route_text_color){
@@ -39,12 +38,10 @@ public class Route {
 		this.routeColor = route_color;
 		this.routeTextColor = route_text_color;
 		this.stops = new TreeMap<>();
-		this.routeLabel = new GTFSLabel(this);
 	}
 
 	public Route(String routeId) {
 		this.routeID = routeId;
-		this.routeLabel = new GTFSLabel(this);
 	}
 
 	/**
@@ -159,7 +156,7 @@ public class Route {
 	 * @author Joseph Heinz - heinzja@msoe.edu
 	 * @return returns string of data stored in route class
 	 */
-	public String toString(){
+	public String toStringData(){
 		if(isEmpty()){
 			return  "RouteID: " + getRouteID() +"\nNo data";
 		}
@@ -172,6 +169,10 @@ public class Route {
 				"URL: " + getRouteUrl() +"\n" +
 				"Color: " + getRouteColor() +"\n" +
 				"TextColor: " + getRouteTextColor() +"\n";
+	}
+
+	public String toString(){
+		return "RouteID: " + routeID + "\n  Route Name: " + routeLongName;
 	}
 
 	/**
@@ -230,18 +231,6 @@ public class Route {
 		this.routeUrl = route.getRouteUrl();
 		this.routeColor = route.getRouteColor();
 		this.routeTextColor = route.getRouteTextColor();
-		updateLabelName();
 	}
 
-	public void addEventHandler(EventHandler<MouseEvent> eventHandler){
-		routeLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
-	}
-
-	public GTFSLabel getRouteLabel() {
-		return routeLabel;
-	}
-
-	public void updateLabelName(){
-		routeLabel.setText("RouteID: " + routeID + "\n  Route Name: " + routeLongName);
-	}
 }

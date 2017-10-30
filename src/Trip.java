@@ -23,8 +23,6 @@ public class Trip {
     private Route route;
     private String routeID;
     private String tripID;
-    private GTFSLabel tripLabel;
-    private GTFSLabel tripListLabel;
 
 
     public Trip(String tripID, String serviceID, String routeID, String tripHeadsign, String
@@ -37,9 +35,6 @@ public class Trip {
         this.blockID = blockID;
         this.shapeID = shapeID;
         this.tripList = new TreeMap<>();
-        tripLabel = new GTFSLabel(this);
-        tripListLabel = new GTFSLabel(this);
-        tripListLabel.setStopTime(true);
     }
 
 
@@ -54,9 +49,6 @@ public class Trip {
     public Trip(String tripID) {
         this.tripID = tripID;
         tripList = new TreeMap<>();
-        tripLabel = new GTFSLabel(this);
-        tripListLabel = new GTFSLabel(this);
-        tripListLabel.setStopTime(true);
     }
 
     public void setRoute(Route route) {
@@ -179,7 +171,7 @@ public class Trip {
      * @return returns string of data stored in trip class
      * @author Joseph Heinz - heinzja@msoe.edu
      */
-    public String toString() {
+    public String toStringData() {
         if (isEmpty()) {
             return "TripID: " + getTripID() + "\nNo data";
         }
@@ -191,6 +183,10 @@ public class Trip {
                 "BlockID: " + getBlockID() + "\n" +
                 "ShapeID: " + getShapeID() + "\n";
         return toReturn;
+    }
+
+    public String toString(){
+        return "TripID: " + tripID + "\nRouteID: " + routeID;
     }
 
     public String tripListToString() {
@@ -251,26 +247,5 @@ public class Trip {
         this.serviceID = trip.getServiceID();
         this.route = trip.getRoute();
         this.routeID = trip.getRouteID();
-    }
-
-    public void addEventHandler(EventHandler<MouseEvent> eventHandler){
-        tripListLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
-        tripLabel.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
-    }
-
-    public GTFSLabel getTripLabel() {
-        return tripLabel;
-    }
-
-    public GTFSLabel getTripListLabel() {
-        return tripListLabel;
-    }
-
-    public void updateLabelName(){
-        tripLabel.setText("TripID: " + tripID + "\nRouteID: " + routeID);
-        if(tripList.size() != 0) {
-            tripListLabel.setText("TripID: " + tripID + "\n  RouteID: " + routeID
-                    + "\n  StarTime: " + tripList.get(tripList.firstKey()).getArrivalTime());
-        }
     }
 }
