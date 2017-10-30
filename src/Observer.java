@@ -1,12 +1,16 @@
 import java.util.ArrayList;
 
 /**
- * @author Gracie Horton
- * @version 1.0
- * @created 03-Oct-2017 4:57:30 PM
+ * Author: Gracie Horton
+ * Description:
+ * Date Created: 10/3/2017 - 4:57:30 PM
  */
 public interface Observer {
 
+	/**
+	 * Description:
+	 * @param updatedItems
+	 */
 	void update(ArrayList<Object> updatedItems);
 
 }

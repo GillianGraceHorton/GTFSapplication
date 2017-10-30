@@ -26,6 +26,12 @@ public class Controller implements Initializable {
 	@FXML
     private VBox mainVBox;
 
+	/**
+	 * Author:
+	 * Description:
+	 * @param location
+	 * @param resources
+	 */
 	public void initialize(URL location, ResourceBundle resources){
 		try {
 			fileManager = new FileManager();
@@ -69,7 +75,7 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Author: Joseph Heinz - heinzja@msoe.edu
 	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
 	 */
 	public void exportStopFileHandler(){
@@ -85,7 +91,7 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Author: Joseph Heinz - heinzja@msoe.edu
 	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
 	 */
 	public void exportStopTimesFileHandler(){
@@ -101,7 +107,7 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * @author Joseph Heinz - heinzja@msoe.edu
+	 * Author: Joseph Heinz - heinzja@msoe.edu
 	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
 	 */
 	public void exportRouteFileHandler(){
@@ -117,8 +123,8 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * @author Joseph Heinz - heinzja@msoe.edu
-	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 * Author: Joseph Heinz - heinzja@msoe.edu
+	 * Description: creates an exports directory in the user chosen directory, with the user chosen file name
 	 */
 	public void exportTripFileHandler(){
 		FileChooser fileChooser = new FileChooser();

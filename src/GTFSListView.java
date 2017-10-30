@@ -7,9 +7,9 @@ import javafx.scene.layout.*;
 import java.util.ArrayList;
 
 /**
- * @author Gracie Horton
- * @version 1.0
- * Created: 03-Oct-2017 4:57:27 PM
+ * Author: Gracie Horton
+ * Description:
+ * Date Created: 10/3/2017 - 4:57:27 PM
  */
 public class GTFSListView extends HBox implements Observer {
 
@@ -33,6 +33,10 @@ public class GTFSListView extends HBox implements Observer {
     private EventHandler<MouseEvent> itemClicked;
 
 
+    /**
+     * Author:
+     * Description: Initializes the GTFSListView class
+     */
     public GTFSListView() {
         tabPane = new TabPane();
         stopsTab = new Tab("STOPS");
@@ -78,8 +82,8 @@ public class GTFSListView extends HBox implements Observer {
     }
 
     /**
-     * adjusts the sizes of the javaFX objects
-     *
+     * Author:
+     * Description: Adjusts the sizes of the javaFX objects
      * @param height height of the object
      * @param width  width of the object
      */
@@ -89,13 +93,18 @@ public class GTFSListView extends HBox implements Observer {
         details.setPrefHeight(height);
     }
 
+    /**
+     * Author:
+     * Description:
+     * @param dataStorage
+     */
     public void setSubject(Subject dataStorage) {
         this.dataStorage = dataStorage;
     }
 
     /**
-     * receives update from the subject
-     *
+     * Author:
+     * Description: Receives update from the subject
      * @param addedItems items that have been updated
      */
     public void update(ArrayList<Object> addedItems) {
@@ -122,6 +131,11 @@ public class GTFSListView extends HBox implements Observer {
         }
     }
 
+    /**
+     * Author:
+     * Description:
+     * @param routes
+     */
     public void displayRoutesContainingStop(ArrayList<Route> routes) {
         if (routesContainingStopTab == null) {
             routesContainingStopTab = new Tab("Routes containing Stop");
@@ -138,6 +152,11 @@ public class GTFSListView extends HBox implements Observer {
         routesContainingStop.setEditable(false);
     }
 
+    /**
+     * Author:
+     * Description:
+     * @param route
+     */
     public void displayRouteWithStops(Route route) {
         if(routeWithStopsTab == null){
             routeWithStopsTab = new Tab("Route With its Stops");

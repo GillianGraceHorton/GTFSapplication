@@ -4,9 +4,9 @@ import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.*;
 
 /**
- * @author Gracie Horton
- * @version 1.0
- * @created 03-Oct-2017 4:57:21 PM
+ * Author: Gracie Horton
+ * Description:
+ * Date Created: 10/3/2017 - 4:57:21 PM
  */
 public class DataStorage implements Subject {
 
@@ -16,7 +16,10 @@ public class DataStorage implements Subject {
     private Collection<StopTime> stopTimes;
     private Collection<Observer> observers;
 
-
+    /**
+     * Author:
+     * Description: Initializes the DataStorage class
+     */
     public DataStorage() {
         stops = new TreeMap<>();
         routes = new TreeMap<>();
@@ -25,21 +28,31 @@ public class DataStorage implements Subject {
         observers = new ArrayList<>();
     }
 
+    /**
+     * Author:
+     * Description:
+     * @param observer - the observer to attach
+     */
     public void attach(Observer observer) {
         observers.add(observer);
     }
 
+    /**
+     * Author:
+     * Description:
+     * @param observer
+     * @return boolean - result of removing an observer
+     */
     public boolean detach(Observer observer) {
         return observers.remove(observer);
     }
 
     /**
-     * takes an arrayList of objects created by files loaded in the file manager and adds each
-     * object.
-     * @param updates arrayList of objects created by the file loaded in the File manager class
-     * @throws KeyAlreadyExistsException if one of the items from updates has an ID that matches
+     * Author: hortong
+     * Description: Takes an arrayList of objects created by files loaded in the file manager and adds each object.
+     * @param updates - ArrayList of objects created by the file loaded in the File manager class
+     * @throws KeyAlreadyExistsException - if one of the items from updates has an ID that matches
      * one that is already in data structures and is not a placeholder.
-     * @author hortong
      */
     public void updateFromFiles(LinkedList<Object> updates) throws KeyAlreadyExistsException{
         for (Object item : updates) {
@@ -125,9 +138,10 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * takes in an object that is either an instanceof Trip or StopTime and checks that each
-     * occurrence of an ID has an actual object belonging to it
-     * @param newItem
+     * Author:
+     * Description: Takes in an object that is either an instanceof Trip or StopTime and checks that each
+     *              occurrence of an ID has an actual object belonging to it.
+     * @param newItem -
      */
     private void createIDReferences(Object newItem){
         if(newItem instanceof Trip){
@@ -178,8 +192,8 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * searches the stops for one containing the stop ID.
-     *
+     * Author:
+     * Description: Searches the stops for one containing the stop ID.
      * @param stopID
      * @return the stop with the specified stopID or null if no such stop is found
      */
@@ -196,11 +210,10 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * searches for a route by routeID
-     *
+     * Author: Joey Hoffman
+     * Description: Searches for a route by routeID.
      * @param routeID
      * @return returns the route with the specified routeID or null if no such route is found
-     * @author Joey Hoffman
      */
     public Route searchRoutes(String routeID) {
         if (routes != null) {
@@ -215,10 +228,10 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * searches a trip object for the specified tripID
-     *
-     * @param tripID to search for
-     * @return the trip with the specified tripID or null if there is no such trip
+     * Author:
+     * Description: Searches a trip object for the specified tripID
+     * @param tripID - The tripID to search for
+     * @return Trip object with the specified tripID or null if there is no such trip
      */
     public Trip searchTrips(String tripID) {
         if (trips != null) {
@@ -233,12 +246,12 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * searches all the trips for the specified stopID, calls the getStop method in each trip object
-     * in the trips map.
-     *
+     * Author:
+     * Description: Searches all the trips for the specified stopID, calls the
+     *              getStop method in each trip object in the trips map.
      * @param stopID to search for
-     * @return an ArrayList containing all the trips that contain the stop with the specified
-     * stopID or null if no such trip exists.
+     * @return an Collection made of an ArrayList containing all the trips that contains
+     *          the Stop with the specified stopID or null if no such trip exists.
      */
     public Collection<Trip> searchTripsForStop(String stopID) {
         ArrayList<Trip> tripsToReturn = new ArrayList<>();
@@ -257,8 +270,8 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * searches all the routes for those containing a stop with the specified stopID.
-     *
+     * Author:
+     * Description: Searches all the routes for those containing a stop with the specified stopID.
      * @param stopID of the stop to search for
      * @return an ArrayList containing all the routes that contain the stop with the specified
      * stopID or null if no such route exists.
@@ -279,30 +292,65 @@ public class DataStorage implements Subject {
         return routesToReturn;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @return
+     */
     public Collection<Observer> getObservers() {
         return observers;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @param observers
+     */
     public void setObservers(Collection<Observer> observers) {
         this.observers = observers;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @return
+     */
     public NavigableMap<String, Stop> getStops() {
         return stops;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @param stops
+     */
     public void setStops(NavigableMap<String, Stop> stops) {
         this.stops = stops;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @return
+     */
     public NavigableMap<String, Route> getRoutes() {
         return routes;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @param routes
+     */
     public void setRoutes(NavigableMap<String, Route> routes) {
         this.routes = routes;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @return
+     */
     public NavigableMap<String, Trip> getTrips() {
         return trips;
     }
@@ -311,6 +359,11 @@ public class DataStorage implements Subject {
         this.trips = trips;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @return
+     */
     public Collection<StopTime> getStopTimes() {
         return stopTimes;
     }
