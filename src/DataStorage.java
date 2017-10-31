@@ -13,6 +13,7 @@ public class DataStorage implements Subject {
     private NavigableMap<String, Trip> trips;
     private Collection<StopTime> stopTimes;
     private Collection<Observer> observers;
+    private SearchResultsView searchResultsView;
 
     /**
      * Author:
@@ -24,6 +25,10 @@ public class DataStorage implements Subject {
         trips = new TreeMap<>();
         stopTimes = new ArrayList<>();
         observers = new ArrayList<>();
+    }
+
+    public void setSearchResultsView(SearchResultsView view){
+        searchResultsView = view;
     }
 
     /**
@@ -156,6 +161,9 @@ public class DataStorage implements Subject {
                 trip.setRoute(newRoute);
                 //puts the new route object in the routes set
                 routes.put(trip.getRouteID(), newRoute);
+                if(trip.hasTripList()) {
+                    newRoute.copyTripListToRoute(trip);
+                }
             }else{
                 //sets the route in the trip object to the new route
                 trip.setRoute(routes.get(trip.getRouteID()));
@@ -265,7 +273,6 @@ public class DataStorage implements Subject {
                 final Trip tmp = trips.get(id);
                 if (tmp.getStop(stopID) != null) { tripsToReturn.add(tmp); }
             }
-            if (tripsToReturn.size() == 0) { throw new NoSuchElementException("Error: No Route Contains the StopID: " + stopID); }
         }
         return tripsToReturn;
     }
@@ -287,7 +294,6 @@ public class DataStorage implements Subject {
                 final Route tmp = routes.get(id);
                 if (tmp.searchRoute(stopID) != null) { routesToReturn.add(tmp); }
             }
-            if (routesToReturn.size() == 0) { routesToReturn = null; }
         }
         return routesToReturn;
     }

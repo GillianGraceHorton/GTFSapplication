@@ -59,6 +59,7 @@ public class Route {
 	 */
 	public Route(String routeId) {
 		this.routeID = routeId;
+		this.stops = new TreeMap<>();
 	}
 
 	/**
@@ -372,4 +373,9 @@ public class Route {
 		this.routeTextColor = route.getRouteTextColor();
 	}
 
+	public void copyTripListToRoute(Trip trip) {
+		for(StopTime stopTime: trip.getTripList().values()){
+			addStop(stopTime.getStop(), stopTime.getStopSequence());
+		}
+	}
 }

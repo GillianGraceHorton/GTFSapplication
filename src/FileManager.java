@@ -52,6 +52,9 @@ public class FileManager {
                 }catch(IllegalArgumentException e){
                     JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n    " + e
                             .getMessage());
+                    JOptionPane.showConfirmDialog(null, "would you like to manually correct the" +
+                            " information for the stop? if you select no the line will be ignored",
+                            "", JOptionPane.YES_NO_OPTION);
                 }catch (NullPointerException e) {
                     throw new NullPointerException("ERROR: Invalid Stop File Format at the following line:\n" + line);
                 }

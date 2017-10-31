@@ -1,11 +1,11 @@
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -21,9 +21,20 @@ public class Controller implements Initializable {
 	private BusMap map;
 	private FileManager fileManager;
 	private GTFSListView gtfsListView;
+	private SearchResultsView searchResultsView;
 	private DataStorage dataStorage;
 	@FXML
-    private VBox mainVBox;
+	private VBox mainVBox;
+	@FXML
+    private Tab importedItemsTab;
+	@FXML
+	private TextField searchForStopTextField;
+	@FXML
+	private TextField searchForRouteTextField;
+	@FXML
+	private TextField searchForTripTextField;
+	@FXML
+	private VBox tabSearchVBox;
 
 	/**
 	 * Author:
@@ -46,24 +57,15 @@ public class Controller implements Initializable {
 			gtfsListView.setSubject(dataStorage);
 			map.setSubject(dataStorage);
 
-			mainVBox.getChildren().add(gtfsListView);
-            gtfsListView.setPrefWidth(mainVBox.getPrefWidth());
+			importedItemsTab.setContent(gtfsListView);
+            gtfsListView.setPrefWidth(mainVBox.getWidth());
             gtfsListView.adjustSizes(mainVBox.getPrefHeight(), mainVBox.getPrefWidth());
+
+			searchResultsView = new SearchResultsView();
+            tabSearchVBox.getChildren().add(searchResultsView);
 		}catch (Exception e){
 			writeErrorMessage(e.getMessage());
 		}
-	}
-
-	public void loadFilesHandler(){
-
-	}
-
-	public void addStopHandler(){
-
-	}
-
-	public void showOngoingTripsHandler(){
-
 	}
 
 	public void editFilesHandler(){
@@ -134,31 +136,32 @@ public class Controller implements Initializable {
 		}
 	}
 
-    /**
-     * Author:
-     * Description:
-     * @param actionEvent
-     */
-	public void searchRouteForStopHandler(ActionEvent actionEvent) {
-		TextInputDialog input = new TextInputDialog();
-		String stopID = null;
-		input.setHeaderText("Search for a stop by stop_id and display all routes that contain the stop");
-		input.setContentText("Please enter the StopID");
-		if(input.showAndWait().isPresent()){ stopID = input.getResult(); }
-		ArrayList<Route> routes = dataStorage.searchRoutesForStop(stopID);
-		gtfsListView.displayRoutesContainingStop(routes);
-	}
-
 	public void searchForStopHandler() {
-	}
+		ArrayList<Object> results = new ArrayList<>();
+		String stopID = searchForStopTextField.getText();
+		if(dataStorage.searchStops(stopID) != null){
+			results.add(dataStorage.searchStops(stopID));
+			results.addAll(dataStorage.searchRoutesForStop(stopID));
+			results.addAll(dataStorage.searchTripsForStop(stopID));
+			searchResultsView.addSearchResults(stopID, results);
+		}else{
+			JOptionPane.showMessageDialog(null, "No such stop exists for the the stop ID: " +
+					stopID);
+		}
 
-	public void searchTripsForRouteHandler() {
-	}
-
-	public void searchTripsForStopHandler() {
 	}
 
 	public void searchForTripHandler() {
+		ArrayList<Object> results = new ArrayList<>();
+		String tripID = searchForRouteTextField.getText();
+		if(dataStorage.searchTrips(tripID) != null){
+			results.add(dataStorage.searchTrips(tripID));
+			searchResultsView.addSearchResults(tripID, results);
+		}else{
+			JOptionPane.showMessageDialog(null, "No such trip exists for the the trip ID: " +
+					tripID);
+		}
+
 	}
 
     /**
@@ -166,12 +169,15 @@ public class Controller implements Initializable {
      * Description:
      */
 	public void searchForRouteHandler() {
-        TextInputDialog input = new TextInputDialog();
-		String routeID = null;
-        input.setHeaderText("Search for a route by routeID and display all of the stops on the route");
-        input.setContentText("please enter the RouteID");
-        if(input.showAndWait().isPresent()){ routeID = input.getResult(); }
-        gtfsListView.displayRouteWithStops(dataStorage.searchRoutes(routeID));
+		ArrayList<Object> results = new ArrayList<>();
+		String routeID = searchForTripTextField.getText();
+		if(dataStorage.searchRoutes(routeID) != null){
+			results.add(dataStorage.searchRoutes(routeID));
+			searchResultsView.addSearchResults(routeID, results);
+		}else{
+			JOptionPane.showMessageDialog(null, "No such trip exists for the the trip ID: " +
+					routeID);
+		}
 	}
 
     /**
