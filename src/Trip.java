@@ -1,5 +1,6 @@
 import com.sun.jdi.request.DuplicateRequestException;
 
+import java.util.ArrayList;
 import java.util.NavigableMap;
 import java.util.NavigableSet;
 import java.util.TreeMap;
@@ -132,6 +133,20 @@ public class Trip {
         if (stopTime != null) {
             if (!tripList.containsKey(stopTime.getStopSequence())) {
                 tripList.put(stopTime.getStopSequence(), stopTime);
+
+                //get the sorted list, get stoptimes before and after and compare
+                ArrayList<StopTime> tripArray = new ArrayList<>(tripList.values());
+                int current = tripArray.indexOf(stopTime);
+                if (current == tripArray.size() - 1 && current != 0) {
+                    checkTime(tripArray.get(current - 1), stopTime, null);
+                } else if(current < tripArray.size() - 1 && current == 0) {
+                    checkTime(null, stopTime, tripArray.get(current + 1));
+                } else if(current < tripArray.size() - 1 && current != 0) {
+                    checkTime(tripArray.get(current - 1), stopTime, tripArray.get(current + 1));
+                }
+
+
+
                 result = true;
             }
             else {
@@ -241,5 +256,24 @@ public class Trip {
         this.serviceID = trip.getServiceID();
         this.route = trip.getRoute();
         this.routeID = trip.getRouteID();
+    }
+
+    public boolean checkTime(StopTime prev, StopTime current, StopTime next) {
+        if(prev != null) {
+            if (!(prev.getDepartureTime().compareTo(current.getArrivalTime()) <= 0)) {
+                throw new IllegalArgumentException("For Trip " + tripID + ", StopTime " + prev.getStopSequence()
+                        + "'s Departure Time Is Greater Than Or Equal To StopTime " + current.getStopSequence()
+                        + "'s Arrival Time.");
+            }
+        }
+
+        if(next != null) {
+            if (!(current.getDepartureTime().compareTo(next.getArrivalTime()) <= 0)) {
+                throw new IllegalArgumentException("For Trip " + tripID + ", StopTime " + current.getStopSequence()
+                        + "'s Departure Time Is Greater Than Or Equal To StopTime " + next.getStopSequence()
+                        + "'s Arrival Time.");
+            }
+        }
+        return true;
     }
 }
