@@ -134,16 +134,18 @@ public class Route {
 	 */
 	public boolean addStop(Stop stop, int stopNum) throws DuplicateRequestException {
 		boolean result = false;
-		if(stop != null) {
+		if(stop != null && stops != null) {
 			if(!stops.containsKey(stopNum)) {
 				stops.put(stopNum, stop);
 				result = true;
 			}else if(stops.get(stopNum).isEmpty()){
 				stops.replace(stopNum, stop);
 			}else if(!stops.get(stopNum).equals(stop)){
-				throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Route: "
-						+ routeID);
+				throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Route: " + routeID);
 			}
+		}
+		else {
+			System.out.println("Error: Attempting to add to stops treemap in route before its initialized!");
 		}
 		return result;
 	}

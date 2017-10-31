@@ -133,7 +133,6 @@ public class Trip {
         if (stopTime != null) {
             if (!tripList.containsKey(stopTime.getStopSequence())) {
                 tripList.put(stopTime.getStopSequence(), stopTime);
-
                 //get the sorted list, get stoptimes before and after and compare
                 ArrayList<StopTime> tripArray = new ArrayList<>(tripList.values());
                 int current = tripArray.indexOf(stopTime);
@@ -144,17 +143,19 @@ public class Trip {
                 } else if(current < tripArray.size() - 1 && current != 0) {
                     checkTime(tripArray.get(current - 1), stopTime, tripArray.get(current + 1));
                 }
-
-
-
                 result = true;
             }
             else {
                 throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Trip: " + tripID);
             }
-        }
-        if (route != null) {
-            route.addStop(stopTime.getStop(), stopTime.getStopSequence());
+            if (route != null) {
+                if(stopTime.getStop() != null){
+                    route.addStop(stopTime.getStop(), stopTime.getStopSequence());
+                }
+                else{
+                    System.out.println("POSSIBLE BUG");
+                }
+            }
         }
         return result;
     }

@@ -8,6 +8,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InvalidObjectException;
 import java.net.URL;
 import java.util.*;
 
@@ -189,9 +190,7 @@ public class Controller implements Initializable {
 				dataStorage.notifyObservers();
 				writeInformationMessage("Import Successful", "File Imported: " + fileToAdd.getName());
 			}
-			else {
-				throw new NullPointerException();
-			}
+			else { throw new NullPointerException(); }
 		}catch (Exception e){
 			System.out.println("TEST: importStopFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
@@ -210,11 +209,8 @@ public class Controller implements Initializable {
         	if(stopTimes != null) {
 				dataStorage.updateFromFiles(stopTimes);
 				dataStorage.notifyObservers();
-				writeInformationMessage("Import Successful", "File Imported: " + fileToAdd.getName());
 			}
-			else {
-        		throw new NullPointerException();
-			}
+			else { throw new NullPointerException(); }
         }catch (Exception e){
             System.out.println("Error: importStopTimesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
@@ -228,75 +224,42 @@ public class Controller implements Initializable {
 				Scanner scanner = new Scanner(file);
 				String firstLine = scanner.nextLine();
 				if(firstLine.equals(fileManager.validFileTypes.get("stops"))){
-					try {
-						LinkedList<Stop> stops = fileManager.parseStopFile(file);
-						if(stops != null) {
-							dataStorage.updateFromFiles(stops);
-							dataStorage.notifyObservers();
-							writeInformationMessage("Import Successful", "File Imported: " + file.getName());
-						}
-						else {
-							throw new NullPointerException();
-						}
-					}catch (Exception e){
-						System.out.println("TEST: importStopFilesHandler -> " + e);
-						writeErrorMessage(e.getMessage());
+					LinkedList<Stop> stops = fileManager.parseStopFile(file);
+					if(!stops.isEmpty()) {
+						dataStorage.updateFromFiles(stops);
+						dataStorage.notifyObservers();
 					}
+					else { throw new NullPointerException("Error: LinkedList<Stop> is empty"); }
 				}
-				else if(firstLine.equals(fileManager.validFileTypes.get("routes"))){
-					try {
-						LinkedList<Route> routes = fileManager.parseRouteFile(file);
-						if(routes != null) {
-							dataStorage.updateFromFiles(routes);
-							dataStorage.notifyObservers();
-							writeInformationMessage("Import Successful", "File Imported: " + file.getName());
-						}
-						else {
-							throw new NullPointerException();
-						}
-					}catch (Exception e){
-						System.out.println("TEST: importRouteFilesHandler -> " + e);
-						writeErrorMessage(e.getMessage());
+				else if(firstLine.equals(fileManager.validFileTypes.get("routes"))) {
+					LinkedList<Route> routes = fileManager.parseRouteFile(file);
+					if (!routes.isEmpty()) {
+						dataStorage.updateFromFiles(routes);
+						dataStorage.notifyObservers();
 					}
+					else { throw new NullPointerException("Error: LinkedList<Route> is empty"); }
 				}
 				else if(firstLine.equals(fileManager.validFileTypes.get("trips"))){
-					try {
-						LinkedList<Trip> stops = fileManager.parseTripFile(file);
-						if(stops != null) {
-							dataStorage.updateFromFiles(stops);
-							dataStorage.notifyObservers();
-							writeInformationMessage("Import Successful", "File Imported: " + file.getName());
-						}
-						else {
-							throw new NullPointerException();
-						}
-					}catch (Exception e){
-						System.out.println("TEST: importTripFilesHandler -> " + e);
-						writeErrorMessage(e.getMessage());
+					LinkedList<Trip> trips = fileManager.parseTripFile(file);
+					if(!trips.isEmpty()) {
+						dataStorage.updateFromFiles(trips);
+						dataStorage.notifyObservers();
 					}
+					else { throw new NullPointerException("Error: LinkedList<Trip> is empty"); }
 				}
-				else if(firstLine.equals(fileManager.validFileTypes.get("stop_times"))){
-					try {
-						LinkedList<StopTime> stopTimes = fileManager.parseStopTimesFile(file);
-						if(stopTimes != null) {
-							dataStorage.updateFromFiles(stopTimes);
-							dataStorage.notifyObservers();
-							writeInformationMessage("Import Successful", "File Imported: " + file.getName());
-						}
-						else {
-							throw new NullPointerException();
-						}
-					}catch (Exception e){
-						System.out.println("Error: importStopTimesHandler -> " + e);
-						writeErrorMessage(e.getMessage());
+				else if(firstLine.equals(fileManager.validFileTypes.get("stop_times"))) {
+					LinkedList<StopTime> stopTimes = fileManager.parseStopTimesFile(file);
+					if (!stopTimes.isEmpty()) {
+						dataStorage.updateFromFiles(stopTimes);
+						dataStorage.notifyObservers();
 					}
+					else { throw new NullPointerException("Error: LinkedList<StopTime> is empty"); }
 				}
+				else { throw new InvalidObjectException("Error: Invalid File Format"); }
 			}
-			catch (FileNotFoundException e){
-
-			}
-			catch (NullPointerException e){
-
+			catch (InvalidObjectException | InputMismatchException | FileNotFoundException | NullPointerException e){
+				writeErrorMessage("Error: " + e.toString() +"\nMessage: "+ e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}

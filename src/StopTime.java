@@ -3,7 +3,6 @@
  * Description:
  * Date Created: 10/3/2017
  */
-@SuppressWarnings("SpellCheckingInspection")
 public class StopTime {
 
     private String trip_id;
@@ -13,10 +12,8 @@ public class StopTime {
     private Stop stop;
     private String stop_id;
     private int stop_sequence;
-    @SuppressWarnings("SpellCheckingInspection")
     private String stop_headsign;
     private String pickup_type;
-    @SuppressWarnings("SpellCheckingInspection")
     private String dropoff_type;
 
     /**
@@ -31,14 +28,14 @@ public class StopTime {
      * @param pickup_type
      * @param drop_off_type
      */
-    @SuppressWarnings("SpellCheckingInspection")
+
     public StopTime(String trip_id, String arrival_time, String departure_time, String stop_id,
                     String stop_sequence, String stop_headsign, String pickup_type, String drop_off_type) {
 
         this.trip_id = trip_id;
         this.arrival_time = new Time(arrival_time);
         this.departure_time = new Time(departure_time);
-        if(this.arrival_time.compareTo(this.departure_time) == 1){
+        if(this.arrival_time.getTime() > this.departure_time.getTime()){
             throw new IllegalArgumentException("the arrival time must be less than or equal to the departure time");
         }
         this.stop_id = stop_id;
