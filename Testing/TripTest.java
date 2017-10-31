@@ -18,18 +18,25 @@ class TripTest {
     @Test
     void addStop() {
         //Test if a stop cannot be added without setting route first.
-        assertFalse(trip.addStop(new Stop(12, 11, "Stop", "stop_0", "Stop"), 0));
+        Stop stop1 = new Stop(12, 11, "Stop", "stop_0", "Stop");
+        StopTime stopTime1 = new StopTime("stopTime_0", "", "",
+                "stop_0", "0", "", "", "");
+        stopTime1.setStop(stop1);
+        assertFalse(trip.addStopTime(stopTime1));
 
         //Test if all stops can be found with a valid route assigned in the trip
         trip.setRoute(new Route("route_1", " ", " ", " ", " ",
                 " ", " ", " ", " "));
         for (int i = 1; i <= 10; i++) {
+            StopTime stopTime = new StopTime("stopTime_" + i, "", "",
+                    "stop_0", "0", "", "", "");
             Stop stop = new Stop(12, 11, "Stop", "stop_" + i, "Stop");
-            assertTrue(trip.addStop(stop, i));
+            stopTime.setStop(stop);
+            assertTrue(trip.addStopTime(stopTime));
         }
 
         //add a null stop
-        assertFalse(trip.addStop(null, 3));
+        assertFalse(trip.addStopTime(null));
     }
 
 
@@ -42,13 +49,16 @@ class TripTest {
         //set route for trip
         trip.setRoute(new Route("route_1", " ", " ", " ", " ",
                 " ", " ", " ", " "));
-        //Makes sure searching for stops before adding doesnt create error
+        //Makes sure searching for stops before adding doesn't create error
         assertEquals(trip.getStop("stop_3"), null);
 
         //Add stops
         for(int i = 1; i <= 10; i++) {
+            StopTime stopTime = new StopTime("stopTime", "", "",
+                    "stop_0", "0", "", "", "");
             Stop stop = new Stop(12, 11, "Stop", "stop_" + i, "Stop");
-            trip.addStop(stop, i);
+            stopTime.setStop(stop);
+            trip.addStopTime(stopTime);
         }
 
         //Test if all stops can be found
@@ -60,7 +70,7 @@ class TripTest {
         assertEquals(trip.getStop("stop_15"), null);
 
         //search with a null stop id
-        trip.addStop(null, 11);
+        trip.addStopTime(null);
         assertEquals(trip.getStop(null), null);
     }
 

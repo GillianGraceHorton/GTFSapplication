@@ -18,13 +18,13 @@ class StopTest {
      */
     @Test
     void addStopTimes() {
-        //Test if normal stoptimes can be added
+        //Test if normal stopTimes can be added
         for(int i = 1; i <= 10; i++) {
             StopTime stopTime = new StopTime("trip_" + 1, "10:10", "10:10", "", "", "", "", "");
             assertTrue(stops.addStopTimes(stopTime));
         }
 
-        //test if null stoptimes can't be added
+        //test if null stopTimes can't be added
         assertFalse(stops.addStopTimes(null));
     }
 

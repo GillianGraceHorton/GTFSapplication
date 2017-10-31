@@ -1,40 +1,21 @@
 import java.util.ArrayList;
 
 /**
- * @author Gracie Horton
- * @version 1.0
- * @created 03-Oct-2017 4:57:33 PM
+ * Author: Gracie Horton
+ * Description:
+ * Date Created: 10/3/2017 - 4:57:33 PM
  */
 public class Stop {
 
-	/* arrival time for the bus at given stop. to be set when the stop is part of a trip. */
-	private Time arrivalTime;
-
-	/* departure time for the bus at given stop. to be set when the stop is part of a trip. */
-	private Time departureTime;
-
-	/* gps location of the stop */
-	private Location location;
-
-	/**
-	 * stop identifier
-	 */
-	private String stopID;
-
-	/**
-	 * stop name
-	 */
-	private String name;
-
-	/**
-	 * short description of stop and/or where it is located
-	 */
-	private String stopDescription;
-
+	private Location location; //gps location of the stop
+	private String stopID; //stop identifier
+	private String name; //stop name
+	private String stopDescription; //short description of stop and/or where it is located
 	private ArrayList<StopTime> stopTimes;
 
 	/**
-	 * creates a stop object with information loaded from a stop file
+	 * Author:
+	 * Description: Creates a stop object with information loaded from a stop file
 	 * @param lon longitude for the gps location of the stop
 	 * @param lat latitude for the gps location of the stop
 	 * @param name of the stop
@@ -48,68 +29,98 @@ public class Stop {
 		this.stopDescription = stopDesc;
 	}
 
+	/**
+	 * Author:
+	 * Description:
+	 * @param stopID
+	 */
 	public Stop(String stopID){
-	    this.stopID = stopID;
-    }
-
-	public void setArrivalTime(Time arrivalTime) {
-		this.arrivalTime = arrivalTime;
+		this.stopID = stopID;
 	}
 
-	public void setDepartureTime(Time departureTime) {
-		this.departureTime =  departureTime;
-	}
-
+	/**
+	 * Author:
+	 * Description:
+	 * @param location
+	 */
 	public void setLocation(Location location) {
 		this.location = location;
 	}
 
+	/**
+	 * Author:
+	 * Description:
+	 * @param stopDescription
+	 */
 	public void setStopDescription(String stopDescription) {
 		this.stopDescription = stopDescription;
 	}
 
-	public Time getArrivalTime() {
-		return arrivalTime;
-	}
-
-	public Time getDepartureTime() {
-		return departureTime;
-	}
-
+	/**
+	 * Author:
+	 * Description:
+	 * @return
+	 */
 	public Location getLocation() {
 		return location;
 	}
 
+	/**
+	 * Author:
+	 * Description:
+	 * @return
+	 */
 	public String getStopID() {
 		return stopID;
 	}
 
+	/**
+	 * Author:
+	 * Description:
+	 * @return
+	 */
+	public ArrayList<StopTime> getStopTimes() {
+		return stopTimes;
+	}
+
+	/**
+	 * Author:
+	 * Description:
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Author:
+	 * Description:
+	 * @return
+	 */
 	public String getStopDescription() {
 		return stopDescription;
 	}
 
-    /**
-     * Adds stop times to the stops object
-     * @param stopTime - The stoptime to add
-     * @return boolean - if it was successfully added or not
-     */
+	/**
+	 * Author:
+	 * Description: Adds stop times to the stops object
+	 * @param stopTime - The stopTime to add
+	 * @return boolean - if it was successfully added or not
+	 */
 	public boolean addStopTimes(StopTime stopTime){
+		boolean result = false;
 		if(stopTimes == null){
-			stopTimes = new ArrayList<StopTime>();
+			stopTimes = new ArrayList<>();
 		}
 		if(stopTime != null) {
-			return stopTimes.add(stopTime);
+			result = stopTimes.add(stopTime);
 		}
-		return false;
+		return result;
 	}
 
 	/**
-	 * @author Gracie Horton
-	 * compares two stops based on their stopIDS
+	 * Author: Gracie Horton
+	 * Description: Compares two stops based on their stopIDS
 	 * @param stop to compare to
 	 * @return true if the stopIDs are equal and false if they are not
 	 */
@@ -118,24 +129,40 @@ public class Stop {
 	}
 
 	/**
-	 * @author Joseph Heinz - heinzja@msoe.edu
-	 * @return returns formatted string of data stored in stop class.
+	 * Author: Joseph Heinz - heinzja@msoe.edu
+	 * Description: returns formatted string of data stored in stop class.
+	 * @return String - formatted string of data used for GUI
 	 */
-	public String toString(){
+	public String toStringData(){
+		String result;
 		if(isEmpty()){
-			return "StopID: " + getStopID() + "\nNo Data";
+			result =  "StopID: " + getStopID() + "\nNo Data";
+		}else {
+			result = "StopID: " + getStopID() + "\n" +
+					"Name: " + getName() + "\n" +
+					"Description: " + getStopDescription() + "\n" +
+					"Latitude: " + location.getLat() + "\n" +
+					"Longitude: " + location.getLon() + "\n";
 		}
-		return  "StopID: " + getStopID() + "\n" +
-				"Name: " + getName() + "\n" +
-				"Description: " + getStopDescription() + "\n" +
-				"Latitude: " + location.getLat() + "\n" +
-				"Longitude: " + location.getLon() + "\n" +
-				"Arrival Time: " + getArrivalTime() + "\n" +
-				"Departure Time: " + getDepartureTime() + "\n";
+		return result;
 	}
 
+	/**
+	 * Author:
+	 * Description:
+	 * @return
+	 */
+	public String toString(){
+		return "Stop Name: " + name + "\n  StopID: " + stopID;
+	}
+
+	/**
+	 * Author:
+	 * Description:
+	 * @return
+	 */
 	public String toStringExport(){
-		return String.format("%s,%s,%s,%f,%f,%s,%s,",getStopID(),getName(),getStopDescription(),getLocation().getLat(),getLocation().getLon(),getArrivalTime(),getDepartureTime());
+		return String.format("%s,%s,%s,%f,%f,",getStopID(),getName(),getStopDescription(),getLocation().getLat(),getLocation().getLon());
 	}
 
 	/**
@@ -151,4 +178,22 @@ public class Stop {
 		}
 		return result;
 	}
+
+	/**
+	 * Author:
+	 * Description:
+	 * @param stop
+	 * @throws IllegalArgumentException
+	 */
+	public void copyInstanceVariables(Stop stop)throws IllegalArgumentException{
+		if(!this.getStopID().equalsIgnoreCase(stop.getStopID())){
+			throw new IllegalArgumentException("This trip's ID: " + this.getStopID() + ", does " +
+					"not match the ID of the argument: " + stop.getStopID());
+		}
+		this.name = stop.getName();
+		this.stopDescription = stop.getStopDescription();
+		this.location = stop.getLocation();
+		this.stopTimes = stop.getStopTimes();
+	}
+
 }

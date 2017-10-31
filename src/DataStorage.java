@@ -1,178 +1,208 @@
-
-
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.*;
 
 /**
- * @author Gracie Horton
- * @version 1.0
- * @created 03-Oct-2017 4:57:21 PM
+ * Author: Gracie Horton
+ * Description:
+ * Date Created: 10/3/2017 - 4:57:21 PM
  */
 public class DataStorage implements Subject {
 
     private NavigableMap<String, Stop> stops;
     private NavigableMap<String, Route> routes;
     private NavigableMap<String, Trip> trips;
-    private Collection<Trip> tripsWithTimes;
     private Collection<StopTime> stopTimes;
     private Collection<Observer> observers;
+    private SearchResultsView searchResultsView;
 
-
+    /**
+     * Author:
+     * Description: Initializes the DataStorage class
+     */
     public DataStorage() {
         stops = new TreeMap<>();
         routes = new TreeMap<>();
         trips = new TreeMap<>();
         stopTimes = new ArrayList<>();
-        tripsWithTimes = new ArrayList<>();
         observers = new ArrayList<>();
     }
 
+    public void setSearchResultsView(SearchResultsView view){
+        searchResultsView = view;
+    }
+
+    /**
+     * Author:
+     * Description:
+     * @param observer - the observer to attach
+     */
     public void attach(Observer observer) {
         observers.add(observer);
     }
 
+    /**
+     * Author:
+     * Description:
+     * @param observer
+     * @return boolean - result of removing an observer
+     */
     public boolean detach(Observer observer) {
         return observers.remove(observer);
     }
 
     /**
-     * sends updates to all observers after adding each object to its own dataStructures
-     *
-     * @param updates an arrayList of the objects that were added.
+     * Author: hortong
+     * Description: Takes an arrayList of objects created by files loaded in the file manager and adds each object.
+     * @param updates - ArrayList of objects created by the file loaded in the File manager class
+     * @throws KeyAlreadyExistsException - if one of the items from updates has an ID that matches
+     * one that is already in data structures and is not a placeholder.
      */
-    public void notifyObservers(ArrayList<Object> updates) throws KeyAlreadyExistsException {
-        for (Object item : updates) {
-            if (item instanceof Stop) {
-                if(stops.containsKey(((Stop) item).getStopID())){
-                    if(stops.get(((Stop) item).getStopID()).isEmpty()){
-                        stops.replace(((Stop) item).getStopID(),(Stop)item);
-                    }else{
-                        throw new KeyAlreadyExistsException("the stop: " + item.toString() +
+    public void updateFromFiles(LinkedList updates) throws KeyAlreadyExistsException{
+        Object tmp = updates.get(0);
+        if(tmp instanceof Stop){
+            for (Stop cStop : (LinkedList<Stop>) updates) {
+                final String cStopID = cStop.getStopID();
+                //checks if the stops list contains a stop with the same stopID
+                if (stops.containsKey(cStopID)){
+                    Stop oldStop = stops.get(cStopID);
+                    if (oldStop.isEmpty()) {
+                        //gives the empty stop all the variables of the newStop
+                        oldStop.copyInstanceVariables(cStop);
+                    } else {
+                        throw new KeyAlreadyExistsException("the stop: " + cStop.toString() +
                                 "\ncannot bee added because it has the same ID as the stop: " +
-                                stops.get(((Stop)item).getStopID()));
+                                stops.get(cStopID));
                     }
-                }else {
-                    stops.put(((Stop) item).getStopID(), (Stop) item);
+                } else{
+                    stops.put(cStopID, cStop);
                 }
-
-            } else if (item instanceof Route) {
-                if(routes.containsKey(((Route) item).getRouteID())){
-                    if(routes.get(((Route) item).getRouteID()).isEmpty()){
-                        routes.replace(((Route) item).getRouteID(),(Route)item);
-                    }else{
-                        throw new KeyAlreadyExistsException();
-                    }
-                }else {
-                    routes.put(((Route) item).getRouteID(), (Route) item);
-                }
-
-            } else if (item instanceof Trip) {
-                if(trips.containsKey(((Trip) item).getTripID())){
-                    if(trips.get(((Trip) item).getTripID()).isEmpty()){
-                        trips.replace(((Trip) item).getTripID(),(Trip)item);
-                    }else{
-                        throw new KeyAlreadyExistsException();
-                    }
-                }else {
-                    trips.put(((Trip) item).getTripID(), (Trip) item);
-                }
-
-            } else if (item instanceof StopTime) {
-                stopTimes.add((StopTime) item);
             }
         }
+        else if(tmp instanceof Route){
+            for(Route cRoute : (LinkedList<Route>) updates){
+                final String cRouteID = cRoute.getRouteID();
+                if (routes.containsKey(cRouteID)) {
+                    Route oldRoute = routes.get(cRouteID);
+                    if (routes.get(cRouteID).isEmpty()) {
+                        //gives the empty route all the variables of the newRoute
+                        oldRoute.copyInstanceVariables(cRoute);
+                    } else {
+                        throw new KeyAlreadyExistsException("the route: " + updates.toString() +
+                                "\ncannot bee added because it has the same ID as the route: " +
+                                routes.get(cRouteID));
+                    }
+                } else {
+                    routes.put(cRouteID, cRoute);
+                }
+            }
+        }
+        else if(tmp instanceof Trip){
+            for(Trip cTrip : (LinkedList<Trip>) updates){
+                String cTripID = cTrip.getTripID();
+                //checks if the trips list contains a trip with the same tripID
+                if (trips.containsKey(cTripID)) {
+                    Trip oldTrip = trips.get(cTripID);
+                    if (oldTrip.isEmpty()) {
+                        //gives the empty route all the variables of the newRoute
+                        oldTrip.copyInstanceVariables(cTrip);
+                        cTrip = oldTrip;
+                    } else {
+                        //throws an exception because there already exists a trip object with the same ID
+                        throw new KeyAlreadyExistsException("the trip: " + cTrip.toString() +
+                                "\ncannot bee added because it has the same ID as the trip: " +
+                                trips.get(cTrip.getTripID()));
+                    }
+                } else {
+                    //adds the trip to the trips list
+                    trips.put(cTripID, cTrip);
+                }
+                //creates Id references from this item
+                createIDReferences(cTrip);
+            }
+        }
+        else if(tmp instanceof StopTime){
+            for(StopTime cStopTime : (LinkedList<StopTime>) updates) {
+                    stopTimes.add(cStopTime);
+                    //creates empty object from ID references in the stopTimes Object if they don't already exist
+                    createIDReferences(cStopTime);
+            }
+        }
+    }
+
+    /**
+     * sends the contents of this subject's dataStructures to each observer
+     * @throws KeyAlreadyExistsException
+     */
+    public void notifyObservers(){
         ArrayList<Object> dataStructures = new ArrayList<>();
         dataStructures.addAll(stops.values());
         dataStructures.addAll(routes.values());
         dataStructures.addAll(trips.values());
         dataStructures.addAll(stopTimes);
-        if(stopTimes.size()!=0){
-            dataStructures.addAll(createIDReferencesFromStopTimes());
-        }
-        if (trips.size() != 0){
-            dataStructures.addAll(createIDReferencesFromTrips());
-            if(routes.size() != 0) {
-                addRoutesToTrips();
-            }
-            if(stopTimes.size()!=0){
-                updateTripsWithStopTimes();
-            }
-        }
         for (Observer observer : observers) {
             observer.update(dataStructures);
         }
     }
 
     /**
-     * updates the trip with information loaded from the stopTimes file and adds the stopTime
-     * object to is corresponding stop object where its put into an arrayList in the stop object.
-     *
-     * @author hortong
+     * Author:
+     * Description: Takes in an object that is either an instanceof Trip or StopTime and checks that each
+     *              occurrence of an ID has an actual object belonging to it.
+     * @param newItem -
      */
-    private void updateTripsWithStopTimes() {
-        for (StopTime stopTime : stopTimes) {
-            Trip tripToUpdate = searchTrips(stopTime.getTripID());
-            tripsWithTimes.add(tripToUpdate);
-            tripToUpdate.addStop(searchStops(stopTime.getStopID()), Integer.parseInt(stopTime
-                    .getStopSequence()));
-            tripToUpdate.getStop(stopTime.getStopID()).setArrivalTime(stopTime.getArrivalTime());
-            tripToUpdate.getStop(stopTime.getStopID()).setDepartureTime(stopTime.getDepartureTime());
-            searchStops(stopTime.getStopID()).addStopTimes(stopTime);
-        }
-    }
-
-    private ArrayList<Object> createIDReferencesFromTrips(){
-        ArrayList<Object> created = new ArrayList<>();
-        NavigableSet<String> nav = trips.navigableKeySet();
-        for (String id : nav) {
-            if(!trips.get(id).isEmpty() && !routes.containsKey(trips.get(id).getRouteID())){
-                Route newRoute = new Route(trips.get(id).getRouteID());
-                routes.put(trips.get(id).getRouteID(), newRoute);
-                created.add(newRoute);
-            }
-        }
-        return created;
-    }
-
-    private ArrayList<Object> createIDReferencesFromStopTimes(){
-        ArrayList<Object> created = new ArrayList<>();
-        for (StopTime stopTime: stopTimes) {
-            if(!stops.containsKey(stopTime.getStopID())){
-                Stop newStop = new Stop(stopTime.getStopID());
-                stops.put(stopTime.getStopID(), newStop);
-                created.add(newStop);
-            }
-            if(!trips.containsKey(stopTime.getTripID())){
-                Trip newTrip = new Trip(stopTime.getTripID());
-                trips.put(stopTime.getTripID(), newTrip);
-                created.add(newTrip);
-            }
-        }
-        return created;
-    }
-
-    /**
-     * updates the trip object with the route objects that they have ID's for but only if the
-     * trips and routes maps are not empty
-     *
-     * @author hortong
-     */
-    private void addRoutesToTrips() {
-        if (routes != null && trips != null) {
-            NavigableSet<String> nav = trips.navigableKeySet();
-            Trip thisTrip;
-            for (String id : nav) {
-                thisTrip = trips.get(id);
-                if (!thisTrip.isEmpty()) {
-                    thisTrip.setRoute(searchRoutes(thisTrip.getRouteID()));
+    private void createIDReferences(Object newItem){
+        if(newItem instanceof Trip){
+            Trip trip = (Trip)newItem;
+            //checks if there is already a route object for the routeID in trip
+            if(!routes.containsKey(trip.getRouteID())){
+                //creates new route object from routeID
+                Route newRoute = new Route(trip.getRouteID());
+                //sets the route in the trip object to the new route
+                trip.setRoute(newRoute);
+                //puts the new route object in the routes set
+                routes.put(trip.getRouteID(), newRoute);
+                if(trip.hasTripList()) {
+                    newRoute.copyTripListToRoute(trip);
                 }
+            }else{
+                //sets the route in the trip object to the new route
+                trip.setRoute(routes.get(trip.getRouteID()));
+            }
+        }else if (newItem instanceof StopTime){
+            StopTime stopTime = (StopTime)newItem;
+            //checks if there is already a stop object for the stopID in stopTime
+            if(!stops.containsKey(stopTime.getStopID())){
+                //creates new stop object from stopID
+                Stop newStop = new Stop(stopTime.getStopID());
+                //sets the stop in the stopTime object to the new stop
+                stopTime.setStop(newStop);
+                //adds the stopTime to the new stop object
+                newStop.addStopTimes(stopTime);
+                //puts the new stop in the the stops set
+                stops.put(stopTime.getStopID(), newStop);
+            }else{
+                //adds the stop to the StopTime object and adds the StopTime object to the stop
+                Stop stop = stops.get(stopTime.getStopID());
+                stopTime.setStop(stop);
+                stop.addStopTimes(stopTime);
+            }
+            //checks if a trip with the tripID in stopTime exists
+            if(!trips.containsKey(stopTime.getTripID())){
+                //creates a new trip object from the tripID in stopTime, add the stopTime to
+                // trip, and puts the new trip in the trips set
+                Trip newTrip = new Trip(stopTime.getTripID());
+                newTrip.addStopTime(stopTime);
+                trips.put(stopTime.getTripID(), newTrip);
+            }else{
+                //adds the StopTime to the trip object
+                trips.get(stopTime.getTripID()).addStopTime(stopTime);
             }
         }
     }
 
     /**
-     * searches the stops for one containing the stop ID.
-     *
+     * Author:
+     * Description: Searches the stops for one containing the stop ID.
      * @param stopID
      * @return the stop with the specified stopID or null if no such stop is found
      */
@@ -189,11 +219,10 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * searches for a route by routeID
-     *
+     * Author: Joey Hoffman
+     * Description: Searches for a route by routeID.
      * @param routeID
      * @return returns the route with the specified routeID or null if no such route is found
-     * @author Joey Hoffman
      */
     public Route searchRoutes(String routeID) {
         if (routes != null) {
@@ -208,10 +237,10 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * searches a trip object for the specified tripID
-     *
-     * @param tripID to search for
-     * @return the trip with the specified tripID or null if there is no such trip
+     * Author:
+     * Description: Searches a trip object for the specified tripID
+     * @param tripID - The tripID to search for
+     * @return Trip object with the specified tripID or null if there is no such trip
      */
     public Trip searchTrips(String tripID) {
         if (trips != null) {
@@ -226,76 +255,107 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * searches all the trips for the specified stopID, calls the getStop method in each trip object
-     * in the trips map.
-     *
+     * Author:
+     * Description: Searches all the trips for the specified stopID, calls the
+     *              getStop method in each trip object in the trips map.
      * @param stopID to search for
-     * @return an ArrayList containing all the trips that contain the stop with the specified
-     * stopID or null if no such trip exists.
+     * @return an Collection made of an ArrayList containing all the trips that contains
+     *          the Stop with the specified stopID or null if no such trip exists.
      */
-    public Collection<Trip> searchTripsForStop(String stopID) {
-        ArrayList<Trip> tripsToReturn = new ArrayList<>();
+    public Collection<Trip> searchTripsForStop(String stopID) throws NoSuchElementException {
+        NavigableSet<String> navSet;
+        ArrayList<Trip> tripsToReturn = null;
         if (trips != null) {
-            NavigableSet<String> nav = trips.navigableKeySet();
-            for (String id : nav) {
-                if (trips.get(id).getStop(stopID) != null) {
-                    tripsToReturn.add(trips.get(id));
-                }
+            navSet = trips.navigableKeySet();
+            tripsToReturn = new ArrayList<>();
+            for (String id : navSet) {
+                final Trip tmp = trips.get(id);
+                if (tmp.getStop(stopID) != null) { tripsToReturn.add(tmp); }
             }
-        }
-        if (tripsToReturn.size() == 0) {
-            return null;
         }
         return tripsToReturn;
     }
 
     /**
-     * searches all the routes for those containing a stop with the specified stopID.
-     *
+     * Author:
+     * Description: Searches all the routes for those containing a stop with the specified stopID.
      * @param stopID of the stop to search for
      * @return an ArrayList containing all the routes that contain the stop with the specified
      * stopID or null if no such route exists.
      */
     public ArrayList<Route> searchRoutesForStop(String stopID) {
-        ArrayList<Route> routesToReturn = new ArrayList<>();
+        ArrayList<Route> routesToReturn = null;
+        NavigableSet<String> navSet;
         if (routes != null) {
-            NavigableSet<String> nav = routes.navigableKeySet();
-            for (String id : nav) {
-                if (routes.get(id).searchRoute(stopID) != null) {
-                    routesToReturn.add(routes.get(id));
-                }
+            navSet = routes.navigableKeySet();
+            routesToReturn = new ArrayList<>();
+            for (String id : navSet) {
+                final Route tmp = routes.get(id);
+                if (tmp.searchRoute(stopID) != null) { routesToReturn.add(tmp); }
             }
-        }
-        if (routesToReturn.size() == 0) {
-            return null;
         }
         return routesToReturn;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @return
+     */
     public Collection<Observer> getObservers() {
         return observers;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @param observers
+     */
     public void setObservers(Collection<Observer> observers) {
         this.observers = observers;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @return
+     */
     public NavigableMap<String, Stop> getStops() {
         return stops;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @param stops
+     */
     public void setStops(NavigableMap<String, Stop> stops) {
         this.stops = stops;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @return
+     */
     public NavigableMap<String, Route> getRoutes() {
         return routes;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @param routes
+     */
     public void setRoutes(NavigableMap<String, Route> routes) {
         this.routes = routes;
     }
 
+    /**
+     * Author:
+     * Description:
+     * @return
+     */
     public NavigableMap<String, Trip> getTrips() {
         return trips;
     }
@@ -304,14 +364,11 @@ public class DataStorage implements Subject {
         this.trips = trips;
     }
 
-    public Collection<Trip> getTripsWithTimes() {
-        return tripsWithTimes;
-    }
-
-    public void setTripsWithTimes(Collection<Trip> tripsWithTimes) {
-        this.tripsWithTimes = tripsWithTimes;
-    }
-
+    /**
+     * Author:
+     * Description:
+     * @return
+     */
     public Collection<StopTime> getStopTimes() {
         return stopTimes;
     }

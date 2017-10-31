@@ -1,16 +1,16 @@
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
+import javax.swing.*;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InvalidObjectException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * @author hortong
@@ -18,45 +18,55 @@ import java.util.ResourceBundle;
  * @created 03-Oct-2017 4:57:20 PM
  */
 public class Controller implements Initializable {
+	private FileChooser fileChooser;
 	private BusMap map;
 	private FileManager fileManager;
-	private ListView listView;
+	private GTFSListView gtfsListView;
+	private SearchResultsView searchResultsView;
 	private DataStorage dataStorage;
 	@FXML
-    private VBox mainVBox;
+	private VBox mainVBox;
+	@FXML
+    private Tab importedItemsTab;
+	@FXML
+	private TextField searchForStopTextField;
+	@FXML
+	private TextField searchForRouteTextField;
+	@FXML
+	private TextField searchForTripTextField;
+	@FXML
+	private VBox tabSearchVBox;
 
-	public void initialize(URL location, ResourceBundle resources){
+	/**
+	 * Author:
+	 * Description:
+	 * @param location
+	 * @param resources
+	 */
+	public void initialize(URL location, ResourceBundle resources) {
 		try {
-			fileManager = new FileManager();
-			listView = new ListView();
-			map = new BusMap();
-			dataStorage = new DataStorage();
 			ArrayList<Observer> observers = new ArrayList<>();
-			observers.add(listView);
+			fileChooser = new FileChooser();
+			fileManager = new FileManager();
+			gtfsListView = new GTFSListView();
+			dataStorage = new DataStorage();
+			map = new BusMap();
+
+			observers.add(gtfsListView);
 			observers.add(map);
 			dataStorage.setObservers(observers);
-			listView.setSubject(dataStorage);
+			gtfsListView.setSubject(dataStorage);
 			map.setSubject(dataStorage);
 
-			mainVBox.getChildren().add(listView);
-            listView.setPrefWidth(mainVBox.getPrefWidth());
-            listView.adjustSizes(mainVBox.getPrefHeight(), mainVBox.getPrefWidth());
+			importedItemsTab.setContent(gtfsListView);
+            gtfsListView.setPrefWidth(mainVBox.getWidth());
+            gtfsListView.adjustSizes(mainVBox.getPrefHeight(), mainVBox.getPrefWidth());
+
+			searchResultsView = new SearchResultsView();
+            tabSearchVBox.getChildren().add(searchResultsView);
 		}catch (Exception e){
-			System.out.println(e);
 			writeErrorMessage(e.getMessage());
 		}
-	}
-
-	public void loadFilesHandler(){
-
-	}
-
-	public void addStopHandler(){
-
-	}
-
-	public void showOngoingTripsHandler(){
-
 	}
 
 	public void editFilesHandler(){
@@ -68,166 +78,249 @@ public class Controller implements Initializable {
 	}
 
 	/**
-	 * @author Joseph Heinz - heinzja@msoe.edu
-	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 * Author: Joseph Heinz - heinzja@msoe.edu
+	 * Description: creates an exports directory in the user chosen directory, with the user chosen file name
 	 */
 	public void exportStopFileHandler(){
-		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Export Stop File");
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
 		try {
 			fileManager.exportStopFile(exportDir, dataStorage);
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
-					"Successfully exported StopsFile.");
+			writeInformationMessage("Export Successful", "Successfully exported StopsFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
 	}
 
 	/**
-	 * @author Joseph Heinz - heinzja@msoe.edu
-	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 * Author: Joseph Heinz - heinzja@msoe.edu
+	 * Description: creates an exports directory in the user chosen directory, with the user chosen file name
 	 */
 	public void exportStopTimesFileHandler(){
-		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Export StopTimes File");
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
 		try {
 			fileManager.exportStopTimesFile(exportDir, dataStorage);
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
-					"Successfully exported StopTimesFile.");
+			writeInformationMessage("Export Successful", "Successfully exported StopTimesFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
 	}
 
 	/**
-	 * @author Joseph Heinz - heinzja@msoe.edu
-	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 * Author: Joseph Heinz - heinzja@msoe.edu
+	 * Description: creates an exports directory in the user chosen directory, with the user chosen file name
 	 */
 	public void exportRouteFileHandler(){
-		FileChooser fileChooser = new FileChooser();
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
 		try {
 			fileManager.exportRouteFile(exportDir, dataStorage);
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
-					"Successfully exported RoutesFile.");
+			writeInformationMessage("Export Successful", "Successfully exported RoutesFile.");
 		} catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
 	}
 
 	/**
-	 * @author Joseph Heinz - heinzja@msoe.edu
-	 * Description: creates an exports directory in the user choosen directory, with the user chosen file name
+	 * Author: Joseph Heinz - heinzja@msoe.edu
+	 * Description: creates an exports directory in the user chosen directory, with the user chosen file name
 	 */
 	public void exportTripFileHandler(){
-		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Export Trip File");
 		File exportDir = new File(fileChooser.showSaveDialog(null).getPath());
 		try {
 			fileManager.exportTripFile(exportDir, dataStorage);
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Export Successful",
-					"Successfully exported TripsFile.");
-		} catch (Exception e) {
+			writeInformationMessage("Export Successful", "Successfully exported TripsFile.");
+		}
+		catch (Exception e) {
 			writeErrorMessage(e.getMessage());
 		}
 	}
 
-	public void searchRouteForStopHandler(ActionEvent actionEvent) {
-		TextInputDialog input = new TextInputDialog();
-		input.setHeaderText("Search for a stop by stop_id and display all routes that contain the" +
-						" stop");
-		input.setContentText("please enter the StopID");
-		Optional<String> result = input.showAndWait();
-		String stopID = result.get();
-
-		ArrayList<Route> routes = dataStorage.searchRoutesForStop(stopID);
-		listView.displayRoutesContainingStop(routes);
-	}
-
 	public void searchForStopHandler() {
-	}
+		ArrayList<Object> results = new ArrayList<>();
+		String stopID = searchForStopTextField.getText();
+		if(dataStorage.searchStops(stopID) != null){
+			results.add(dataStorage.searchStops(stopID));
+			results.addAll(dataStorage.searchRoutesForStop(stopID));
+			results.addAll(dataStorage.searchTripsForStop(stopID));
+			searchResultsView.addSearchResults(stopID, results);
+		}else{
+			JOptionPane.showMessageDialog(null, "No such stop exists for the the stop ID: " +
+					stopID);
+		}
 
-	public void searchTripsForRouteHandler() {
-	}
-
-	public void searchTripsForStopHandler() {
 	}
 
 	public void searchForTripHandler() {
+		ArrayList<Object> results = new ArrayList<>();
+		String tripID = searchForRouteTextField.getText();
+		if(dataStorage.searchTrips(tripID) != null){
+			results.add(dataStorage.searchTrips(tripID));
+			searchResultsView.addSearchResults(tripID, results);
+		}else{
+			JOptionPane.showMessageDialog(null, "No such trip exists for the the trip ID: " +
+					tripID);
+		}
+
 	}
 
+    /**
+     * Author:
+     * Description:
+     */
 	public void searchForRouteHandler() {
-        TextInputDialog input = new TextInputDialog();
-        input.setHeaderText("Search for a route by routeID and display all of the stops on the " +
-                "route");
-        input.setContentText("please enter the RouteID");
-        Optional<String> result = input.showAndWait();
-        String routeID = result.get();
-
-        listView.displayRouteWithStops(dataStorage.searchRoutes(routeID));
+		ArrayList<Object> results = new ArrayList<>();
+		String routeID = searchForTripTextField.getText();
+		if(dataStorage.searchRoutes(routeID) != null){
+			results.add(dataStorage.searchRoutes(routeID));
+			searchResultsView.addSearchResults(routeID, results);
+		}else{
+			JOptionPane.showMessageDialog(null, "No such trip exists for the the trip ID: " +
+					routeID);
+		}
 	}
 
+    /**
+     * Author:
+     * Description:
+     */
 	public void importStopFileHandler() {
-		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle("Import Stops");
 		File fileToAdd = fileChooser.showOpenDialog(null);
         System.out.println();
         try {
-			//fileManager.addFile(fileToAdd);
-			ArrayList<Object> stops = fileManager.parseStopFile(fileToAdd);
-			dataStorage.notifyObservers(stops);
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
-					"Successfully imported " + fileToAdd.getName() + ".");
+			LinkedList<Stop> stops = fileManager.parseStopFile(fileToAdd);
+			if(stops != null) {
+				dataStorage.updateFromFiles(stops);
+				dataStorage.notifyObservers();
+				writeInformationMessage("Import Successful", "File Imported: " + fileToAdd.getName());
+			}
+			else { throw new NullPointerException(); }
 		}catch (Exception e){
 			System.out.println("TEST: importStopFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
 		}
 	}
 
+    /**
+     * Author:
+     * Description:
+     */
 	public void importStopTimesFileHandler() {
-        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Stop Times");
         File fileToAdd = fileChooser.showOpenDialog(null);
         try {
-            //fileManager.addFile(fileToAdd);
-            ArrayList<Object> stops = fileManager.parseStopTimesFile(fileToAdd);
-            dataStorage.notifyObservers(stops);
-            System.out.println("finished");
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
-					"Successfully imported " + fileToAdd.getName() + ".");
+			LinkedList<StopTime> stopTimes = fileManager.parseStopTimesFile(fileToAdd);
+        	if(stopTimes != null) {
+				dataStorage.updateFromFiles(stopTimes);
+				dataStorage.notifyObservers();
+			}
+			else { throw new NullPointerException(); }
         }catch (Exception e){
-            System.out.println("TEST: importFilesHandler -> " + e);
+            System.out.println("Error: importStopTimesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
         }
 	}
 
+	public void importMultipleFilesHandler(){
+		List<File> files = fileChooser.showOpenMultipleDialog(null);
+		for(File file : files){
+			try{
+				Scanner scanner = new Scanner(file);
+				String firstLine = scanner.nextLine();
+				if(firstLine.equals(fileManager.validFileTypes.get("stops"))){
+					LinkedList<Stop> stops = fileManager.parseStopFile(file);
+					if(!stops.isEmpty()) {
+						dataStorage.updateFromFiles(stops);
+						dataStorage.notifyObservers();
+					}
+					else { throw new NullPointerException("Error: LinkedList<Stop> is empty"); }
+				}
+				else if(firstLine.equals(fileManager.validFileTypes.get("routes"))) {
+					LinkedList<Route> routes = fileManager.parseRouteFile(file);
+					if (!routes.isEmpty()) {
+						dataStorage.updateFromFiles(routes);
+						dataStorage.notifyObservers();
+					}
+					else { throw new NullPointerException("Error: LinkedList<Route> is empty"); }
+				}
+				else if(firstLine.equals(fileManager.validFileTypes.get("trips"))){
+					LinkedList<Trip> trips = fileManager.parseTripFile(file);
+					if(!trips.isEmpty()) {
+						dataStorage.updateFromFiles(trips);
+						dataStorage.notifyObservers();
+					}
+					else { throw new NullPointerException("Error: LinkedList<Trip> is empty"); }
+				}
+				else if(firstLine.equals(fileManager.validFileTypes.get("stop_times"))) {
+					LinkedList<StopTime> stopTimes = fileManager.parseStopTimesFile(file);
+					if (!stopTimes.isEmpty()) {
+						dataStorage.updateFromFiles(stopTimes);
+						dataStorage.notifyObservers();
+					}
+					else { throw new NullPointerException("Error: LinkedList<StopTime> is empty"); }
+				}
+				else { throw new InvalidObjectException("Error: Invalid File Format"); }
+			}
+			catch (InvalidObjectException | InputMismatchException | FileNotFoundException | NullPointerException e){
+				writeErrorMessage("Error: " + e.toString() +"\nMessage: "+ e.getMessage());
+				e.printStackTrace();
+			}
+		}
+	}
+
+    /**
+     * Author:
+     * Description:
+     */
 	public void importRouteFileHandler() {
-        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Routes");
         File fileToAdd = fileChooser.showOpenDialog(null);
         try {
-            //fileManager.addFile(fileToAdd);
-            ArrayList<Object> stops = fileManager.parseRouteFile(fileToAdd);
-            dataStorage.notifyObservers(stops);
-			writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
-					"Successfully imported " + fileToAdd.getName() + ".");
+			LinkedList<Route> routes = fileManager.parseRouteFile(fileToAdd);
+            if(routes != null) {
+				dataStorage.updateFromFiles(routes);
+				dataStorage.notifyObservers();
+				writeInformationMessage("Import Successful", "File Imported: " + fileToAdd.getName());
+			}
+			else {
+            	throw new NullPointerException();
+			}
         }catch (Exception e){
-            System.out.println("TEST: importFilesHandler -> " + e);
+            System.out.println("TEST: importRouteFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
         }
 	}
 
+    /**
+     * Author:
+     * Description:
+     */
 	public void importTripFileHandler() {
-        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Import Trips");
         File fileToAdd = fileChooser.showOpenDialog(null);
         try {
-            //fileManager.addFile(fileToAdd);
-            ArrayList<Object> stops = fileManager.parseTripFile(fileToAdd);
-            dataStorage.notifyObservers(stops);
-            writeInformationMessage(Alert.AlertType.INFORMATION, "Import Successful",
-					"Successfully imported " + fileToAdd.getName() + ".");
+			LinkedList<Trip> stops = fileManager.parseTripFile(fileToAdd);
+            if(stops != null) {
+				dataStorage.updateFromFiles(stops);
+				dataStorage.notifyObservers();
+				writeInformationMessage("Import Successful", "File Imported: " + fileToAdd.getName());
+			}
+			else {
+            	throw new NullPointerException();
+			}
         }catch (Exception e){
-            System.out.println("TEST: importFilesHandler -> " + e);
+            System.out.println("TEST: importTripFilesHandler -> " + e);
 			writeErrorMessage(e.getMessage());
         }
 	}
 
+    /**
+     * Author:
+     * Description:
+     * @param message
+     */
 	private void writeErrorMessage(String message){
 		Alert alert = new Alert(Alert.AlertType.ERROR);
 		alert.setHeaderText("Error");
@@ -235,8 +328,14 @@ public class Controller implements Initializable {
 		alert.showAndWait();
 	}
 
-	private void writeInformationMessage(Alert.AlertType alertType, String header, String context) {
-		Alert alert = new Alert(alertType);
+    /**
+     * Author:
+     * Description:
+     * @param header
+     * @param context
+     */
+	private void writeInformationMessage(String header, String context) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setHeaderText(header);
 		alert.setContentText(context);
 		alert.showAndWait();

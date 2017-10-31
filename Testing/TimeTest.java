@@ -13,12 +13,12 @@ class TimeTest {
         time1 = new Time("08:16:00");
         time2 = new Time("00:00:00");
         time3 = new Time("00:30:00");
-        assertThrows(IllegalArgumentException.class, () -> {new Time("25:00:00");});
-        assertThrows(IllegalArgumentException.class, () -> {new Time("30:40");});
-        assertThrows(IllegalArgumentException.class, () -> {new Time("45");});
+        assertThrows(IllegalArgumentException.class, () -> new Time("25:00:00"));
+        assertThrows(IllegalArgumentException.class, () -> new Time("30:40"));
+        assertThrows(IllegalArgumentException.class, () -> new Time("45"));
 
-        assertThrows(IllegalArgumentException.class, () -> {new Time(25, 26, 0);});
-        assertThrows(IllegalArgumentException.class, () -> {new Time(125, 0, 0);});
+        assertThrows(IllegalArgumentException.class, () -> new Time(25, 26, 0));
+        assertThrows(IllegalArgumentException.class, () -> new Time(125, 0, 0));
     }
 
     @Test
