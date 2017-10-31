@@ -26,8 +26,7 @@ public class Route {
 	private String routeTextColor;
 
 	/**
-	 * Author:
-	 * Description:
+	 * Author:hortong creates a route object from information read from a file
 	 * @param route_id
 	 * @param agency_id
 	 * @param route_short_name
@@ -53,8 +52,8 @@ public class Route {
 	}
 
 	/**
-	 * Author:
-	 * Description:
+	 * Author: hortong
+	 * Description: creates an empty route object
 	 * @param routeId
 	 */
 	public Route(String routeId) {
@@ -62,65 +61,26 @@ public class Route {
 		this.stops = new TreeMap<>();
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @param stops
-	 */
-	public Route(Collection<Stop> stops){
-
-	}
-
-	/**
-	 * Author:
-	 * Description:
-	 * @param color
-	 */
 	public void setColor(Color color) {
 		this.color = color;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @param routeShortName
-	 */
 	public void setRouteShortName(String routeShortName) {
 		this.routeShortName = routeShortName;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @param routeLongName
-	 */
 	public void setRouteLongName(String routeLongName) {
 		this.routeLongName = routeLongName;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @param routeDescription
-	 */
 	public void setRouteDescription(String routeDescription) {
 		this.routeDescription = routeDescription;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @param routeType
-	 */
 	public void setRouteType(String routeType) {
 		this.routeType = routeType;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @param routeUrl
-	 */
 	public void setRouteUrl(String routeUrl) {
 		this.routeUrl = routeUrl;
 	}
@@ -151,108 +111,49 @@ public class Route {
 		return result;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public Color getColor() {
 		return color;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public NavigableMap<Integer, Stop> getStops() {
 		return stops;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @param stops
-	 */
 	public void setStops(NavigableMap<Integer, Stop> stops) {
 		this.stops = stops;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public String getRouteID() {
 		return routeID;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public String getAgencyID() {
 		return agencyID;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public String getRouteShortName() {
 		return routeShortName;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public String getRouteLongName() {
 		return routeLongName;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public String getRouteDescription() {
 		return routeDescription;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public String getRouteType() {
 		return routeType;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public String getRouteUrl() {
 		return routeUrl;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public String getRouteColor(){return routeColor;}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
+
 	public String getRouteTextColor (){return routeTextColor;}
 
 	/**
@@ -302,7 +203,7 @@ public class Route {
 	}
 
 	/**
-	 * Author:
+	 * Author: hortong
 	 * Description: Compares two route objects based on their routeIDs
 	 * @param route - the route to compare to
 	 * @return boolean - true if their routeIDs are the same, false if they are not the same
@@ -354,8 +255,8 @@ public class Route {
 	}
 
 	/**
-	 * Author:
-	 * Description:
+	 * Author: hortong
+	 * Description: copies all the relevant instance variables to this route
 	 * @param route
 	 * @throws IllegalArgumentException
 	 */
@@ -375,6 +276,11 @@ public class Route {
 		this.routeTextColor = route.getRouteTextColor();
 	}
 
+	/**
+	 * @author: hortong
+	 * copies a tripList over to a routes list of stops
+	 * @param trip to get triplist from
+	 */
 	public void copyTripListToRoute(Trip trip) {
 		for(StopTime stopTime: trip.getTripList().values()){
 			addStop(stopTime.getStop(), stopTime.getStopSequence());

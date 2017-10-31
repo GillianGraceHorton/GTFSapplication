@@ -240,6 +240,7 @@ public class Trip {
     }
 
     /**
+     * @author hortong
      * copies every instance variable within the trip parameter over this instance except for
      * the tripID, and the tripList
      * @param trip to copy from

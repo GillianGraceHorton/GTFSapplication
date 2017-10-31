@@ -5,16 +5,18 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class SearchResultsView extends HBox {
-    private Map<String, TitledPane> searches;
+    private NavigableMap<String, TitledPane> searches;
     private javafx.event.EventHandler<MouseEvent> itemClicked;
     private TextArea details;
     private Accordion accordion;
 
+    /**
+     * @author: hortong
+     * creates a new SearchResultsView object
+     */
     public SearchResultsView(){
         searches = new TreeMap<>();
         details = new TextArea();
@@ -36,6 +38,10 @@ public class SearchResultsView extends HBox {
         adjustSizes();
     }
 
+    /**
+     * @author: hortong
+     * adjusts the sizes of the gui elements
+     */
     private void adjustSizes() {
         this.setWidth(900);
         accordion.setMinWidth(this.getWidth()*(2.0/3.0));
@@ -44,6 +50,12 @@ public class SearchResultsView extends HBox {
         details.setMinHeight(400);
     }
 
+    /**
+     * @author hortong
+     * adds a new titled pane with the search results of a new search
+     * @param searchedFor the id of the object searched for
+     * @param results the results of the search
+     */
     public void addSearchResults(String searchedFor, ArrayList<Object> results){
         TitledPane newPane = new TitledPane();
         if(results.get(0) instanceof Stop){
@@ -83,5 +95,10 @@ public class SearchResultsView extends HBox {
             lists.getChildren().add(tripsListView);
         }
         accordion.getPanes().add(newPane);
+        searches.put(searchedFor, newPane);
+    }
+
+    public Set<String> getSearches(){
+        return searches.navigableKeySet();
     }
 }

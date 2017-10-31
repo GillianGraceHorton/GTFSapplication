@@ -7,7 +7,7 @@ public class Location {
 	private double longitude;
 
 	/**
-	 * Author:
+	 * Author: hortong
 	 * Description: Initializes the Location class
 	 * @param lon - longitude value to store
 	 * @param lat - latitude value to store
@@ -19,7 +19,7 @@ public class Location {
 	}
 
 	/**
-	 * Author:
+	 * Author: hortong
 	 * Description: Returns latitude
 	 * @return double - value stored in latitude.
 	 */
@@ -28,7 +28,7 @@ public class Location {
 	}
 
 	/**
-	 * Author:
+	 * Author: hortong
 	 * Description: Returns longitude
 	 * @return double - value stored in longitude.
 	 */

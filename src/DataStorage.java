@@ -27,13 +27,17 @@ public class DataStorage implements Subject {
         observers = new ArrayList<>();
     }
 
-    public void setSearchResultsView(SearchResultsView view){
-        searchResultsView = view;
+    public void setSearchResultsView(SearchResultsView searchResultsView){
+        this.searchResultsView = searchResultsView;
+    }
+
+    public void updateSearchView(){
+        //TODO update the searches
     }
 
     /**
-     * Author:
-     * Description:
+     * Author: hortong
+     * Description: attaches observers
      * @param observer - the observer to attach
      */
     public void attach(Observer observer) {
@@ -41,9 +45,9 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * Author:
-     * Description:
-     * @param observer
+     * Author: hortong
+     * Description: removes observers
+     * @param observer to remove
      * @return boolean - result of removing an observer
      */
     public boolean detach(Observer observer) {
@@ -375,6 +379,27 @@ public class DataStorage implements Subject {
 
     public void setStopTimes(Collection<StopTime> stopTimes) {
         this.stopTimes = stopTimes;
+    }
+
+    public void searchForStop(String stopID){
+        ArrayList<Object> results = new ArrayList<>();
+        results.add(searchStops(stopID));
+        results.addAll(searchRoutesForStop(stopID));
+        results.addAll(searchTripsForStop(stopID));
+        searchResultsView.addSearchResults(stopID, results);
+
+    }
+
+    public void searchForRoute(String routeID){
+        ArrayList<Object> results = new ArrayList<>();
+        results.add(searchRoutes(routeID));
+        searchResultsView.addSearchResults(routeID, results);
+    }
+
+    public void searchForTrip(String tripID){
+        ArrayList<Object> results = new ArrayList<>();
+        results.add(searchTrips(tripID));
+        searchResultsView.addSearchResults(tripID, results);
     }
 
 }

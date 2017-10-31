@@ -82,7 +82,7 @@
                                           <HBox layoutX="7.0" layoutY="4.0"  prefWidth="870.0">
                                               <children>
                                                   <Label prefHeight="31.0" prefWidth="178.0" text="Search for route by its ID: " />
-                                                  <TextField fx:id="searchRouteTextField" />
+                                                  <TextField fx:id="searchForRouteTextField" />
                                                   <Button mnemonicParsing="false" onAction="#searchForRouteHandler" text="Search" />
                                               </children>
                                           </HBox>

@@ -1,7 +1,6 @@
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 
@@ -63,6 +62,7 @@ public class Controller implements Initializable {
             gtfsListView.adjustSizes(mainVBox.getPrefHeight(), mainVBox.getPrefWidth());
 
 			searchResultsView = new SearchResultsView();
+			dataStorage.setSearchResultsView(searchResultsView);
             tabSearchVBox.getChildren().add(searchResultsView);
 		}catch (Exception e){
 			writeErrorMessage(e.getMessage());
@@ -137,14 +137,14 @@ public class Controller implements Initializable {
 		}
 	}
 
+	/**
+	 * @author: hortong
+	 * searches for a stop object
+	 */
 	public void searchForStopHandler() {
-		ArrayList<Object> results = new ArrayList<>();
 		String stopID = searchForStopTextField.getText();
 		if(dataStorage.searchStops(stopID) != null){
-			results.add(dataStorage.searchStops(stopID));
-			results.addAll(dataStorage.searchRoutesForStop(stopID));
-			results.addAll(dataStorage.searchTripsForStop(stopID));
-			searchResultsView.addSearchResults(stopID, results);
+			dataStorage.searchForStop(stopID);
 		}else{
 			JOptionPane.showMessageDialog(null, "No such stop exists for the the stop ID: " +
 					stopID);
@@ -152,12 +152,14 @@ public class Controller implements Initializable {
 
 	}
 
+	/**
+	 * @author: hortong
+	 * searches for a trip object
+	 */
 	public void searchForTripHandler() {
-		ArrayList<Object> results = new ArrayList<>();
-		String tripID = searchForRouteTextField.getText();
+		String tripID = searchForTripTextField.getText();
 		if(dataStorage.searchTrips(tripID) != null){
-			results.add(dataStorage.searchTrips(tripID));
-			searchResultsView.addSearchResults(tripID, results);
+			dataStorage.searchForTrip(tripID);
 		}else{
 			JOptionPane.showMessageDialog(null, "No such trip exists for the the trip ID: " +
 					tripID);
@@ -166,15 +168,13 @@ public class Controller implements Initializable {
 	}
 
     /**
-     * Author:
-     * Description:
+     * Author: hortong
+     * Description: searches for a route object
      */
 	public void searchForRouteHandler() {
-		ArrayList<Object> results = new ArrayList<>();
-		String routeID = searchForTripTextField.getText();
+		String routeID = searchForRouteTextField.getText();
 		if(dataStorage.searchRoutes(routeID) != null){
-			results.add(dataStorage.searchRoutes(routeID));
-			searchResultsView.addSearchResults(routeID, results);
+			dataStorage.searchForRoute(routeID);
 		}else{
 			JOptionPane.showMessageDialog(null, "No such trip exists for the the trip ID: " +
 					routeID);
@@ -182,8 +182,8 @@ public class Controller implements Initializable {
 	}
 
     /**
-     * Author:
-     * Description:
+     * Author: hortong, heinzja
+     * Description: handles the importing of stop objects from a file
      */
 	public void importStopFileHandler() {
 		fileChooser.setTitle("Import Stops");
@@ -203,10 +203,10 @@ public class Controller implements Initializable {
 		}
 	}
 
-    /**
-     * Author:
-     * Description:
-     */
+	/**
+	 * Author: hortong, heinzja
+	 * Description: handles the importing of stopTimes objects from a file
+	 */
 	public void importStopTimesFileHandler() {
         fileChooser.setTitle("Import Stop Times");
         File fileToAdd = fileChooser.showOpenDialog(null);
@@ -270,10 +270,10 @@ public class Controller implements Initializable {
 		}
 	}
 
-    /**
-     * Author:
-     * Description:
-     */
+	/**
+	 * Author: hortong, heinzja
+	 * Description: handles the importing of route objects from a file
+	 */
 	public void importRouteFileHandler() {
         fileChooser.setTitle("Import Routes");
         File fileToAdd = fileChooser.showOpenDialog(null);
@@ -293,10 +293,10 @@ public class Controller implements Initializable {
         }
 	}
 
-    /**
-     * Author:
-     * Description:
-     */
+	/**
+	 * Author: hortong, heinzja
+	 * Description: handles the importing of trip objects from a file
+	 */
 	public void importTripFileHandler() {
         fileChooser.setTitle("Import Trips");
         File fileToAdd = fileChooser.showOpenDialog(null);
@@ -317,9 +317,9 @@ public class Controller implements Initializable {
 	}
 
     /**
-     * Author:
-     * Description:
-     * @param message
+     * Author: hoffmanj
+     * Description: writes an error message to the user user alerts
+     * @param message to give to the user
      */
 	private void writeErrorMessage(String message){
 		Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -329,10 +329,10 @@ public class Controller implements Initializable {
 	}
 
     /**
-     * Author:
-     * Description:
-     * @param header
-     * @param context
+     * Author: hoffmanj
+     * Description: writes an informative message to the user
+     * @param header for the message
+     * @param context message to write to the user
      */
 	private void writeInformationMessage(String header, String context) {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);

@@ -38,7 +38,7 @@ public class GTFSListView extends HBox implements Observer {
 
 
     /**
-     * Author:
+     * Author: hortong
      * Description: Initializes the GTFSListView class
      */
     public GTFSListView() {
@@ -86,7 +86,7 @@ public class GTFSListView extends HBox implements Observer {
     }
 
     /**
-     * Author:
+     * Author: hortong
      * Description: Adjusts the sizes of the javaFX objects
      * @param height height of the object
      * @param width  width of the object
@@ -98,8 +98,8 @@ public class GTFSListView extends HBox implements Observer {
     }
 
     /**
-     * Author:
-     * Description:
+     * Author:hortong
+     * Description: sets the subject
      * @param dataStorage
      */
     public void setSubject(Subject dataStorage) {
@@ -107,7 +107,7 @@ public class GTFSListView extends HBox implements Observer {
     }
 
     /**
-     * Author:
+     * Author: hortong
      * Description: Receives update from the subject
      * @param addedItems items that have been updated
      */
@@ -133,41 +133,5 @@ public class GTFSListView extends HBox implements Observer {
             this.trips.setItems(trips);
             this.stopTimes.setItems(stopTimes);
         }
-    }
-
-    /**
-     * Author:
-     * Description:
-     * @param routes
-     */
-    public void displayRoutesContainingStop(ArrayList<Route> routes) {
-        if (routesContainingStopTab == null) {
-            routesContainingStopTab = new Tab("Routes containing Stop");
-            routesContainingStop = new TextArea();
-            routesContainingStopTab.setContent(routesContainingStop);
-            tabPane.getTabs().add(routesContainingStopTab);
-        }
-        StringBuilder toAdd = new StringBuilder();
-        for (Route route : routes) {
-            toAdd.append("RouteID: ").append(route.getRouteID()).append(", Route Name: ").append(route
-                    .getRouteLongName()).append("\n");
-        }
-        routesContainingStop.setText(toAdd.toString());
-        routesContainingStop.setEditable(false);
-    }
-
-    /**
-     * Author:
-     * Description:
-     * @param route
-     */
-    public void displayRouteWithStops(Route route) {
-        if(routeWithStopsTab == null){
-            routeWithStopsTab = new Tab("Route With its Stops");
-            routeWithStops = new TextArea();
-            routeWithStopsTab.setContent(routeWithStops);
-            tabPane.getTabs().add(routeWithStopsTab);
-        }
-        routeWithStops.setText(route.stopsToString());
     }
 }
