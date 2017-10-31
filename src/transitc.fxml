@@ -1,63 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
-   <children>
-      <VBox fx:id="mainVBox" prefHeight="700.0" prefWidth="900.0">
-         <children>
-            <MenuBar>
-              <menus>
-                <Menu mnemonicParsing="false" text="File">
-                  <items>
-                        <Menu mnemonicParsing="false" text="Import">
-                          <items>
-                            <MenuItem mnemonicParsing="false" onAction="#importFilesHandler" text="StopFile" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#importFilesHandler" text="StopTimesFile" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#importFilesHandler" text="RouteFile" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#importFilesHandler" text="TripFile" />
-                          </items>
-                        </Menu>
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <Menu mnemonicParsing="false" text="Export">
-                          <items>
-                            <MenuItem mnemonicParsing="false" onAction="#exportStopFileHandler" text="StopFile" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#exportStopTimesFileHandler" text="StopTimesFile" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#exportRouteFileHandler" text="RouteFile" />
-                              <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#exportTripFileHandler" text="TripFile" />
-                          </items>
-                        </Menu>
-                  </items>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller">
+    <VBox fx:id="mainVBox" prefHeight="700.0" prefWidth="900.0">
+        <MenuBar>
+            <Menu mnemonicParsing="false" text="File">
+                <Menu mnemonicParsing="false" text="Import">
+                    <MenuItem mnemonicParsing="false" onAction="#importMultipleFilesHandler" text="Multiple Files" />
+                    <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem mnemonicParsing="false" onAction="#importStopFileHandler" text="StopFile" />
+                    <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem mnemonicParsing="false" onAction="#importStopTimesFileHandler" text="StopTimesFile" />
+                    <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem mnemonicParsing="false" onAction="#importRouteFileHandler" text="RouteFile" />
+                    <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem mnemonicParsing="false" onAction="#importTripFileHandler" text="TripFile" />
                 </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#editFilesHandler" text="Stop" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#editFilesHandler" text="Route" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#editFilesHandler" text="Trip" />
-                  </items>
+                <SeparatorMenuItem mnemonicParsing="false" />
+                <Menu mnemonicParsing="false" text="Export">
+                    <MenuItem mnemonicParsing="false" onAction="#exportStopFileHandler" text="StopFile" />
+                    <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem mnemonicParsing="false" onAction="#exportStopTimesFileHandler" text="StopTimesFile" />
+                    <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem mnemonicParsing="false" onAction="#exportRouteFileHandler" text="RouteFile" />
+                    <SeparatorMenuItem mnemonicParsing="false" />
+                    <MenuItem mnemonicParsing="false" onAction="#exportTripFileHandler" text="TripFile" />
                 </Menu>
-                <Menu mnemonicParsing="false" text="Search">
-                  <items>
-                    <MenuItem mnemonicParsing="false" onAction="#searchStopHandler" text="StopID" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#searchRouteHandler" text="RouteID" />
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <MenuItem mnemonicParsing="false" onAction="#searchTripHandler" text="TripID" />
-                  </items>
-                </Menu>
-                  <Menu mnemonicParsing="false" text="Update" />
-              </menus>
-            </MenuBar>
-         </children>
-      </VBox>
-   </children>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+                <MenuItem mnemonicParsing="false" onAction="#editFilesHandler" text="Stop" />
+                <SeparatorMenuItem mnemonicParsing="false" />
+                <MenuItem mnemonicParsing="false" onAction="#editFilesHandler" text="Route" />
+                <SeparatorMenuItem mnemonicParsing="false" />
+                <MenuItem mnemonicParsing="false" onAction="#editFilesHandler" text="Trip" />
+            </Menu>
+        </MenuBar>
+      <TabPane prefHeight="670.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab fx:id="importedItemsTab" text="Imported Items" />
+          <Tab text="Search">
+               <content>
+                  <VBox fx:id="tabSearchVBox" prefHeight="622.0" prefWidth="900.0">
+                     <children>
+                        <Accordion>
+                          <panes>
+                            <TitledPane animated="false" prefWidth="900.0" text="Search for Stop">
+                              <content>
+                                <AnchorPane prefWidth="898.0">
+                                       <children>
+                                          <HBox layoutY="3.0" prefWidth="870.0">
+                                             <children>
+                                                <Label prefHeight="31.0" prefWidth="151.0" text="Search Stop by its ID: " />
+                                                <TextField fx:id="searchForStopTextField" />
+                                                <Button mnemonicParsing="false" onAction="#searchForStopHandler" text="Search" />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </AnchorPane>
+                              </content>
+                            </TitledPane>
+                            <TitledPane animated="false" text="Search for Route">
+                              <content>
+                                  <AnchorPane >
+                                      <children>
+                                          <HBox layoutX="7.0" layoutY="4.0"  prefWidth="870.0">
+                                              <children>
+                                                  <Label prefHeight="31.0" prefWidth="178.0" text="Search for route by its ID: " />
+                                                  <TextField fx:id="searchRouteTextField" />
+                                                  <Button mnemonicParsing="false" onAction="#searchForRouteHandler" text="Search" />
+                                              </children>
+                                          </HBox>
+                                      </children>
+                                  </AnchorPane>
+                              </content>
+                            </TitledPane>
+                            <TitledPane animated="false" prefHeight="60.0" text="Search for Trip">
+                              <content>
+                                  <AnchorPane >
+                                       <children>
+                                          <HBox layoutY="8.0" prefWidth="870.0">
+                                              <children>
+                                                  <Label prefHeight="31.0" prefWidth="178.0" text="Search for trip by its ID: " />
+                                                  <TextField fx:id="searchForTripTextField" />
+                                                  <Button mnemonicParsing="false" onAction="#searchForTripHandler" text="Search" />
+                                              </children>
+                                          </HBox>
+                                       </children>
+                                  </AnchorPane>
+                              </content>
+                            </TitledPane>
+                          </panes>
+                        </Accordion>
+                        <Label alignment="CENTER" prefHeight="35.0" prefWidth="908.0" text="Search Results" textAlignment="CENTER">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+    </VBox>
 </Pane>

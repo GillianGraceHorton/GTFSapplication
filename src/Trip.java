@@ -1,10 +1,16 @@
-import java.util.*;
+import com.sun.jdi.request.DuplicateRequestException;
+
+import java.util.ArrayList;
+import java.util.NavigableMap;
+import java.util.NavigableSet;
+import java.util.TreeMap;
 
 /**
  * @author Gracie Horton
  * @version 1.0
  * @created 03-Oct-2017 4:57:35 PM
  */
+@SuppressWarnings("ALL")
 public class Trip {
 
     private String shapeID;
@@ -12,10 +18,11 @@ public class Trip {
     private String directionID;
     private String tripHeadsign;
     private String serviceID;
-    private NavigableMap<Integer, Stop> tripList;
+    private NavigableMap<Integer, StopTime> tripList;
     private Route route;
     private String routeID;
     private String tripID;
+
 
     public Trip(String tripID, String serviceID, String routeID, String tripHeadsign, String
             directionID, String blockID, String shapeID) {
@@ -26,13 +33,25 @@ public class Trip {
         this.directionID = directionID;
         this.blockID = blockID;
         this.shapeID = shapeID;
+        this.tripList = new TreeMap<>();
     }
+
+
 
     /**
      * @param route
      */
     public Trip(Route route) {
+        //TODO: Implement if needed, remove if not
+    }
 
+    public Trip(String tripID) {
+        this.tripID = tripID;
+        tripList = new TreeMap<>();
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
     }
 
     public void setShapeID(String shapeID) {
@@ -53,6 +72,14 @@ public class Trip {
 
     public void setServiceID(String serviceID) {
         this.serviceID = serviceID;
+    }
+
+    public void setTripList(NavigableMap<Integer, StopTime> tripList) {
+        this.tripList = tripList;
+    }
+
+    public NavigableMap<Integer, StopTime> getTripList() {
+        return tripList;
     }
 
     public String getShapeID() {
@@ -87,47 +114,83 @@ public class Trip {
         return tripID;
     }
 
+    public Boolean hasTripList(){
+        return tripList.size()>0;
+    }
+
     public boolean setTimes() {
         return false;
     }
 
     /**
      * added the specified stop at the specified index in the tripList.
-     * @param stop stop to add to the tripList
-     * @param stopNum number indicating when the stop will be reached on the trip
+     *
+     * @param stopTime to be added to the tripList
      * @return true after the stop is added
      */
-    public boolean addStop(Stop stop, int stopNum) {
-        if(tripList == null){
-            tripList = new TreeMap<>();
-        }
-
-        tripList.put(stopNum, stop);
-        return true;
-    }
-
-    public Stop getStop(String stopId){
-        NavigableSet<Integer> nav = tripList.navigableKeySet();
-        for (Integer num: nav) {
-            if(tripList.get(num).getStopID().equals(stopId)){
-                return tripList.get(num);
+    public boolean addStopTime(StopTime stopTime) throws DuplicateRequestException {
+        boolean result = false;
+        if (stopTime != null) {
+            if (!tripList.containsKey(stopTime.getStopSequence())) {
+                tripList.put(stopTime.getStopSequence(), stopTime);
+                //get the sorted list, get stoptimes before and after and compare
+                ArrayList<StopTime> tripArray = new ArrayList<>(tripList.values());
+                int current = tripArray.indexOf(stopTime);
+                if (current == tripArray.size() - 1 && current != 0) {
+                    checkTime(tripArray.get(current - 1), stopTime, null);
+                } else if(current < tripArray.size() - 1 && current == 0) {
+                    checkTime(null, stopTime, tripArray.get(current + 1));
+                } else if(current < tripArray.size() - 1 && current != 0) {
+                    checkTime(tripArray.get(current - 1), stopTime, tripArray.get(current + 1));
+                }
+                result = true;
+            }
+            else {
+                throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Trip: " + tripID);
+            }
+            if (route != null) {
+                if(stopTime.getStop() != null){
+                    route.addStop(stopTime.getStop(), stopTime.getStopSequence());
+                }
+                else{
+                    System.out.println("POSSIBLE BUG");
+                }
             }
         }
-        return null;
+        return result;
     }
 
-    public NavigableMap<Integer, Stop> getTripList() {
-        return tripList;
+    /**
+     * Gets the stop associated to the trip from the specified trip id.
+     *
+     * @param stopId
+     * @return the stop object connected to the given stopID
+     */
+    public Stop getStop(String stopId) {
+        Stop result = null;
+        if (tripList != null && stopId != null) {
+            for (StopTime stopTime:tripList.values()) {
+                if(stopTime.getStopID().equals(stopId)){
+                    return stopTime.getStop();
+                }
+            }
+        }
+        return result;
     }
+
+
 
     /**
      * @return returns string of data stored in trip class
      * @author Joseph Heinz - heinzja@msoe.edu
      */
-    public String toString() {
-        String toReturn = "RouteID: " + getRouteID() + "\n" +
+    public String toStringData() {
+        if (isEmpty()) {
+            return "TripID: " + getTripID() + "\nNo data";
+        }
+        String toReturn = "TripID: " + getTripID() + "\n" +
                 "ServiceID: " + getServiceID() + "\n" +
-                "TripID: " + getTripID() + "\n" +
+                "RouteID: " + getRouteID() + "\n" +
                 "HeadSign: " + getTripHeadsign() + "\n" +
                 "DirectionID: " + getDirectionID() + "\n" +
                 "BlockID: " + getBlockID() + "\n" +
@@ -135,22 +198,83 @@ public class Trip {
         return toReturn;
     }
 
-    public String tripListToString(){
-        String toReturn = "";
-        toReturn += "TripID: " + this.getTripID() + "\n" + "Stops: " + "\n";
+    public String toString(){
+        return "TripID: " + tripID + "\nRouteID: " + routeID;
+    }
+
+    public String tripListToString() {
+        StringBuilder toReturn = new StringBuilder();
+        toReturn.append("TripID: ").append(this.getTripID()).append("\n").append("Stops: ").append("\n");
         NavigableSet<Integer> nav = tripList.navigableKeySet();
-        for (Integer num: nav) {
-            toReturn += "  " + num + " ID : " + tripList.get(num).getStopID() + ", " +
-                    "Arrival: " + tripList.get(num).getArrivalTime() +
-                    ", Departure: " + tripList.get(num).getDepartureTime() + "\n";
+        for (Integer num : nav) {
+            toReturn.append("  ").append(num).append(".) StopID: ").append(tripList.get(num).getStopID()).append(", Name: ").append(tripList.get(num).getStop().getName()).append(", Arrival: ").append(tripList.get(num).getArrivalTime()).append(", Departure: ").append(tripList.get(num).getDepartureTime()).append("\n");
         }
-        return toReturn;
+        return toReturn.toString();
     }
 
     /**
      * @param trip
      */
     public boolean equals(Trip trip) {
-        return false;
+        return (this.getTripID().equalsIgnoreCase(trip.getTripID()));
+    }
+
+    public String toStringExport() {
+        //returns Trip format: route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id
+        return String.format("%s,%s,%s,%s,%s,%s,%s", getRouteID(), getServiceID(), getTripID(), getTripHeadsign(),
+                getDirectionID(), getBlockID(), getShapeID());
+    }
+
+    /**
+     * Author: Joseph Heinz - heinzja@msoe.edu
+     * Description: checks to see if the Trip Object is a placeholder (empty) or is a valid Trip Object
+     *
+     * @return result of if Trip Object is empty or not
+     */
+    public boolean isEmpty() {
+        boolean result = true;
+        if (getRouteID() != null && getServiceID() != null) {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * copies every instance variable within the trip parameter over this instance except for
+     * the tripID, and the tripList
+     * @param trip to copy from
+     * @throws IllegalArgumentException if the IDs don't match
+     */
+    public void copyInstanceVariables(Trip trip)throws IllegalArgumentException {
+        if(!this.getTripID().equalsIgnoreCase(trip.getTripID())){
+            throw new IllegalArgumentException("This trip's ID: " + this.getTripID() + ", does " +
+                    "not match the ID of the argument: " + trip.getTripID());
+        }
+        this.shapeID = trip.getShapeID();
+        this.blockID = trip.getBlockID();
+        this.directionID = trip.getDirectionID();
+        this.tripHeadsign = trip.getTripHeadsign();
+        this.serviceID = trip.getServiceID();
+        this.route = trip.getRoute();
+        this.routeID = trip.getRouteID();
+    }
+
+    public boolean checkTime(StopTime prev, StopTime current, StopTime next) {
+        if(prev != null) {
+            if (!(prev.getDepartureTime().compareTo(current.getArrivalTime()) <= 0)) {
+                throw new IllegalArgumentException("For Trip " + tripID + ", StopTime " + prev.getStopSequence()
+                        + "'s Departure Time Is Greater Than Or Equal To StopTime " + current.getStopSequence()
+                        + "'s Arrival Time.");
+            }
+        }
+
+        if(next != null) {
+            if (!(current.getDepartureTime().compareTo(next.getArrivalTime()) <= 0)) {
+                throw new IllegalArgumentException("For Trip " + tripID + ", StopTime " + current.getStopSequence()
+                        + "'s Departure Time Is Greater Than Or Equal To StopTime " + next.getStopSequence()
+                        + "'s Arrival Time.");
+            }
+        }
+        return true;
     }
 }
