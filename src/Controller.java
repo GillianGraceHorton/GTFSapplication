@@ -225,6 +225,7 @@ public class Controller implements Initializable {
 
 	public void importMultipleFilesHandler(){
 		List<File> files = fileChooser.showOpenMultipleDialog(null);
+		writeInformationMessage("Importing...", "Please Wait: Files Are Currently Being Imported.");
 		for(File file : files){
 			try{
 				Scanner scanner = new Scanner(file);
@@ -233,7 +234,6 @@ public class Controller implements Initializable {
 					LinkedList<Stop> stops = fileManager.parseStopFile(file);
 					if(!stops.isEmpty()) {
 						dataStorage.updateFromFiles(stops);
-						dataStorage.notifyObservers();
 					}
 					else { throw new NullPointerException("Error: LinkedList<Stop> is empty"); }
 				}
@@ -241,7 +241,6 @@ public class Controller implements Initializable {
 					LinkedList<Route> routes = fileManager.parseRouteFile(file);
 					if (!routes.isEmpty()) {
 						dataStorage.updateFromFiles(routes);
-						dataStorage.notifyObservers();
 					}
 					else { throw new NullPointerException("Error: LinkedList<Route> is empty"); }
 				}
@@ -249,7 +248,6 @@ public class Controller implements Initializable {
 					LinkedList<Trip> trips = fileManager.parseTripFile(file);
 					if(!trips.isEmpty()) {
 						dataStorage.updateFromFiles(trips);
-						dataStorage.notifyObservers();
 					}
 					else { throw new NullPointerException("Error: LinkedList<Trip> is empty"); }
 				}
@@ -257,7 +255,6 @@ public class Controller implements Initializable {
 					LinkedList<StopTime> stopTimes = fileManager.parseStopTimesFile(file);
 					if (!stopTimes.isEmpty()) {
 						dataStorage.updateFromFiles(stopTimes);
-						dataStorage.notifyObservers();
 					}
 					else { throw new NullPointerException("Error: LinkedList<StopTime> is empty"); }
 				}
@@ -268,6 +265,8 @@ public class Controller implements Initializable {
 				e.printStackTrace();
 			}
 		}
+		dataStorage.notifyObservers();
+		writeInformationMessage("Import Successful", "All Files Were Imported Successfully");
 	}
 
     /**

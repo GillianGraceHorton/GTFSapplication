@@ -153,49 +153,52 @@ public class DataStorage implements Subject {
     private void createIDReferences(Object newItem){
         if(newItem instanceof Trip){
             Trip trip = (Trip)newItem;
+            String tmpRouteID = trip.getRouteID();
             //checks if there is already a route object for the routeID in trip
-            if(!routes.containsKey(trip.getRouteID())){
+            if(!routes.containsKey(tmpRouteID)){
                 //creates new route object from routeID
-                Route newRoute = new Route(trip.getRouteID());
+                Route newRoute = new Route(tmpRouteID);
                 //sets the route in the trip object to the new route
                 trip.setRoute(newRoute);
                 //puts the new route object in the routes set
-                routes.put(trip.getRouteID(), newRoute);
+                routes.put(tmpRouteID, newRoute);
                 if(trip.hasTripList()) {
                     newRoute.copyTripListToRoute(trip);
                 }
             }else{
                 //sets the route in the trip object to the new route
-                trip.setRoute(routes.get(trip.getRouteID()));
+                trip.setRoute(routes.get(tmpRouteID));
             }
         }else if (newItem instanceof StopTime){
             StopTime stopTime = (StopTime)newItem;
+            String tmpStopID = stopTime.getStopID();
+            String tmpTripID = stopTime.getTripID();
             //checks if there is already a stop object for the stopID in stopTime
-            if(!stops.containsKey(stopTime.getStopID())){
+            if(!stops.containsKey(tmpStopID)){
                 //creates new stop object from stopID
-                Stop newStop = new Stop(stopTime.getStopID());
+                Stop newStop = new Stop(tmpStopID);
                 //sets the stop in the stopTime object to the new stop
                 stopTime.setStop(newStop);
                 //adds the stopTime to the new stop object
                 newStop.addStopTimes(stopTime);
                 //puts the new stop in the the stops set
-                stops.put(stopTime.getStopID(), newStop);
+                stops.put(tmpStopID, newStop);
             }else{
                 //adds the stop to the StopTime object and adds the StopTime object to the stop
-                Stop stop = stops.get(stopTime.getStopID());
+                Stop stop = stops.get(tmpStopID);
                 stopTime.setStop(stop);
                 stop.addStopTimes(stopTime);
             }
             //checks if a trip with the tripID in stopTime exists
-            if(!trips.containsKey(stopTime.getTripID())){
+            if(!trips.containsKey(tmpTripID)){
                 //creates a new trip object from the tripID in stopTime, add the stopTime to
                 // trip, and puts the new trip in the trips set
-                Trip newTrip = new Trip(stopTime.getTripID());
+                Trip newTrip = new Trip(tmpTripID);
                 newTrip.addStopTime(stopTime);
-                trips.put(stopTime.getTripID(), newTrip);
+                trips.put(tmpTripID, newTrip);
             }else{
                 //adds the StopTime to the trip object
-                trips.get(stopTime.getTripID()).addStopTime(stopTime);
+                trips.get(tmpTripID).addStopTime(stopTime);
             }
         }
     }
