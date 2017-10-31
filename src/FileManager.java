@@ -34,7 +34,12 @@ public class FileManager {
             String stop_id, stop_desc, stop_name;
             double stop_lat, stop_lon;
             Scanner scanner = new Scanner(file);
-            String firstLine = scanner.nextLine();
+            String firstLine;
+            if(scanner.hasNextLine()) {
+                firstLine = scanner.nextLine();
+            } else {
+                throw new NullPointerException("Incorrect File Type: " + file.getName());
+            }
             if (!firstLine.equals(validFileTypes.get("stops"))) {
                 throw new InputMismatchException("Error: Invalid Stops File format for: " + file.getName());
             }
@@ -78,7 +83,12 @@ public class FileManager {
             String route_id, agency_id, route_short_name, route_long_name;
             String route_desc, route_type, route_url, route_color, route_text_color;
             Scanner scanner = new Scanner(file);
-            String firstLine = scanner.nextLine();
+            String firstLine;
+            if(scanner.hasNextLine()) {
+                firstLine = scanner.nextLine();
+            } else {
+                throw new NullPointerException("Incorrect File Type: " + file.getName());
+            }
             if (!firstLine.equals(validFileTypes.get("routes"))) {
                 throw new InputMismatchException("Error: Invalid Route file format for: " + file.getName());
             }
@@ -124,7 +134,12 @@ public class FileManager {
         try {
             String route_id, service_id, trip_id, trip_head_sign, direction_id, block_id, shape_id;
             Scanner scanner = new Scanner(file);
-            String firstLine = scanner.nextLine();
+            String firstLine;
+            if(scanner.hasNextLine()) {
+                firstLine = scanner.nextLine();
+            } else {
+                throw new NullPointerException("Incorrect File Type: " + file.getName());
+            }
             if (!firstLine.equals(validFileTypes.get("trips"))) {
                 throw new InputMismatchException("Error: Invalid Trip file format for: " + file.getName());
             }
@@ -162,21 +177,24 @@ public class FileManager {
      * @throws FileNotFoundException File was not found
      * @throws NullPointerException Invalid StopTimes File Format at a specific line
      */
-    public LinkedList<StopTime> parseStopTimesFile(File file)  throws InputMismatchException,
-            FileNotFoundException, NullPointerException {
+    public LinkedList<StopTime> parseStopTimesFile(File file)  throws InputMismatchException, FileNotFoundException, NullPointerException {
         LinkedList<StopTime> toReturn = new LinkedList<>();
         try {
             Scanner scanner = new Scanner(file);
-            String firstLine = scanner.nextLine();
+            String firstLine = null;
+            if(scanner.hasNextLine()) {
+                firstLine = scanner.nextLine();
+            } else {
+                throw new NullPointerException("Incorrect File Type: " + file.getName());
+            }
             //checks that the first line in the file matches the format for a stop_timesFile
             if (!firstLine.equals(validFileTypes.get("stop_times"))) {
                 throw new InputMismatchException("Error: Invalid StopTimes File format for: " + file.getName());
             }
-            @SuppressWarnings("SpellCheckingInspection") String line, trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign,
-                    pickup_type, drop_off_type;
+           String line, trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type;
             //reads each of the lines in the stop_times file, creates a new stopTimes object from
             // the information, and adds it to the toReturn ArrayList of stopTime objects.
-            while (scanner.hasNext()) {
+            while (scanner.hasNextLine()) {
                 line = scanner.nextLine();
                 try {
                     String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
@@ -188,13 +206,11 @@ public class FileManager {
                     stop_headsign = items[5];
                     pickup_type = items[6];
                     drop_off_type = items[7];
-                    toReturn.add(new StopTime(trip_id, arrival_time, departure_time, stop_id,
-                            stop_sequence, stop_headsign, pickup_type, drop_off_type));
+                    toReturn.add(new StopTime(trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type));
                     /* Catches an error in creating the stopTime object and adds it to the
                         ArrayList of error messages then continues going through the lines in the file.*/
                 } catch (IllegalArgumentException e) {
-                    JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n\t" + e
-                            .getMessage());
+                    JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n\t" + e.getMessage());
                 }catch (NullPointerException e) {
                     throw new NullPointerException("ERROR: Invalid StopTimes File Format at the following line:\n"+line);
                 }
@@ -217,10 +233,10 @@ public class FileManager {
         String feedInfoFormat = "feed_publisher_name,feed_publisher_url,feed_lang";
         String routesFormat = "route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color";
         String shapesFormat = "shape_id,shape_pt_lat,shape_pt_lon,shape_pt_sequence";
-        @SuppressWarnings("SpellCheckingInspection") String stopTimesFormat = "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type";
+        String stopTimesFormat = "trip_id,arrival_time,departure_time,stop_id,stop_sequence,stop_headsign,pickup_type,drop_off_type";
         String stopsFormat = "stop_id,stop_name,stop_desc,stop_lat,stop_lon";
         String transfersFormat = "from_stop_id,to_stop_id,transfer_type";
-        @SuppressWarnings("SpellCheckingInspection") String tripsFormat = "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id";
+        String tripsFormat = "route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id";
 
         validFileTypes.put("agency", agencyFormat);
         validFileTypes.put("calender", calenderFormat);

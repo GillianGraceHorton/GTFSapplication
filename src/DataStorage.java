@@ -185,7 +185,6 @@ public class DataStorage implements Subject {
                 Stop stop = stops.get(stopTime.getStopID());
                 stopTime.setStop(stop);
                 stop.addStopTimes(stopTime);
-
             }
             //checks if a trip with the tripID in stopTime exists
             if(!trips.containsKey(stopTime.getTripID())){
