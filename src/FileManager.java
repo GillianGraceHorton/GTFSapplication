@@ -34,7 +34,12 @@ public class FileManager {
             String stop_id, stop_desc, stop_name;
             double stop_lat, stop_lon;
             Scanner scanner = new Scanner(file);
-            String firstLine = scanner.nextLine();
+            String firstLine;
+            if(scanner.hasNextLine()) {
+                firstLine = scanner.nextLine();
+            } else {
+                throw new NullPointerException("Incorrect File Type: " + file.getName());
+            }
             if (!firstLine.equals(validFileTypes.get("stops"))) {
                 throw new InputMismatchException("Error: Invalid Stops File format for: " + file.getName());
             }
@@ -75,7 +80,12 @@ public class FileManager {
             String route_id, agency_id, route_short_name, route_long_name;
             String route_desc, route_type, route_url, route_color, route_text_color;
             Scanner scanner = new Scanner(file);
-            String firstLine = scanner.nextLine();
+            String firstLine;
+            if(scanner.hasNextLine()) {
+                firstLine = scanner.nextLine();
+            } else {
+                throw new NullPointerException("Incorrect File Type: " + file.getName());
+            }
             if (!firstLine.equals(validFileTypes.get("routes"))) {
                 throw new InputMismatchException("Error: Invalid Route file format for: " + file.getName());
             }
@@ -121,7 +131,12 @@ public class FileManager {
         try {
             String route_id, service_id, trip_id, trip_head_sign, direction_id, block_id, shape_id;
             Scanner scanner = new Scanner(file);
-            String firstLine = scanner.nextLine();
+            String firstLine;
+            if(scanner.hasNextLine()) {
+                firstLine = scanner.nextLine();
+            } else {
+                throw new NullPointerException("Incorrect File Type: " + file.getName());
+            }
             if (!firstLine.equals(validFileTypes.get("trips"))) {
                 throw new InputMismatchException("Error: Invalid Trip file format for: " + file.getName());
             }
@@ -164,7 +179,12 @@ public class FileManager {
         LinkedList<StopTime> toReturn = new LinkedList<>();
         try {
             Scanner scanner = new Scanner(file);
-            String firstLine = scanner.nextLine();
+            String firstLine;
+            if(scanner.hasNextLine()) {
+                firstLine = scanner.nextLine();
+            } else {
+                throw new NullPointerException("Incorrect File Type: " + file.getName());
+            }
             //checks that the first line in the file matches the format for a stop_timesFile
             if (!firstLine.equals(validFileTypes.get("stop_times"))) {
                 throw new InputMismatchException("Error: Invalid StopTimes File format for: " + file.getName());
