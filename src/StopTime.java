@@ -172,7 +172,6 @@ public class StopTime {
      *
      * @return
      */
-    @SuppressWarnings("SpellCheckingInspection")
     public String getStopHeadsign() {
         return stop_headsign;
     }
@@ -183,7 +182,6 @@ public class StopTime {
      *
      * @param stop_headsign
      */
-    @SuppressWarnings("SpellCheckingInspection")
     public void setStopHeadsign(String stop_headsign) {
         this.stop_headsign = stop_headsign;
     }
@@ -214,7 +212,6 @@ public class StopTime {
      *
      * @return
      */
-    @SuppressWarnings("SpellCheckingInspection")
     public String getDropoffType() {
         return dropoff_type;
     }
@@ -225,7 +222,6 @@ public class StopTime {
      *
      * @param dropoff_type
      */
-    @SuppressWarnings("SpellCheckingInspection")
     public void setDropoffType(String dropoff_type) {
         this.dropoff_type = dropoff_type;
     }
@@ -236,7 +232,6 @@ public class StopTime {
      *
      * @return String - formatted string used for GUI
      */
-    @SuppressWarnings("SpellCheckingInspection")
     public String toString() {
         return "TripID: " + getTripID() + "\n" +
                 "StopID: " + getStopID() + "\n" +

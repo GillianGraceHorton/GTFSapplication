@@ -185,7 +185,7 @@ public class FileManager {
         LinkedList<StopTime> toReturn = new LinkedList<>();
         try {
             Scanner scanner = new Scanner(file);
-            String firstLine = null;
+            String firstLine;
             if (scanner.hasNextLine()) {
                 firstLine = scanner.nextLine();
             } else {
@@ -195,29 +195,26 @@ public class FileManager {
             if (!firstLine.equals(validFileTypes.get("stop_times"))) {
                 throw new InputMismatchException("Error: Invalid StopTimes File format for: " + file.getName());
             }
-            String line, trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type;
+
             //reads each of the lines in the stop_times file, creates a new stopTimes object from
             // the information, and adds it to the toReturn ArrayList of stopTime objects.
             while (scanner.hasNextLine()) {
-                line = scanner.nextLine();
-                try {
-                    String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-                    trip_id = items[0];
-                    arrival_time = items[1];
-                    departure_time = items[2];
-                    stop_id = items[3];
-                    stop_sequence = items[4];
-                    stop_headsign = items[5];
-                    pickup_type = items[6];
-                    drop_off_type = items[7];
-                    toReturn.add(new StopTime(trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type));
-                    /* Catches an error in creating the stopTime object and adds it to the
-                        ArrayList of error messages then continues going through the lines in the file.*/
-                } catch (IllegalArgumentException e) {
-                    JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n\t" + e.getMessage());
-                } catch (NullPointerException e) {
-                    throw new NullPointerException("ERROR: Invalid StopTimes File Format at the following line:\n" + line);
+                String line = scanner.nextLine();
+                String[] str = new String[8];
+                String x = line + ",";
+                int iPos = 0;
+                int iStr = 0;
+                int iNext = -1;
+                while( (iNext = x.indexOf( ',', iPos )) != -1 && iStr < 8 ){
+                    if( iNext == iPos ){
+                        str[iStr++] = "";
+                    }
+                    else {
+                        str[iStr++] = x.substring(iPos, iNext);
+                    }
+                    iPos = iNext + 1;
                 }
+                toReturn.add(new StopTime(str[0],str[1],str[2],str[3],str[4],str[5],str[6],str[7]));
             }
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("ERROR: " + file.getName() + " was not found.\n" + e.getMessage());
