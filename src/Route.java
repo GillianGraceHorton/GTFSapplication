@@ -102,6 +102,9 @@ public class Route {
 			}else if(stops.get(stopNum).isEmpty()){
 				stops.replace(stopNum, stop);
 			}else if(!stops.get(stopNum).equals(stop)){
+				System.out.println(stops.get(stopNum));
+				System.out.println(stop);
+				System.out.println();
 				throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Route: " + routeID);
 			}
 		}
@@ -190,7 +193,7 @@ public class Route {
 				"Type: " + getRouteType() +"\n" +
 				"URL: " + getRouteUrl() +"\n" +
 				"Color: " + getRouteColor() +"\n" +
-				"TextColor: " + getRouteTextColor() +"\n";
+				"TextColor: " + getRouteTextColor() +"\n" + stopsToString();
 	}
 
 	/**
@@ -244,7 +247,7 @@ public class Route {
 	public String stopsToString() {
 		StringBuilder toReturn = new StringBuilder();
 		toReturn.append(toString()).append("Stops: \n");
-		if(stops.size() != 0){
+		if(stops.size() == 0){
 			toReturn.append("    No stops loaded yet");
 		}else {
 			for (int num : stops.keySet()) {

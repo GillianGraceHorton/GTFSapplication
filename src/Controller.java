@@ -231,6 +231,7 @@ public class Controller implements Initializable {
 				String firstLine = scanner.nextLine();
 				if(firstLine.equals(fileManager.validFileTypes.get("stops"))){
 					LinkedList<Stop> stops = fileManager.parseStopFile(file);
+					System.out.println(file.getName());
 					if(!stops.isEmpty()) {
 						dataStorage.updateFromFiles(stops);
 						dataStorage.notifyObservers();
@@ -239,6 +240,7 @@ public class Controller implements Initializable {
 				}
 				else if(firstLine.equals(fileManager.validFileTypes.get("routes"))) {
 					LinkedList<Route> routes = fileManager.parseRouteFile(file);
+					System.out.println(file.getName());
 					if (!routes.isEmpty()) {
 						dataStorage.updateFromFiles(routes);
 						dataStorage.notifyObservers();
@@ -247,6 +249,7 @@ public class Controller implements Initializable {
 				}
 				else if(firstLine.equals(fileManager.validFileTypes.get("trips"))){
 					LinkedList<Trip> trips = fileManager.parseTripFile(file);
+					System.out.println(file.getName());
 					if(!trips.isEmpty()) {
 						dataStorage.updateFromFiles(trips);
 						dataStorage.notifyObservers();
@@ -255,6 +258,7 @@ public class Controller implements Initializable {
 				}
 				else if(firstLine.equals(fileManager.validFileTypes.get("stop_times"))) {
 					LinkedList<StopTime> stopTimes = fileManager.parseStopTimesFile(file);
+					System.out.println(file.getName());
 					if (!stopTimes.isEmpty()) {
 						dataStorage.updateFromFiles(stopTimes);
 						dataStorage.notifyObservers();

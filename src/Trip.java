@@ -1,9 +1,6 @@
 import com.sun.jdi.request.DuplicateRequestException;
 
-import java.util.ArrayList;
-import java.util.NavigableMap;
-import java.util.NavigableSet;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * @author Gracie Horton
@@ -52,6 +49,13 @@ public class Trip {
 
     public void setRoute(Route route) {
         this.route = route;
+        NavigableMap<Integer, Stop> temp = new TreeMap<>();
+        if(this.hasTripList()){
+            for(int stopNum: tripList.navigableKeySet()){
+                temp.put(stopNum, tripList.get(stopNum).getStop());
+            }
+            route.setStops(temp);
+        }
     }
 
     public void setShapeID(String shapeID) {
@@ -134,15 +138,7 @@ public class Trip {
             if (!tripList.containsKey(stopTime.getStopSequence())) {
                 tripList.put(stopTime.getStopSequence(), stopTime);
                 //get the sorted list, get stoptimes before and after and compare
-                ArrayList<StopTime> tripArray = new ArrayList<>(tripList.values());
-                int current = tripArray.indexOf(stopTime);
-                if (current == tripArray.size() - 1 && current != 0) {
-                    checkTime(tripArray.get(current - 1), stopTime, null);
-                } else if(current < tripArray.size() - 1 && current == 0) {
-                    checkTime(null, stopTime, tripArray.get(current + 1));
-                } else if(current < tripArray.size() - 1 && current != 0) {
-                    checkTime(tripArray.get(current - 1), stopTime, tripArray.get(current + 1));
-                }
+                checkTimes(stopTime);
                 result = true;
             }
             else {
@@ -158,6 +154,18 @@ public class Trip {
             }
         }
         return result;
+    }
+
+    private void checkTimes(StopTime stopTime){
+        ArrayList<StopTime> tripArray = new ArrayList<>(tripList.values());
+        int current = tripArray.indexOf(stopTime);
+        if (current == tripArray.size() - 1 && current != 0) {
+            checkTime(tripArray.get(current - 1), stopTime, null);
+        } else if(current < tripArray.size() - 1 && current == 0) {
+            checkTime(null, stopTime, tripArray.get(current + 1));
+        } else if(current < tripArray.size() - 1 && current != 0) {
+            checkTime(tripArray.get(current - 1), stopTime, tripArray.get(current + 1));
+        }
     }
 
     /**

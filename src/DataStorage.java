@@ -1,3 +1,5 @@
+
+
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.util.*;
 
@@ -32,7 +34,24 @@ public class DataStorage implements Subject {
     }
 
     public void updateSearchView(){
-        //TODO update the searches
+        NavigableSet<String> searches = searchResultsView.getSearches();
+        if(searches.size() != 0) {
+            String[] parts;
+            for (String search : searches) {
+                parts = search.split(" ");
+                switch (parts[0]) {
+                    case "stop":
+                        searchForStop(parts[1]);
+                        break;
+                    case "route":
+                        searchForRoute(parts[1]);
+                        break;
+                    case "trip":
+                        searchForTrip(parts[1]);
+                        break;
+                }
+            }
+        }
     }
 
     /**
@@ -146,6 +165,7 @@ public class DataStorage implements Subject {
         for (Observer observer : observers) {
             observer.update(dataStructures);
         }
+        updateSearchView();
     }
 
     /**
@@ -280,6 +300,16 @@ public class DataStorage implements Subject {
         return tripsToReturn;
     }
 
+    public Collection<Trip> searchTripsForRoute(String routeID){
+        Collection<Trip> toReturn = new LinkedList<>();
+        for(Trip trip: trips.values()){
+            if(trip.getRouteID().equals(routeID)){
+                toReturn.add(trip);
+            }
+        }
+        return toReturn;
+    }
+
     /**
      * Author:
      * Description: Searches all the routes for those containing a stop with the specified stopID.
@@ -393,6 +423,7 @@ public class DataStorage implements Subject {
     public void searchForRoute(String routeID){
         ArrayList<Object> results = new ArrayList<>();
         results.add(searchRoutes(routeID));
+        results.addAll(searchTripsForStop(routeID));
         searchResultsView.addSearchResults(routeID, results);
     }
 
