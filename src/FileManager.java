@@ -1,3 +1,6 @@
+import javafx.scene.control.Alert;
+import javafx.scene.shape.Path;
+
 import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,13 +13,13 @@ import java.util.*;
  * Created: 10/3/2017 4:57:25 PM
  */
 public class FileManager {
-    public NavigableMap<String, String> validFileTypes;
+    NavigableMap<String /* ID */, String /* Value */> validFileTypes;
 
     /**
      * @author Joseph Heinz - heinzja@msoe.edu
      * Description: initializes FileManager and validFileTypes
      */
-    public FileManager() {
+    FileManager() {
         validFileTypes = new TreeMap<>();
         addValidType();
     }
@@ -28,8 +31,7 @@ public class FileManager {
      * @return Array containing all the stop objects
      * @author hortong
      */
-    public LinkedList<Stop> parseStopFile(File file) throws InputMismatchException,
-            FileNotFoundException, NullPointerException {
+    public LinkedList<Stop> parseStopFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
         LinkedList<Stop> toReturn = new LinkedList<>();
         try {
             String stop_id, stop_desc, stop_name;
@@ -182,7 +184,7 @@ public class FileManager {
      * @throws NullPointerException   Invalid StopTimes File Format at a specific line
      */
     public LinkedList<StopTime> parseStopTimesFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
-        LinkedList<StopTime> toReturn = new LinkedList<>();
+        LinkedList<StopTime> stopTimesList = new LinkedList<>();
         try {
             Scanner scanner = new Scanner(file);
             String firstLine;
@@ -195,7 +197,6 @@ public class FileManager {
             if (!firstLine.equals(validFileTypes.get("stop_times"))) {
                 throw new InputMismatchException("Error: Invalid StopTimes File format for: " + file.getName());
             }
-
             //reads each of the lines in the stop_times file, creates a new stopTimes object from
             // the information, and adds it to the toReturn ArrayList of stopTime objects.
             while (scanner.hasNextLine()) {
@@ -204,22 +205,18 @@ public class FileManager {
                 String x = line + ",";
                 int iPos = 0;
                 int iStr = 0;
-                int iNext = -1;
+                int iNext;
                 while( (iNext = x.indexOf( ',', iPos )) != -1 && iStr < 8 ){
-                    if( iNext == iPos ){
-                        str[iStr++] = "";
-                    }
-                    else {
-                        str[iStr++] = x.substring(iPos, iNext);
-                    }
+                    if( iNext == iPos ){ str[iStr++] = ""; }
+                    else { str[iStr++] = x.substring(iPos, iNext); }
                     iPos = iNext + 1;
                 }
-                toReturn.add(new StopTime(str[0],str[1],str[2],str[3],str[4],str[5],str[6],str[7]));
+                stopTimesList.add(new StopTime(str[0],str[1],str[2],str[3],str[4],str[5],str[6],str[7]));
             }
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("ERROR: " + file.getName() + " was not found.\n" + e.getMessage());
         }
-        return toReturn;
+        return stopTimesList;
     }
 
     /**
@@ -252,6 +249,20 @@ public class FileManager {
         validFileTypes.put("trips", tripsFormat);
     }
 
+    private void mkAlert(Alert.AlertType alertType, String title, String headerText, String contentText){
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+
+    private void makeDirectory(File directory){
+        directory.mkdir();
+        mkAlert(Alert.AlertType.INFORMATION,"Export Notice", "Please Note:",
+                "An 'exports' directory was created to hold your exported files\n" +
+                        "Location: " + directory.getPath());
+    }
     /**
      * Author: Joseph Heinz - heinzja@msoe.edu
      * Description: exports stops to user chosen directory
@@ -263,12 +274,15 @@ public class FileManager {
     public void exportStopFile(File exportName, DataStorage ds) throws IOException {
         File exportDir = new File(exportName.getParent(), "exports");
         try {
-            if (!exportDir.exists()) {
-                exportDir.mkdir();
-            }
+            if (!exportDir.exists()) { makeDirectory(exportDir); }
             File exportFile = new File(exportDir.getPath(), exportName.getName() + ".txt");
             if (!exportFile.exists()) {
                 exportFile.createNewFile();
+            }
+            else {
+                mkAlert(Alert.AlertType.ERROR,"Error","File Already Exists",
+                        "The export filename already exist, please chose a different one.");
+                throw new IOException();
             }
 
             PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
@@ -282,7 +296,6 @@ public class FileManager {
         } catch (IOException e) {
             throw new IOException("Error: Unable to create: " + exportName.getName(), e);
         }
-        System.out.println("TEST: exportStopFile completed");
     }
 
     /**
@@ -296,13 +309,16 @@ public class FileManager {
     public void exportRouteFile(File exportName, DataStorage ds) throws IOException {
         File exportDir = new File(exportName.getParent(), "exports");
         try {
-            if (!exportDir.exists()) {
-                exportDir.mkdir();
-                System.out.println("TEST: exportRouteFile -> exports directory created");
-            }
+            if (!exportDir.exists()) { makeDirectory(exportDir); }
+
             File exportFile = new File(exportDir.getPath(), exportName.getName() + ".txt");
             if (!exportFile.exists()) {
                 exportFile.createNewFile();
+            }
+            else {
+                mkAlert(Alert.AlertType.ERROR,"Error","File Already Exists",
+                        "The export filename already exist, please chose a different one.");
+                throw new IOException();
             }
 
             PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
@@ -316,7 +332,6 @@ public class FileManager {
         } catch (IOException e) {
             throw new IOException("Error: Unable to create: " + exportName.getName(), e);
         }
-        System.out.println("TEST: exportRouteFile completed");
     }
 
     /**
@@ -330,13 +345,16 @@ public class FileManager {
     public void exportTripFile(File exportName, DataStorage ds) throws IOException {
         File exportDir = new File(exportName.getParent(), "exports");
         try {
-            if (!exportDir.exists()) {
-                exportDir.mkdir();
-                System.out.println("TEST: exportTripFile -> exports file created");
-            }
+            if (!exportDir.exists()) { makeDirectory(exportDir); }
+
             File exportFile = new File(exportDir.getPath(), exportName.getName() + ".txt");
             if (!exportFile.exists()) {
                 exportFile.createNewFile();
+            }
+            else {
+                mkAlert(Alert.AlertType.ERROR,"Error","File Already Exists",
+                        "The export filename already exist, please chose a different one.");
+                throw new IOException();
             }
 
             PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
@@ -350,7 +368,6 @@ public class FileManager {
         } catch (IOException e) {
             throw new IOException("Error: Unable to create: " + exportName.getName(), e);
         }
-        System.out.println("TEST: exportTripFile completed");
     }
 
     /**
@@ -364,13 +381,16 @@ public class FileManager {
     public void exportStopTimesFile(File exportName, DataStorage ds) throws IOException {
         File exportDir = new File(exportName.getParent(), "exports");
         try {
-            if (!exportDir.exists()) {
-                exportDir.mkdir();
-                System.out.println("TEST: exportStopTimesFile -> exports file created");
-            }
+            if (!exportDir.exists()) { makeDirectory(exportDir); }
+
             File exportFile = new File(exportDir.getPath(), exportName.getName() + ".txt");
             if (!exportFile.exists()) {
                 exportFile.createNewFile();
+            }
+            else {
+                mkAlert(Alert.AlertType.ERROR,"Error","File Already Exists",
+                        "The export filename already exist, please chose a different one.");
+                throw new IOException();
             }
 
             PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
@@ -382,7 +402,6 @@ public class FileManager {
         } catch (IOException e) {
             throw new IOException("Error: Unable to create: " + exportName.getName(), e);
         }
-        System.out.println("TEST: exportStopTimesFile completed");
     }
 
     /**
