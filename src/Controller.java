@@ -227,37 +227,60 @@ public class Controller implements Initializable {
     }
 
     public void importMultipleFilesHandler() {
+        SimpleTimer st = new SimpleTimer();
         List<File> files = fileChooser.showOpenMultipleDialog(null);
-        writeInformationMessage("Importing...", "Please Wait: Files Are Currently Being Imported.");
+        writeInformationMessage("Importing...", "Warning: Loading Large/Multiple Files May Cause the Program to Appear Unresponsive.\n" +
+                "Click Ok to Continue.");
         for (File file : files) {
+
             try {
                 Scanner scanner = new Scanner(file);
                 String firstLine = scanner.nextLine();
                 if (firstLine.equals(fileManager.validFileTypes.get("stops"))) {
+                    System.out.println("stops:");
+                    st.start();
                     LinkedList<Stop> stops = fileManager.parseStopFile(file);
+                    st.end();
                     if (!stops.isEmpty()) {
+                        st.start();
                         dataStorage.updateFromFiles(stops);
+                        st.end();
                     } else {
                         throw new NullPointerException("Error: LinkedList<Stop> is empty");
                     }
                 } else if (firstLine.equals(fileManager.validFileTypes.get("routes"))) {
+                    System.out.println("routes:");
+                    st.start();
                     LinkedList<Route> routes = fileManager.parseRouteFile(file);
+                    st.end();
                     if (!routes.isEmpty()) {
+                        st.start();
                         dataStorage.updateFromFiles(routes);
+                        st.end();
                     } else {
                         throw new NullPointerException("Error: LinkedList<Route> is empty");
                     }
                 } else if (firstLine.equals(fileManager.validFileTypes.get("trips"))) {
+                    System.out.println("trips:");
+                    st.start();
                     LinkedList<Trip> trips = fileManager.parseTripFile(file);
+                    st.end();
                     if (!trips.isEmpty()) {
+                        st.start();
                         dataStorage.updateFromFiles(trips);
+                        st.end();
                     } else {
                         throw new NullPointerException("Error: LinkedList<Trip> is empty");
                     }
                 } else if (firstLine.equals(fileManager.validFileTypes.get("stop_times"))) {
+                    System.out.println("stop_times:");
+                    st.start();
                     LinkedList<StopTime> stopTimes = fileManager.parseStopTimesFile(file);
+                    st.end();
                     if (!stopTimes.isEmpty()) {
+                        st.start();
                         dataStorage.updateFromFiles(stopTimes);
+                        st.end();
                     } else {
                         throw new NullPointerException("Error: LinkedList<StopTime> is empty");
                     }
@@ -268,6 +291,7 @@ public class Controller implements Initializable {
                 writeErrorMessage("Error: " + e.toString() + "\nMessage: " + e.getMessage());
                 e.printStackTrace();
             }
+
         }
         dataStorage.notifyObservers();
         writeInformationMessage("Import Successful", "All Files Were Imported Successfully");

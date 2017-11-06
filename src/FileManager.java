@@ -1,4 +1,5 @@
 import javafx.scene.control.Alert;
+import javafx.scene.shape.Path;
 
 import javax.swing.*;
 import java.io.File;
@@ -12,7 +13,6 @@ import java.util.*;
  * Created: 10/3/2017 4:57:25 PM
  */
 public class FileManager {
-
     NavigableMap<String /* ID */, String /* Value */> validFileTypes;
 
     /**
@@ -276,7 +276,9 @@ public class FileManager {
         try {
             if (!exportDir.exists()) { makeDirectory(exportDir); }
             File exportFile = new File(exportDir.getPath(), exportName.getName() + ".txt");
-            if (!exportFile.exists()) { exportFile.createNewFile(); }
+            if (!exportFile.exists()) {
+                exportFile.createNewFile();
+            }
             else {
                 mkAlert(Alert.AlertType.ERROR,"Error","File Already Exists",
                         "The export filename already exist, please chose a different one.");
@@ -310,7 +312,9 @@ public class FileManager {
             if (!exportDir.exists()) { makeDirectory(exportDir); }
 
             File exportFile = new File(exportDir.getPath(), exportName.getName() + ".txt");
-            if (!exportFile.exists()) { exportFile.createNewFile(); }
+            if (!exportFile.exists()) {
+                exportFile.createNewFile();
+            }
             else {
                 mkAlert(Alert.AlertType.ERROR,"Error","File Already Exists",
                         "The export filename already exist, please chose a different one.");
@@ -344,7 +348,9 @@ public class FileManager {
             if (!exportDir.exists()) { makeDirectory(exportDir); }
 
             File exportFile = new File(exportDir.getPath(), exportName.getName() + ".txt");
-            if (!exportFile.exists()) { exportFile.createNewFile(); }
+            if (!exportFile.exists()) {
+                exportFile.createNewFile();
+            }
             else {
                 mkAlert(Alert.AlertType.ERROR,"Error","File Already Exists",
                         "The export filename already exist, please chose a different one.");
@@ -378,7 +384,9 @@ public class FileManager {
             if (!exportDir.exists()) { makeDirectory(exportDir); }
 
             File exportFile = new File(exportDir.getPath(), exportName.getName() + ".txt");
-            if (!exportFile.exists()) { exportFile.createNewFile(); }
+            if (!exportFile.exists()) {
+                exportFile.createNewFile();
+            }
             else {
                 mkAlert(Alert.AlertType.ERROR,"Error","File Already Exists",
                         "The export filename already exist, please chose a different one.");

@@ -13,6 +13,7 @@ public class SimpleTimer {
 
     public void end() {
         this.endTime = System.nanoTime();
+        result();
     }
 
     private double getEndTime() {
@@ -25,5 +26,7 @@ public class SimpleTimer {
 
     public void result() {
         System.out.printf("%.6f seconds\n", (this.endTime - this.startTime) / 1000000000);
+        this.startTime = 0;
+        this.endTime = 0;
     }
 }
