@@ -1,20 +1,26 @@
 var map;
+var markers;
 
 function initMap() {
-        var uluru = {lat: -25.363, lng: 131.044};
+        var midWest = {lat: 40.105124, lng: -91.142859};
         map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: uluru
+          zoom: 5,
+          center: midWest
         });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
+        markers = [];
 }
 
-        document.addStopMarker = function addStopMarker(latitude, longitude){
+function addStopMarker(latitude, longitude){
         var marker = new google.maps.Marker({
            position: {lat: latitude, lng:  longitude},
-           map: map
         });
+        markers.push(marker);
 }
+
+function createCluster(){
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+        }
+
+

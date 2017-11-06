@@ -2,15 +2,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 
 /**
@@ -34,16 +29,22 @@ public class BusMap extends Pane implements Observer {
 		webView = new WebView();
 		this.getChildren().add(webView);
 
-		webEngine = webView.getEngine();
-		webEngine.load(getClass().getResource("loadGoogleMap.html").toString());
-
-		addStopMarker(new Stop(44.810060,-89.497640, "", "", ""));
+		try {
+			webView.setVisible(true);
+			webEngine = webView.getEngine();
+			webEngine.setJavaScriptEnabled(true);
+			File file = new File("src\\loadGoogleMap.html");
+			System.out.println(file.exists() + " file exitence");
+			webEngine.load(file.toURI().toURL().toString());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void addStopMarker(Stop stop){
 		try {
-			webEngine.executeScript("document.addStopMarker(" + stop.getLocation().getLat() + ", " +
-					stop.getLocation().getLon() + ")");
+			webView.getEngine().executeScript("addStopMarker(" + stop.getLocation().getLat() + "," +
+					" " + stop.getLocation().getLon() + ")");
 		}catch(Exception e){
 			e.printStackTrace();
 		}
@@ -93,9 +94,10 @@ public class BusMap extends Pane implements Observer {
 	@Override
 	public void update(ArrayList<Object> updates) {
 		for (Object item: updates) {
-			if(item instanceof Stop){ stops.add((Stop)item); }
+			if(item instanceof Stop){ addStopMarker((Stop)item); }
 			else if(item instanceof Route){ routes.add((Route)item); }
 			else if(item instanceof Trip){ trips.add((Trip)item); }
 		}
+		webView.getEngine().executeScript("createCluster()");
 	}
 }
