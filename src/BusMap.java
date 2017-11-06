@@ -1,5 +1,16 @@
 import javafx.scene.layout.Pane;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 
+import javax.script.Invocable;
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -13,11 +24,29 @@ public class BusMap extends Pane implements Observer {
 	private ArrayList<Stop> stops;
 	private ArrayList<Route> routes;
 	private ArrayList<Trip> trips;
+	WebView webView;
+	WebEngine webEngine;
 
-	public BusMap(){
+	public BusMap() throws FileNotFoundException, ScriptException {
 		stops = new ArrayList<>();
 		routes = new ArrayList<>();
 		trips = new ArrayList<>();
+		webView = new WebView();
+		this.getChildren().add(webView);
+
+		webEngine = webView.getEngine();
+		webEngine.load(getClass().getResource("loadGoogleMap.html").toString());
+
+		addStopMarker(new Stop(44.810060,-89.497640, "", "", ""));
+	}
+
+	public void addStopMarker(Stop stop){
+		try {
+			webEngine.executeScript("document.addStopMarker(" + stop.getLocation().getLat() + ", " +
+					stop.getLocation().getLon() + ")");
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 
 	/**

@@ -35,6 +35,8 @@ public class Controller implements Initializable {
 	private TextField searchForTripTextField;
 	@FXML
 	private VBox tabSearchVBox;
+	@FXML
+	private Tab mapTab;
 
 	/**
 	 * Author:
@@ -60,6 +62,8 @@ public class Controller implements Initializable {
 			importedItemsTab.setContent(gtfsListView);
             gtfsListView.setPrefWidth(mainVBox.getWidth());
             gtfsListView.adjustSizes(mainVBox.getPrefHeight(), mainVBox.getPrefWidth());
+
+            mapTab.setContent(map);
 
 			searchResultsView = new SearchResultsView();
 			dataStorage.setSearchResultsView(searchResultsView);
