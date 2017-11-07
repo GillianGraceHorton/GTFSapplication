@@ -1,11 +1,17 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -16,6 +22,9 @@ import java.util.ArrayList;
 public class GTFSListView extends HBox implements Observer {
 
     private Subject dataStorage;
+    private DataView dataView;
+    private Stage dataStage;
+    private VBox dataBox;
     private VBox detailsBox;
     private TextArea details;
     private TabPane tabPane;
@@ -48,12 +57,27 @@ public class GTFSListView extends HBox implements Observer {
         routesTab = new Tab("ROUTES");
         tripsTab = new Tab("TRIPS");
         stopTimesTab = new Tab("STOP TIMES");
+
+        dataView = new DataView();
+        dataStage = new Stage();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DataView.fxml"));
+            Parent root;
+            root = loader.load();
+            dataView = loader.getController();
+            dataStage.setScene(new Scene(root));
+            dataBox = dataView.getDataBox();
+            dataView.setVisibility(false, false, false, false, false, false, false, false);
+        } catch(IOException e) {
+            System.out.println("Could not load DataView.fxml");
+        }
+
         tabPane.getTabs().addAll(stopsTab, routesTab, tripsTab, stopTimesTab);
         details = new TextArea();
         detailsBox = new VBox();
         elementsView = new ListView<>();
         detailsBox.getChildren().addAll();
-        detailsBox.getChildren().addAll(details, elementsView);
+        detailsBox.getChildren().addAll(details, elementsView, dataBox);
         details.setEditable(false);
 
         this.getChildren().addAll(tabPane, detailsBox);
@@ -71,6 +95,7 @@ public class GTFSListView extends HBox implements Observer {
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
         itemClicked = event -> {
+            dataView.setVisibility(false, false, false, false, false, false, false, false);
             details.clear();
             Object list = event.getSource();
             Object item = ((ListView) event.getSource()).getSelectionModel().getSelectedItem();
@@ -96,9 +121,15 @@ public class GTFSListView extends HBox implements Observer {
             } else if (item instanceof Route) {
                 details.setText(((Route) item).toStringData());
                 elementsView.getItems().clear();
+                //TODO: List Any Elements of Route.
             } else if (item instanceof Trip) {
                 details.setText(((Trip) item).toStringData());
                 elementsView.getItems().clear();
+                //TODO: List Any Elements of Trip.
+            } else if (item instanceof StopTime) {
+                details.setText(((StopTime) item).toString());
+                elementsView.getItems().clear();
+                //TODO: List Any Elements of StopTime.
             }
         };
 
@@ -106,12 +137,17 @@ public class GTFSListView extends HBox implements Observer {
             Object item = ((ListView) event.getSource()).getSelectionModel().getSelectedItem();
             if (item instanceof Stop) {
                 //TODO: Pop up for editing Routes. Can change ListView to GUI element with back button option later.
+                dataView.setVisibility(false, false, false, false, false, false, false, false);
             } else if (item instanceof Route) {
                 //TODO: Pop up for editing Routes. Can change ListView to GUI element with back button option later.
+                dataView.setVisibility(false, false, false, false, false, false, false, false);
             } else if (item instanceof Trip) {
                 //TODO: Pop up for editing trips. Can change ListView to GUI element with back button option later.
+                dataView.setVisibility(false, false, false, false, false, false, false, false);
             } else if (item instanceof StopTime) {
-
+                dataView.setVisibility(true, true, true, true, true, true, true, true)
+                        .setData(item)
+                        .fillData();
             }
         };
 
@@ -135,6 +171,8 @@ public class GTFSListView extends HBox implements Observer {
         details.setPrefHeight(height/4);
         elementsView.setPrefWidth(width / 3.0);
         elementsView.setPrefHeight(height/4);
+        dataBox.setPrefWidth(width / 3.0);
+        dataBox.setPrefHeight(height / 2);
     }
 
     /**
