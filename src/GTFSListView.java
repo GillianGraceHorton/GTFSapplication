@@ -58,7 +58,6 @@ public class GTFSListView extends HBox implements Observer {
 
         this.getChildren().addAll(tabPane, detailsBox);
 
-
         stops = new ListView<>();
         routes = new ListView<>();
         trips = new ListView<>();
@@ -149,7 +148,7 @@ public class GTFSListView extends HBox implements Observer {
     }
 
     /**
-     * Author:
+     * Author: Gracie Horton
      * Description: Receives update from the subject
      *
      * @param addedItems items that have been updated

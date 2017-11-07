@@ -167,7 +167,7 @@ public class Controller implements Initializable {
     }
 
     /**
-     * Author:
+     * Author: hortog
      * Description:
      */
     public void searchForRouteHandler() {
@@ -177,28 +177,26 @@ public class Controller implements Initializable {
             results.add(dataStorage.searchRoutes(routeID));
             searchResultsView.addSearchResults(routeID, results);
         } else {
-            JOptionPane.showMessageDialog(null, "No such trip exists for the the trip ID: " +
-                    routeID);
+            JOptionPane.showMessageDialog(null, "No such trip exists for the the trip ID: " + routeID);
         }
     }
 
     /**
-     * Author:
+     * Author: hortog
      * Description:
      */
     public void importStopFileHandler() {
-        fileChooser.setTitle("Import Stops");
+        fileChooser.setTitle("Import Stop File");
         File fileToAdd = fileChooser.showOpenDialog(null);
         System.out.println();
         try {
+
             LinkedList<Stop> stops = fileManager.parseStopFile(fileToAdd);
-            if (stops != null) {
-                dataStorage.updateFromFiles(stops);
-                dataStorage.notifyObservers();
-                writeInformationMessage("Import Successful", "File Imported: " + fileToAdd.getName());
-            } else {
-                throw new NullPointerException();
-            }
+            if (stops != null) { dataStorage.updateFromFiles(stops); }
+            else { throw new NullPointerException(); }
+            dataStorage.notifyObservers();
+            writeInformationMessage("Import Successful", "File Imported: " + fileToAdd.getName());
+
         } catch (Exception e) {
             System.out.println("TEST: importStopFilesHandler -> " + e);
             writeErrorMessage(e.getMessage());
@@ -206,87 +204,67 @@ public class Controller implements Initializable {
     }
 
     /**
-     * Author:
+     * Author: hortog
      * Description:
      */
     public void importStopTimesFileHandler() {
-        fileChooser.setTitle("Import Stop Times");
+        fileChooser.setTitle("Import Stop_Times File");
         File fileToAdd = fileChooser.showOpenDialog(null);
         try {
             LinkedList<StopTime> stopTimes = fileManager.parseStopTimesFile(fileToAdd);
             if (stopTimes != null) {
                 dataStorage.updateFromFiles(stopTimes);
-                dataStorage.notifyObservers();
-            } else {
-                throw new NullPointerException();
             }
+            else { throw new NullPointerException(); }
+            dataStorage.notifyObservers();
+            writeInformationMessage("Import Successful", "File Imported: " + fileToAdd.getName());
         } catch (Exception e) {
             System.out.println("Error: importStopTimesHandler -> " + e);
             writeErrorMessage(e.getMessage());
         }
     }
 
+    /**
+     * Author: hortog, Joseph Heinz - heinzja@msoe.edu
+     * Description: Allows the user to import several stop,route,trip, and stop_times files at once.
+     */
     public void importMultipleFilesHandler() {
-        SimpleTimer st = new SimpleTimer();
         List<File> files = fileChooser.showOpenMultipleDialog(null);
-        writeInformationMessage("Importing...", "Warning: Loading Large/Multiple Files May Cause the Program to Appear Unresponsive.\n" +
-                "Click Ok to Continue.");
+        writeInformationMessage("User Message:", "Warning:\n" +
+                "When Importing Large and/or Multiple Files the Program May Appear Unresponsive.\n" +
+                "\nPlease Click 'Ok' to Continue Importing...");
         for (File file : files) {
-
             try {
                 Scanner scanner = new Scanner(file);
                 String firstLine = scanner.nextLine();
                 if (firstLine.equals(fileManager.validFileTypes.get("stops"))) {
-                    System.out.println("stops:");
-                    st.start();
+
                     LinkedList<Stop> stops = fileManager.parseStopFile(file);
-                    st.end();
-                    if (!stops.isEmpty()) {
-                        st.start();
-                        dataStorage.updateFromFiles(stops);
-                        st.end();
-                    } else {
-                        throw new NullPointerException("Error: LinkedList<Stop> is empty");
-                    }
-                } else if (firstLine.equals(fileManager.validFileTypes.get("routes"))) {
-                    System.out.println("routes:");
-                    st.start();
-                    LinkedList<Route> routes = fileManager.parseRouteFile(file);
-                    st.end();
-                    if (!routes.isEmpty()) {
-                        st.start();
-                        dataStorage.updateFromFiles(routes);
-                        st.end();
-                    } else {
-                        throw new NullPointerException("Error: LinkedList<Route> is empty");
-                    }
-                } else if (firstLine.equals(fileManager.validFileTypes.get("trips"))) {
-                    System.out.println("trips:");
-                    st.start();
-                    LinkedList<Trip> trips = fileManager.parseTripFile(file);
-                    st.end();
-                    if (!trips.isEmpty()) {
-                        st.start();
-                        dataStorage.updateFromFiles(trips);
-                        st.end();
-                    } else {
-                        throw new NullPointerException("Error: LinkedList<Trip> is empty");
-                    }
-                } else if (firstLine.equals(fileManager.validFileTypes.get("stop_times"))) {
-                    System.out.println("stop_times:");
-                    st.start();
-                    LinkedList<StopTime> stopTimes = fileManager.parseStopTimesFile(file);
-                    st.end();
-                    if (!stopTimes.isEmpty()) {
-                        st.start();
-                        dataStorage.updateFromFiles(stopTimes);
-                        st.end();
-                    } else {
-                        throw new NullPointerException("Error: LinkedList<StopTime> is empty");
-                    }
-                } else {
-                    throw new InvalidObjectException("Error: Invalid File Format");
+                    if (!stops.isEmpty()) { dataStorage.updateFromFiles(stops); }
+                    else { throw new NullPointerException("Error: LinkedList<Stop> is empty"); }
+
                 }
+                else if (firstLine.equals(fileManager.validFileTypes.get("routes"))) {
+
+                    LinkedList<Route> routes = fileManager.parseRouteFile(file);
+                    if (!routes.isEmpty()) { dataStorage.updateFromFiles(routes); }
+                    else { throw new NullPointerException("Error: LinkedList<Route> is empty"); }
+
+                } else if (firstLine.equals(fileManager.validFileTypes.get("trips"))) {
+
+                    LinkedList<Trip> trips = fileManager.parseTripFile(file);
+                    if (!trips.isEmpty()) { dataStorage.updateFromFiles(trips); }
+                    else { throw new NullPointerException("Error: LinkedList<Trip> is empty"); }
+
+                } else if (firstLine.equals(fileManager.validFileTypes.get("stop_times"))) {
+
+                    LinkedList<StopTime> stopTimes = fileManager.parseStopTimesFile(file);
+                    if (!stopTimes.isEmpty()) { dataStorage.updateFromFiles(stopTimes); }
+                    else { throw new NullPointerException("Error: LinkedList<StopTime> is empty"); }
+
+                }
+                else { throw new InvalidObjectException("Error: Invalid File Format"); }
+
             } catch (InvalidObjectException | InputMismatchException | FileNotFoundException | NullPointerException e) {
                 writeErrorMessage("Error: " + e.toString() + "\nMessage: " + e.getMessage());
                 e.printStackTrace();
@@ -305,14 +283,13 @@ public class Controller implements Initializable {
         fileChooser.setTitle("Import Routes");
         File fileToAdd = fileChooser.showOpenDialog(null);
         try {
+
             LinkedList<Route> routes = fileManager.parseRouteFile(fileToAdd);
-            if (routes != null) {
-                dataStorage.updateFromFiles(routes);
-                dataStorage.notifyObservers();
-                writeInformationMessage("Import Successful", "File Imported: " + fileToAdd.getName());
-            } else {
-                throw new NullPointerException();
-            }
+            if (routes != null) { dataStorage.updateFromFiles(routes); }
+            else { throw new NullPointerException(); }
+            dataStorage.notifyObservers();
+            writeInformationMessage("Import Successful", "File Imported: " + fileToAdd.getName());
+
         } catch (Exception e) {
             System.out.println("TEST: importRouteFilesHandler -> " + e);
             writeErrorMessage(e.getMessage());
@@ -327,14 +304,13 @@ public class Controller implements Initializable {
         fileChooser.setTitle("Import Trips");
         File fileToAdd = fileChooser.showOpenDialog(null);
         try {
+
             LinkedList<Trip> stops = fileManager.parseTripFile(fileToAdd);
-            if (stops != null) {
-                dataStorage.updateFromFiles(stops);
-                dataStorage.notifyObservers();
-                writeInformationMessage("Import Successful", "File Imported: " + fileToAdd.getName());
-            } else {
-                throw new NullPointerException();
-            }
+            if (stops != null) { dataStorage.updateFromFiles(stops); }
+            else { throw new NullPointerException(); }
+            dataStorage.notifyObservers();
+            writeInformationMessage("Import Successful", "File Imported: " + fileToAdd.getName());
+
         } catch (Exception e) {
             System.out.println("TEST: importTripFilesHandler -> " + e);
             writeErrorMessage(e.getMessage());

@@ -31,29 +31,16 @@ public class DataStorage implements Subject {
         searchResultsView = view;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param observer - the observer to attach
-     */
     public void attach(Observer observer) {
         observers.add(observer);
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param observer
-     * @return boolean - result of removing an observer
-     */
     public boolean detach(Observer observer) {
         return observers.remove(observer);
     }
 
     /**
-     * Author: hortong
+     * Author: hortong & Joseph Heinz - heinzja@msoe.edu
      * Description: Takes an arrayList of objects created by files loaded in the file manager and adds each object.
      *
      * @param updates - ArrayList of objects created by the file loaded in the File manager class
@@ -130,7 +117,8 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * sends the contents of this subject's dataStructures to each observer
+     * Author:
+     * Description: Sends the contents of this subject's dataStructures to each observer
      *
      * @throws KeyAlreadyExistsException
      */
@@ -213,15 +201,16 @@ public class DataStorage implements Subject {
      * @return the stop with the specified stopID or null if no such stop is found
      */
     public Stop searchStops(String stopID) {
+        Stop result = null;
         if (stops != null) {
             NavigableSet<String> nav = stops.navigableKeySet();
             for (String id : nav) {
                 if (id.equalsIgnoreCase(stopID)) {
-                    return stops.get(id);
+                    result = stops.get(id);
                 }
             }
         }
-        return null;
+        return result;
     }
 
     /**
@@ -232,15 +221,16 @@ public class DataStorage implements Subject {
      * @return returns the route with the specified routeID or null if no such route is found
      */
     public Route searchRoutes(String routeID) {
+        Route result = null;
         if (routes != null) {
             NavigableSet<String> nav = routes.navigableKeySet();
             for (String id : nav) {
                 if (id.equalsIgnoreCase(routeID)) {
-                    return routes.get(id);
+                    result =  routes.get(id);
                 }
             }
         }
-        return null;
+        return result;
     }
 
     /**
@@ -251,15 +241,16 @@ public class DataStorage implements Subject {
      * @return Trip object with the specified tripID or null if there is no such trip
      */
     public Trip searchTrips(String tripID) {
+        Trip result = null;
         if (trips != null) {
             NavigableSet<String> nav = trips.navigableKeySet();
             for (String id : nav) {
                 if (id.equalsIgnoreCase(tripID)) {
-                    return trips.get(id);
+                    result = trips.get(id);
                 }
             }
         }
-        return null;
+        return result;
     }
 
     /**
@@ -311,72 +302,30 @@ public class DataStorage implements Subject {
         return routesToReturn;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public Collection<Observer> getObservers() {
         return observers;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param observers
-     */
     public void setObservers(Collection<Observer> observers) {
         this.observers = observers;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public NavigableMap<String, Stop> getStops() {
         return stops;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param stops
-     */
     public void setStops(NavigableMap<String, Stop> stops) {
         this.stops = stops;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public NavigableMap<String, Route> getRoutes() {
         return routes;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param routes
-     */
     public void setRoutes(NavigableMap<String, Route> routes) {
         this.routes = routes;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public NavigableMap<String, Trip> getTrips() {
         return trips;
     }
@@ -385,12 +334,6 @@ public class DataStorage implements Subject {
         this.trips = trips;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public Collection<StopTime> getStopTimes() {
         return stopTimes;
     }

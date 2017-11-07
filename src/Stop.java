@@ -14,9 +14,7 @@ public class Stop {
     private ArrayList<StopTime> stopTimes;
 
     /**
-     * Author:
      * Description: Creates a stop object with information loaded from a stop file
-     *
      * @param lon      longitude for the gps location of the stop
      * @param lat      latitude for the gps location of the stop
      * @param name     of the stop
@@ -30,82 +28,34 @@ public class Stop {
         this.stopDescription = stopDesc;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param stopID
-     */
     public Stop(String stopID) {
         this.stopID = stopID;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public Location getLocation() {
         return location;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param location
-     */
     public void setLocation(Location location) {
         this.location = location;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public String getStopID() {
         return stopID;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public ArrayList<StopTime> getStopTimes() {
         return stopTimes;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public String getName() {
         return name;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public String getStopDescription() {
         return stopDescription;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param stopDescription
-     */
     public void setStopDescription(String stopDescription) {
         this.stopDescription = stopDescription;
     }
@@ -162,7 +112,6 @@ public class Stop {
     /**
      * Author:
      * Description:
-     *
      * @return
      */
     public String toString() {
@@ -172,7 +121,6 @@ public class Stop {
     /**
      * Author:
      * Description:
-     *
      * @return
      */
     public String toStringExport() {
@@ -182,8 +130,7 @@ public class Stop {
     /**
      * Author: Joseph Heinz - heinzja@msoe.edu
      * Description: Checks if this Stop Object contains a location and name, if not, then the stop
-     * is a place holder for future stop information to added to.
-     *
+     *              is a place holder for future stop information to added to.
      * @return returns result of if this Stop Object is a placeholder (empty) or valid
      */
     public boolean isEmpty() {
@@ -197,7 +144,6 @@ public class Stop {
     /**
      * Author:
      * Description:
-     *
      * @param stop
      * @throws IllegalArgumentException
      */

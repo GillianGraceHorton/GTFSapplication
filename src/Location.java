@@ -7,7 +7,6 @@ public class Location {
     private double longitude;
 
     /**
-     * Author:
      * Description: Initializes the Location class
      *
      * @param lon - longitude value to store
@@ -19,12 +18,6 @@ public class Location {
         setLon(lon);
     }
 
-    /**
-     * Author:
-     * Description: Returns latitude
-     *
-     * @return double - value stored in latitude.
-     */
     public double getLat() {
         return latitude;
     }

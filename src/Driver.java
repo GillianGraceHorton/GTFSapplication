@@ -15,9 +15,7 @@ import java.io.IOException;
 public class Driver extends Application {
 
     /**
-     * Author:
      * Description: Begins application
-     *
      * @param args - beginning arguments being passed into the application
      */
     public static void main(String[] args) {
