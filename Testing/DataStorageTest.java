@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.script.ScriptException;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NavigableMap;
@@ -21,7 +23,7 @@ class DataStorageTest {
      * @author: hortong
      */
     @Test
-    void attach() {
+    void attach() throws FileNotFoundException, ScriptException {
         //creates observer object to test the attach method
         Observer observer = new BusMap();
 
@@ -69,7 +71,7 @@ class DataStorageTest {
      * @author: hortong
      */
     @Test
-    void detach() {
+    void detach() throws FileNotFoundException, ScriptException {
         ArrayList<Observer> observers = new ArrayList<>();
         Observer observer1 = new BusMap();
         observers.add(observer1);
@@ -124,7 +126,7 @@ class DataStorageTest {
      * @author: hortong
      */
     @Test
-    void notifyObservers() {
+    void notifyObservers() throws FileNotFoundException, ScriptException {
         ArrayList<Observer> observers = new ArrayList<>();
         LinkedList<Stop> updates = new LinkedList<>();
         Stop stop = new Stop(0, 0, "test",  "1A", "");

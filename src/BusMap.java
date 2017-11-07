@@ -21,8 +21,10 @@ public class BusMap extends Pane implements Observer {
 	private ArrayList<Trip> trips;
 	WebView webView;
 	WebEngine webEngine;
+	boolean drewRoute;
 
 	public BusMap() throws FileNotFoundException, ScriptException {
+		drewRoute = false;
 		stops = new ArrayList<>();
 		routes = new ArrayList<>();
 		trips = new ArrayList<>();
@@ -43,9 +45,11 @@ public class BusMap extends Pane implements Observer {
 
 	public void addStopMarker(Stop stop){
 		try {
-			webView.getEngine().executeScript("addStopMarker(" + stop.getLocation().getLat() + "," +
-					" " + stop.getLocation().getLon() + ")");
-		}catch(Exception e){
+			if(!stop.isEmpty()) {
+				webView.getEngine().executeScript("addStopMarker(" + stop.getLocation().getLat() + "," +
+						" " + stop.getLocation().getLon() + ")");
+			}
+		}catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -94,10 +98,19 @@ public class BusMap extends Pane implements Observer {
 	@Override
 	public void update(ArrayList<Object> updates) {
 		for (Object item: updates) {
-			if(item instanceof Stop){ addStopMarker((Stop)item); }
-			else if(item instanceof Route){ routes.add((Route)item); }
-			else if(item instanceof Trip){ trips.add((Trip)item); }
+			if(item instanceof Route){ drawRoute((Route)item); }
 		}
-		webView.getEngine().executeScript("createCluster()");
+		//webView.getEngine().executeScript("createCluster()");
+	}
+
+	private void drawRoute(Route route){
+		if(!drewRoute && !route.getStops().isEmpty() && !route.isEmpty()) {
+			for (Stop stop : route.getStops().values()) {
+				addStopMarker(stop);
+			}
+			webView.getEngine().executeScript("drawRoute()");
+			drewRoute = true;
+			System.out.println("drew route");
+		}
 	}
 }
