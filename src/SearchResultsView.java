@@ -18,6 +18,10 @@ public class SearchResultsView extends HBox {
     private TextArea details;
     private Accordion accordion;
 
+    /**
+     * Author:
+     * Description:
+     */
     public SearchResultsView() {
         searches = new TreeMap<>();
         details = new TextArea();
@@ -39,6 +43,10 @@ public class SearchResultsView extends HBox {
         adjustSizes();
     }
 
+    /**
+     * Author:
+     * Description:
+     */
     private void adjustSizes() {
         this.setWidth(900);
         accordion.setMinWidth(this.getWidth() * (2.0 / 3.0));
@@ -47,6 +55,12 @@ public class SearchResultsView extends HBox {
         details.setMinHeight(400);
     }
 
+    /**
+     * Author:
+     * Description:
+     * @param searchedFor
+     * @param results
+     */
     public void addSearchResults(String searchedFor, ArrayList<Object> results) {
         TitledPane newPane = new TitledPane();
         if (results.get(0) instanceof Stop) {
