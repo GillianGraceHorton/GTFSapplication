@@ -1,14 +1,16 @@
+/**
+ * Author:
+ * Date:
+ * Description:
+ */
 public class Time {
-
     private int hour;
     private int min;
     private int sec;
 
     /**
-     * Author:
-     * Description: Constructor that checks for invalid times and throws an
-     * IllegalArgumentException if the time is an invalid format of an invalid time
-     *
+     * Description: Constructor that checks for invalid times and throws an IllegalArgumentException
+     *              if the time is an invalid format of an invalid time.
      * @param time - the value to be set for Time object.
      * @throws IllegalArgumentException
      */
@@ -26,7 +28,6 @@ public class Time {
     /**
      * Author:
      * Description:
-     *
      * @param hour
      * @param min
      * @param sec
@@ -38,7 +39,6 @@ public class Time {
     /**
      * Author:
      * Description: Returns an integer value of the time for comparison purposes.
-     *
      * @return integer value of the time (from 0 to 239999)
      */
     public int getTime() {
@@ -48,7 +48,6 @@ public class Time {
     /**
      * Author:
      * Description: sets hour location of time
-     *
      * @param hour
      */
     public void setHour(int hour) throws NumberFormatException {
@@ -61,7 +60,6 @@ public class Time {
     /**
      * Author:
      * Description: sets min location of time
-     *
      * @param min
      */
     public void setMin(int min) throws NumberFormatException {
@@ -74,7 +72,6 @@ public class Time {
     /**
      * Author:
      * Description: sets seconds location of time
-     *
      * @param sec
      */
     public void setSec(int sec) throws NumberFormatException {
@@ -87,7 +84,6 @@ public class Time {
     /**
      * Author: hortong
      * Description:
-     *
      * @return string of this objects time value
      */
     public String toString() {
@@ -97,8 +93,7 @@ public class Time {
     /**
      * Author: hortong
      * Description: Compares the time values of two time objects
-     * and returns an integer indicating which is greater.
-     *
+     *              and returns an integer indicating which is greater.
      * @param time
      * @return -1 if value of this time object is smaller
      * 1 if the value of this time object is greater
