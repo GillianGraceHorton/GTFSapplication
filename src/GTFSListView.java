@@ -66,7 +66,7 @@ public class GTFSListView extends HBox implements Observer {
             dataStage.setScene(new Scene(root));
             dataBox = dataView.getDataBox();
             dataView.setVisibility(false, false, false, false, false, false, false, false);
-        } catch(IOException e) {
+        } catch (IOException e) {
             System.out.println("Could not load DataView.fxml");
         }
 
@@ -104,7 +104,7 @@ public class GTFSListView extends HBox implements Observer {
                 elementsView.getItems().clear();
                 ObservableList<Object> stopTimes = FXCollections.observableArrayList();
                 ArrayList<StopTime> stopTimesList = ((Stop) item).getStopTimes();
-                if(stopTimesList != null && stopTimesList.size() != 0) {
+                if (stopTimesList != null && stopTimesList.size() != 0) {
                     for (StopTime o : stopTimesList) {
                         stopTimes.add(o);
                     }
@@ -166,9 +166,9 @@ public class GTFSListView extends HBox implements Observer {
     public void adjustSizes(double height, double width) {
         tabPane.setPrefWidth(width * (2.0 / 3.0));
         details.setPrefWidth(width / 3.0);
-        details.setPrefHeight(height/4);
+        details.setPrefHeight(height / 4);
         elementsView.setPrefWidth(width / 3.0);
-        elementsView.setPrefHeight(height/4);
+        elementsView.setPrefHeight(height / 4);
         dataBox.setPrefWidth(width / 3.0);
         dataBox.setPrefHeight(height / 2);
     }
@@ -213,41 +213,4 @@ public class GTFSListView extends HBox implements Observer {
         }
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param routes
-     */
-    public void displayRoutesContainingStop(ArrayList<Route> routes) {
-        if (routesContainingStopTab == null) {
-            routesContainingStopTab = new Tab("Routes containing Stop");
-            routesContainingStop = new TextArea();
-            routesContainingStopTab.setContent(routesContainingStop);
-            tabPane.getTabs().add(routesContainingStopTab);
-        }
-        StringBuilder toAdd = new StringBuilder();
-        for (Route route : routes) {
-            toAdd.append("RouteID: ").append(route.getRouteID()).append(", Route Name: ").append(route
-                    .getRouteLongName()).append("\n");
-        }
-        routesContainingStop.setText(toAdd.toString());
-        routesContainingStop.setEditable(false);
-    }
-
-    /**
-     * Author:
-     * Description:
-     *
-     * @param route
-     */
-    public void displayRouteWithStops(Route route) {
-        if (routeWithStopsTab == null) {
-            routeWithStopsTab = new Tab("Route With its Stops");
-            routeWithStops = new TextArea();
-            routeWithStopsTab.setContent(routeWithStops);
-            tabPane.getTabs().add(routeWithStopsTab);
-        }
-        routeWithStops.setText(route.stopsToString());
-    }
 }

@@ -64,30 +64,6 @@ public class Route {
         this.stops = new TreeMap<>();
     }
 
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
-	public void setRouteShortName(String routeShortName) {
-		this.routeShortName = routeShortName;
-	}
-
-	public void setRouteLongName(String routeLongName) {
-		this.routeLongName = routeLongName;
-	}
-
-	public void setRouteDescription(String routeDescription) {
-		this.routeDescription = routeDescription;
-	}
-
-	public void setRouteType(String routeType) {
-		this.routeType = routeType;
-	}
-
-	public void setRouteUrl(String routeUrl) {
-		this.routeUrl = routeUrl;
-	}
-
 	/**
 	 * Author: hortong
 	 * Description: adds a stop to a route
