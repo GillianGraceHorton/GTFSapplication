@@ -6,7 +6,7 @@ import javafx.scene.layout.VBox;
 
 /**
  * transitc
- * Purpose:
+ * Purpose: edit stopTimes from a stop
  *
  * @author: hoffmanjc
  * @version: 1.0 on 11/6/2017 at 9:05 PM
@@ -31,6 +31,19 @@ public class DataView {
     public DataView() {
     }
 
+    /**
+     * Sets each data pane visible as a boolean
+     * @param m1
+     * @param m2
+     * @param m3
+     * @param m4
+     * @param m5
+     * @param m6
+     * @param m7
+     * @param m8
+     * @return this
+     * @author hoffmanjc
+     */
     public DataView setVisibility(boolean m1, boolean m2, boolean m3, boolean m4, boolean m5, boolean m6, boolean m7, boolean m8) {
         data1.setVisible(m1);
         data2.setVisible(m2);
@@ -43,6 +56,12 @@ public class DataView {
         return this;
     }
 
+    /**
+     * sets type of data
+     * @param data
+     * @return this
+     * @author hoffmanjc
+     */
     public DataView setData(Object data) {
         if(data instanceof StopTime) {
             mode = Mode.STOPTIME;
@@ -57,6 +76,11 @@ public class DataView {
         return this;
     }
 
+    /**
+     * fills data in GUI
+     * @return this
+     * @author hoffmanjc
+     */
     public DataView fillData() {
         if(mode == Mode.STOPTIME) {
             StopTime stopTime = (StopTime) data;
@@ -88,13 +112,21 @@ public class DataView {
         return this;
     }
 
+    /**
+     * gets GUI element
+     * @return dataBox
+     * @author hoffmanjc
+     */
     public VBox getDataBox() {
         return this.dataBox;
     }
 
+    /**
+     * updates data pane 1
+     * @author hoffmanjc
+     */
     public void update1() {
         if(mode == Mode.STOPTIME) {
-            //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
             StopTime stopTime = (StopTime) data;
             stopTime.setTripID(field1.getText());
         } else if(mode == Mode.ROUTE) {
@@ -106,6 +138,10 @@ public class DataView {
         }
     }
 
+    /**
+     * updates data pane 2
+     * @author hoffmanjc
+     */
     public void update2() {
         if(mode == Mode.STOPTIME) {
             //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
@@ -120,6 +156,10 @@ public class DataView {
         }
     }
 
+    /**
+     * updates data pane 3
+     * @author hoffmanjc
+     */
     public void update3() {
         if(mode == Mode.STOPTIME) {
             //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
@@ -134,6 +174,10 @@ public class DataView {
         }
     }
 
+    /**
+     * updates data pane 4
+     * @author hoffmanjc
+     */
     public void update4() {
         if(mode == Mode.STOPTIME) {
             //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
@@ -148,6 +192,10 @@ public class DataView {
         }
     }
 
+    /**
+     * updates data pane 5
+     * @author hoffmanjc
+     */
     public void update5() {
         if(mode == Mode.STOPTIME) {
             //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
@@ -162,6 +210,10 @@ public class DataView {
         }
     }
 
+    /**
+     * updates data pane 6
+     * @author hoffmanjc
+     */
     public void update6() {
         if(mode == Mode.STOPTIME) {
             //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
@@ -176,6 +228,10 @@ public class DataView {
         }
     }
 
+    /**
+     * updates data pane 7
+     * @author hoffmanjc
+     */
     public void update7() {
         if(mode == Mode.STOPTIME) {
             //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
@@ -190,6 +246,10 @@ public class DataView {
         }
     }
 
+    /**
+     * updates data pane 8
+     * @author hoffmanjc
+     */
     public void update8() {
         if(mode == Mode.STOPTIME) {
             //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
