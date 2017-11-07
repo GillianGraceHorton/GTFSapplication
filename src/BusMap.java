@@ -108,7 +108,13 @@ public class BusMap extends HBox implements Observer {
 			for (Stop stop : route.getStops().values()) {
 				addStopMarker(stop);
 			}
-			webView.getEngine().executeScript("drawRoute(\"" + route.getRouteColor().trim() + "\")");
+
+			if (route.getRouteColor().trim().equals("FFFFFF")){							 //changes white lines to red
+				webView.getEngine().executeScript("drawRoute(\"" + "FF0000" + "\")");
+			}
+			else {
+				webView.getEngine().executeScript("drawRoute(\"" + route.getRouteColor().trim() + "\")");
+			}
 		}
 	}
 }
