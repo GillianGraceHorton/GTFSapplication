@@ -104,11 +104,12 @@ public class BusMap extends Pane implements Observer {
 	}
 
 	private void drawRoute(Route route){
-		if(!drewRoute && !route.getStops().isEmpty() && !route.isEmpty()) {
+		if(!route.getStops().isEmpty() && !route.isEmpty()) {
+			System.out.println(route.toStringData());
 			for (Stop stop : route.getStops().values()) {
 				addStopMarker(stop);
 			}
-			webView.getEngine().executeScript("drawRoute()");
+			webView.getEngine().executeScript("drawRoute(" + route.getRouteColor() + ")");
 			drewRoute = true;
 			System.out.println("drew route");
 		}

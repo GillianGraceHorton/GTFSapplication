@@ -17,37 +17,45 @@ function addStopMarker(latitude, longitude){
         markers.push(marker);
 }
 
-function drawRoute(){
-        for(index = 0; index < (markers.length - 2); index++){
-            makeConnection(index)
-        }
+function drawRoute(routeColor){
+        makeConnection(routeColor);
         markers = [];
 }
 
-function makeConnection(index){
+function generateWaypoints(){
+        waypts = [];
+        for(index = 0; index < (markers.length - 2); index++){
+            waypts.push({
+                location: markers[index].getPosition(),
+                stopover: true
+            });
+        }
+        return waypts;
+
+}
+
+function makeConnection(routeColor){
         var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
+        var directionsDisplay = new google.maps.DirectionsRenderer({
+            polylineOptions: {
+              strokeColor: routeColor
+            }
+          });
         directionsDisplay.setMap(map);
+        waypts = generateWaypoints();
         directionsService.route({
-            origin: markers[index].getPosition(),
-            destination: markers[index + 1].getPosition(),
+            origin: markers[0].getPosition(),
+            destination: markers[markers.length - 1].getPosition(),
+            waypoints: waypts,
+            optimizeWaypoints: false,
             travelMode: 'DRIVING'
         }, function(response, status) {
             if (status === 'OK') {
-                directionsDisplay.setDirections(response);
-            } else {
-                window.alert('Directions request failed due to ' + status);
+              directionsDisplay.setDirections(response);
+              //var route = response.routes[0];
+
+            }else {
+              window.alert('Directions request failed due to ' + status);
             }
         });
 }
-
-
-function createCluster(){
-        // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-        }
-
-
-
-
