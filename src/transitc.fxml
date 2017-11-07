@@ -116,6 +116,7 @@
                   </VBox>
                </content>
             </Tab>
+            <Tab fx:id="mapTab" text="Map" />
         </tabs>
       </TabPane>
     </VBox>

@@ -86,11 +86,11 @@ public class Route {
 	}
 
 	/**
-	 * Author:
-	 * Description:
+	 * Author: hortong
+	 * Description: adds a stop to a route
 	 * @param stop
 	 * @param stopNum
-	 * @return
+	 * @return boolean indicating if the stop was added
 	 * @throws DuplicateRequestException
 	 */
 	public boolean addStop(Stop stop, int stopNum) throws DuplicateRequestException {
@@ -102,9 +102,6 @@ public class Route {
 			}else if(stops.get(stopNum).isEmpty()){
 				stops.replace(stopNum, stop);
 			}else if(!stops.get(stopNum).equals(stop)){
-				System.out.println(stops.get(stopNum));
-				System.out.println(stop);
-				System.out.println();
 				throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Route: " + routeID);
 			}
 		}

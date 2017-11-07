@@ -33,6 +33,10 @@ public class DataStorage implements Subject {
         this.searchResultsView = searchResultsView;
     }
 
+    /**
+     * @author: hortong
+     * updates the search view object
+     */
     public void updateSearchView(){
         NavigableSet<String> searches = searchResultsView.getSearches();
         if(searches.size() != 0) {
@@ -153,6 +157,7 @@ public class DataStorage implements Subject {
     }
 
     /**
+     * @author: heinzja
      * sends the contents of this subject's dataStructures to each observer
      * @throws KeyAlreadyExistsException
      */
@@ -169,7 +174,7 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * Author:
+     * Author:hortong
      * Description: Takes in an object that is either an instanceof Trip or StopTime and checks that each
      *              occurrence of an ID has an actual object belonging to it.
      * @param newItem -
@@ -225,7 +230,7 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * Author:
+     * Author: hortong
      * Description: Searches the stops for one containing the stop ID.
      * @param stopID
      * @return the stop with the specified stopID or null if no such stop is found
@@ -261,7 +266,7 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * Author:
+     * Author: hortong
      * Description: Searches a trip object for the specified tripID
      * @param tripID - The tripID to search for
      * @return Trip object with the specified tripID or null if there is no such trip
@@ -279,7 +284,7 @@ public class DataStorage implements Subject {
     }
 
     /**
-     * Author:
+     * Author: hortong
      * Description: Searches all the trips for the specified stopID, calls the
      *              getStop method in each trip object in the trips map.
      * @param stopID to search for
@@ -300,18 +305,8 @@ public class DataStorage implements Subject {
         return tripsToReturn;
     }
 
-    public Collection<Trip> searchTripsForRoute(String routeID){
-        Collection<Trip> toReturn = new LinkedList<>();
-        for(Trip trip: trips.values()){
-            if(trip.getRouteID().equals(routeID)){
-                toReturn.add(trip);
-            }
-        }
-        return toReturn;
-    }
-
     /**
-     * Author:
+     * Author: hoffman
      * Description: Searches all the routes for those containing a stop with the specified stopID.
      * @param stopID of the stop to search for
      * @return an ArrayList containing all the routes that contain the stop with the specified
@@ -331,65 +326,30 @@ public class DataStorage implements Subject {
         return routesToReturn;
     }
 
-    /**
-     * Author:
-     * Description:
-     * @return
-     */
     public Collection<Observer> getObservers() {
         return observers;
     }
 
-    /**
-     * Author:
-     * Description:
-     * @param observers
-     */
     public void setObservers(Collection<Observer> observers) {
         this.observers = observers;
     }
 
-    /**
-     * Author:
-     * Description:
-     * @return
-     */
     public NavigableMap<String, Stop> getStops() {
         return stops;
     }
 
-    /**
-     * Author:
-     * Description:
-     * @param stops
-     */
     public void setStops(NavigableMap<String, Stop> stops) {
         this.stops = stops;
     }
 
-    /**
-     * Author:
-     * Description:
-     * @return
-     */
     public NavigableMap<String, Route> getRoutes() {
         return routes;
     }
 
-    /**
-     * Author:
-     * Description:
-     * @param routes
-     */
     public void setRoutes(NavigableMap<String, Route> routes) {
         this.routes = routes;
     }
 
-    /**
-     * Author:
-     * Description:
-     * @return
-     */
     public NavigableMap<String, Trip> getTrips() {
         return trips;
     }
@@ -398,11 +358,6 @@ public class DataStorage implements Subject {
         this.trips = trips;
     }
 
-    /**
-     * Author:
-     * Description:
-     * @return
-     */
     public Collection<StopTime> getStopTimes() {
         return stopTimes;
     }
@@ -411,6 +366,11 @@ public class DataStorage implements Subject {
         this.stopTimes = stopTimes;
     }
 
+    /**
+     * @author: hortong
+     * searchs for a stop in all the dataStructures
+     * @param stopID to search for
+     */
     public void searchForStop(String stopID){
         ArrayList<Object> results = new ArrayList<>();
         results.add(searchStops(stopID));
@@ -420,6 +380,11 @@ public class DataStorage implements Subject {
 
     }
 
+    /**
+     * @author: hortong
+     * searchs for a route in all the dataStructures
+     * @param routeID to search for
+     */
     public void searchForRoute(String routeID){
         ArrayList<Object> results = new ArrayList<>();
         results.add(searchRoutes(routeID));
@@ -427,6 +392,11 @@ public class DataStorage implements Subject {
         searchResultsView.addSearchResults(routeID, results);
     }
 
+    /**
+     * @author: hortong
+     * searchs for a trip in all the dataStructures
+     * @param tripID to search for
+     */
     public void searchForTrip(String tripID){
         ArrayList<Object> results = new ArrayList<>();
         results.add(searchTrips(tripID));
