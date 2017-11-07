@@ -1,26 +1,24 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Accordion;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TitledPane;
+import javafx.event.EventHandler;
+import javafx.scene.control.*;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class SearchResultsView extends HBox {
-    private Map<String, TitledPane> searches;
-    private javafx.event.EventHandler<MouseEvent> itemClicked;
+    private NavigableMap<String, TitledPane> searches;
+    private EventHandler<MouseEvent> itemClicked;
+    private EventHandler<MouseEvent> tabRightClicked;
     private TextArea details;
     private Accordion accordion;
 
     /**
-     * Author:
-     * Description:
+     * @author: hortong
+     * creates a new SearchResultsView object
      */
     public SearchResultsView() {
         searches = new TreeMap<>();
@@ -40,12 +38,25 @@ public class SearchResultsView extends HBox {
                 details.setText(((Trip) item).toStringData());
             }
         };
+
+        tabRightClicked = event -> {
+            System.out.println("got here 5");
+            if (event.getButton() == MouseButton.SECONDARY) {
+                TitledPane selected = (TitledPane)event.getSource();
+                ContextMenu menu = new ContextMenu();
+                MenuItem delete = new MenuItem("Delete");
+                menu.getItems().add(delete);
+                menu.show(selected, event.getScreenX(), event.getScreenY());
+                delete.setOnAction(event1 -> accordion.getPanes().remove(selected));
+            }
+        };
+
         adjustSizes();
     }
 
     /**
-     * Author:
-     * Description:
+     * @author: hortong
+     * adjusts the sizes of the gui elements
      */
     private void adjustSizes() {
         this.setWidth(900);
@@ -56,18 +67,23 @@ public class SearchResultsView extends HBox {
     }
 
     /**
-     * Author:
-     * Description:
-     * @param searchedFor
-     * @param results
+     * @param searchedFor the id of the object searched for
+     * @param results     the results of the search
+     * @author hortong
+     * adds a new titled pane with the search results of a new search
      */
     public void addSearchResults(String searchedFor, ArrayList<Object> results) {
         TitledPane newPane = new TitledPane();
+        newPane.setOnMouseClicked(tabRightClicked);
+        String searchType;
         if (results.get(0) instanceof Stop) {
+            searchType = "stop";
             newPane.setText("results of the stopID: " + searchedFor);
         } else if (results.get(0) instanceof Route) {
+            searchType = "route";
             newPane.setText("results of the routeID: " + searchedFor);
         } else {
+            searchType = "trip";
             newPane.setText("results of the tripID: " + searchedFor);
         }
         VBox lists = new VBox();
@@ -99,6 +115,15 @@ public class SearchResultsView extends HBox {
             tripsListView.setOnMouseClicked(itemClicked);
             lists.getChildren().add(tripsListView);
         }
+        if(searches.containsKey(searchType + " " + searchedFor)){
+            accordion.getPanes().remove(searches.get(searchType + " " + searchedFor));
+            searches.remove(searchType + " " + searchedFor);
+        }
         accordion.getPanes().add(newPane);
+        searches.put(searchType + " " + searchedFor, newPane);
+    }
+
+    public NavigableSet<String> getSearches(){
+        return searches.navigableKeySet();
     }
 }

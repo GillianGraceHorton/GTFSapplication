@@ -1,6 +1,9 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.script.ScriptException;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NavigableMap;
@@ -12,17 +15,16 @@ class DataStorageTest {
     DataStorage dataStorage;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp(){
         dataStorage = new DataStorage();
     }
 
     /**
      * tests the attach method in the dataStorage class for two different test cases
-     *
      * @author: hortong
      */
     @Test
-    void attach() {
+    void attach() throws FileNotFoundException, ScriptException, MalformedURLException {
         //creates observer object to test the attach method
         Observer observer = new BusMap();
 
@@ -35,7 +37,7 @@ class DataStorageTest {
 
         //Test Case 2: tests that the attach method added the correct observer to the observers
         // collection
-        assertEquals(((ArrayList) dataStorage.getObservers()).get(0), observer);
+        assertEquals(((ArrayList)dataStorage.getObservers()).get(0), observer);
     }
 
     /**
@@ -46,11 +48,11 @@ class DataStorageTest {
     void searchStops() {
         //creates the stops to add to the dataStorage object
         NavigableMap<String, Stop> stops = new TreeMap<>();
-        Stop stop1 = new Stop(0, 0, "", "1A", "");
+        Stop stop1 = new Stop(0,0,"", "1A", "");
         stops.put(stop1.getStopID(), stop1);
-        Stop stop2 = new Stop(0, 0, "", "2b", "");
+        Stop stop2 = new Stop(0,0,"", "2b", "");
         stops.put(stop2.getStopID(), stop2);
-        Stop stop3 = new Stop(0, 0, "", "3c", "");
+        Stop stop3 = new Stop(0,0,"", "3c", "");
         stops.put(stop3.getStopID(), stop3);
 
         //Test Case 1: tests that the method returns null when when the stops collection is empty
@@ -67,11 +69,10 @@ class DataStorageTest {
 
     /**
      * tests the detach method of the DataStorage class for 3 test cases
-     *
      * @author: hortong
      */
     @Test
-    void detach() {
+    void detach() throws FileNotFoundException, ScriptException, MalformedURLException {
         ArrayList<Observer> observers = new ArrayList<>();
         Observer observer1 = new BusMap();
         observers.add(observer1);
@@ -95,7 +96,6 @@ class DataStorageTest {
 
     /**
      * tests the search routes method of the DataStorage Class for 3 test cases.
-     *
      * @author: hortong
      */
     @Test
@@ -124,14 +124,13 @@ class DataStorageTest {
 
     /**
      * test the notifyObservers method in the dataStorage class for 2 test cases
-     *
      * @author: hortong
      */
     @Test
-    void notifyObservers() {
+    void notifyObservers() throws FileNotFoundException, ScriptException, MalformedURLException {
         ArrayList<Observer> observers = new ArrayList<>();
         LinkedList<Stop> updates = new LinkedList<>();
-        Stop stop = new Stop(0, 0, "test", "1A", "");
+        Stop stop = new Stop(0, 0, "test",  "1A", "");
         Observer observer1 = new BusMap();
         Observer observer2 = new BusMap();
 
@@ -147,13 +146,10 @@ class DataStorageTest {
         //tests that the correct update is passed to the observers
         dataStorage.setObservers(observers);
         dataStorage.notifyObservers();
-        assertEquals(stop, ((BusMap) observer1).getStops().get(0));
-        assertEquals(stop, ((BusMap) observer2).getStops().get(0));
     }
 
     /**
      * tests the searchTrips method in the DataStorage class for 3 test cases
-     *
      * @author: hortong
      */
     @Test
@@ -182,15 +178,14 @@ class DataStorageTest {
 
     /**
      * tests the searchTripsForStop method in the DataStorage class for 4 test cases
-     *
      * @author: hortong
      */
     @Test
     void searchTripsForStop() {
         NavigableMap<String, Trip> trips = new TreeMap<>();
-        Trip trip1 = new Trip("1A", "", "", "", "", "", "");
+        Trip trip1 = new Trip("1A", "", "","","","","");
         trips.put(trip1.getTripID(), trip1);
-        Trip trip2 = new Trip("2A", "", "", "", "", "", "");
+        Trip trip2 = new Trip("2A", "", "","","","","");
         trips.put(trip2.getTripID(), trip2);
         StopTime stopTime1 = new StopTime("1C", "", "",
                 "stop_0", "0", "", "", "");
@@ -231,7 +226,6 @@ class DataStorageTest {
 
     /**
      * tests the searchRoutesForStop method in the dataStorage class for 4 test cases
-     *
      * @author: hortong
      */
     @Test
