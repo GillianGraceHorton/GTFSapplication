@@ -155,7 +155,7 @@ public class Stop {
         this.name = stop.getName();
         this.stopDescription = stop.getStopDescription();
         this.location = stop.getLocation();
-        this.stopTimes = stop.getStopTimes();
+        //this.stopTimes = stop.getStopTimes();
     }
 
 }

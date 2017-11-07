@@ -1,23 +1,31 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Author: Gracie Horton
+ * Author: Gracie Horton, hoffmanjc
  * Description:
  * Date Created: 10/3/2017 - 4:57:27 PM
  */
 public class GTFSListView extends HBox implements Observer {
 
     private Subject dataStorage;
+    private DataView dataView;
+    private Stage dataStage;
+    private VBox dataBox;
+    private VBox detailsBox;
     private TextArea details;
     private TabPane tabPane;
     private Tab stopsTab;
@@ -31,10 +39,12 @@ public class GTFSListView extends HBox implements Observer {
     private ListView<Route> routes;
     private ListView<Trip> trips;
     private ListView<Trip> stopTimes;
+    private ListView<Object> elementsView;
     private TextArea routesContainingStop;
     private TextArea routeWithStops;
 
     private EventHandler<MouseEvent> itemClicked;
+    private EventHandler<MouseEvent> elementClicked;
 
 
     /**
@@ -47,10 +57,30 @@ public class GTFSListView extends HBox implements Observer {
         routesTab = new Tab("ROUTES");
         tripsTab = new Tab("TRIPS");
         stopTimesTab = new Tab("STOP TIMES");
+
+        dataView = new DataView();
+        dataStage = new Stage();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DataView.fxml"));
+            Parent root;
+            root = loader.load();
+            dataView = loader.getController();
+            dataStage.setScene(new Scene(root));
+            dataBox = dataView.getDataBox();
+            dataView.setVisibility(false, false, false, false, false, false, false, false);
+        } catch(IOException e) {
+            System.out.println("Could not load DataView.fxml");
+        }
+
         tabPane.getTabs().addAll(stopsTab, routesTab, tripsTab, stopTimesTab);
         details = new TextArea();
+        detailsBox = new VBox();
+        elementsView = new ListView<>();
+        detailsBox.getChildren().addAll();
+        detailsBox.getChildren().addAll(details, elementsView, dataBox);
         details.setEditable(false);
-        this.getChildren().addAll(tabPane, details);
+
+        this.getChildren().addAll(tabPane, detailsBox);
 
         stops = new ListView<>();
         routes = new ListView<>();
@@ -65,6 +95,7 @@ public class GTFSListView extends HBox implements Observer {
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
         itemClicked = event -> {
+            dataView.setVisibility(false, false, false, false, false, false, false, false);
             details.clear();
             Object list = event.getSource();
             Object item = ((ListView) event.getSource()).getSelectionModel().getSelectedItem();
@@ -72,16 +103,59 @@ public class GTFSListView extends HBox implements Observer {
                 details.setText(((Trip) item).tripListToString());
             } else if (item instanceof Stop) {
                 details.setText(((Stop) item).toStringData());
+                elementsView.getItems().clear();
+                ObservableList<Object> stopTimes = FXCollections.observableArrayList();
+                ArrayList<StopTime> stopTimesList = ((Stop) item).getStopTimes();
+                if(stopTimesList != null && stopTimesList.size() != 0) {
+                    for (StopTime o : stopTimesList) {
+                        stopTimes.add(o);
+                    }
+                    elementsView.setItems(stopTimes);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Warning");
+                    alert.setHeaderText("StopTimes");
+                    alert.setContentText("No StopTimes Associated With Stop " + ((Stop) item).getStopID() + ".");
+                    alert.showAndWait();
+                }
             } else if (item instanceof Route) {
                 details.setText(((Route) item).toStringData());
+                elementsView.getItems().clear();
+                //TODO: List Any Elements of Route.
             } else if (item instanceof Trip) {
                 details.setText(((Trip) item).toStringData());
+                elementsView.getItems().clear();
+                //TODO: List Any Elements of Trip.
+            } else if (item instanceof StopTime) {
+                details.setText(((StopTime) item).toString());
+                elementsView.getItems().clear();
+                //TODO: List Any Elements of StopTime.
             }
         };
+
+        elementClicked = event -> {
+            Object item = ((ListView) event.getSource()).getSelectionModel().getSelectedItem();
+            if (item instanceof Stop) {
+                //TODO: Pop up for editing Routes. Can change ListView to GUI element with back button option later.
+                dataView.setVisibility(false, false, false, false, false, false, false, false);
+            } else if (item instanceof Route) {
+                //TODO: Pop up for editing Routes. Can change ListView to GUI element with back button option later.
+                dataView.setVisibility(false, false, false, false, false, false, false, false);
+            } else if (item instanceof Trip) {
+                //TODO: Pop up for editing trips. Can change ListView to GUI element with back button option later.
+                dataView.setVisibility(false, false, false, false, false, false, false, false);
+            } else if (item instanceof StopTime) {
+                dataView.setVisibility(true, true, true, true, true, true, true, true)
+                        .setData(item)
+                        .fillData();
+            }
+        };
+
         stops.setOnMouseClicked(itemClicked);
         routes.setOnMouseClicked(itemClicked);
         trips.setOnMouseClicked(itemClicked);
         stopTimes.setOnMouseClicked(itemClicked);
+        elementsView.setOnMouseClicked(elementClicked);
     }
 
     /**
@@ -94,7 +168,11 @@ public class GTFSListView extends HBox implements Observer {
     public void adjustSizes(double height, double width) {
         tabPane.setPrefWidth(width * (2.0 / 3.0));
         details.setPrefWidth(width / 3.0);
-        details.setPrefHeight(height);
+        details.setPrefHeight(height/4);
+        elementsView.setPrefWidth(width / 3.0);
+        elementsView.setPrefHeight(height/4);
+        dataBox.setPrefWidth(width / 3.0);
+        dataBox.setPrefHeight(height / 2);
     }
 
     /**
