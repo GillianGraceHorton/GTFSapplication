@@ -98,7 +98,6 @@ public class BusMap extends Pane implements Observer {
 		for (Object item: updates) {
 			if(item instanceof Route){ drawRoute((Route)item); }
 		}
-		//webView.getEngine().executeScript("createCluster()");
 	}
 
 	private void drawRoute(Route route){
@@ -106,7 +105,8 @@ public class BusMap extends Pane implements Observer {
 			for (Stop stop : route.getStops().values()) {
 				addStopMarker(stop);
 			}
-			webView.getEngine().executeScript("drawRoute(" + route.getColor() + ")");
+			System.out.println(route.getRouteColor());
+			webView.getEngine().executeScript("drawRoute(\"" + route.getRouteColor() + "\")");
 			System.out.println("drew route");
 		}
 	}
