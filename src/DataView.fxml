@@ -15,7 +15,7 @@
                <children>
                   <AnchorPane prefHeight="49.0" prefWidth="414.0">
                      <children>
-                        <Button fx:id="button1" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" prefWidth="115.0" text="Update" />
+                        <Button fx:id="button1" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#update1" prefWidth="115.0" text="Update" />
                         <TextField fx:id="field1" layoutX="140.0" layoutY="11.0" prefWidth="150.0" />
                      </children>
                   </AnchorPane>
@@ -29,7 +29,7 @@
                <children>
                   <AnchorPane prefHeight="49.0" prefWidth="415.0">
                      <children>
-                        <Button fx:id="button2" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" prefWidth="115.0" text="Update" />
+                        <Button fx:id="button2" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#update2" prefWidth="115.0" text="Update" />
                         <TextField fx:id="field2" layoutX="140.0" layoutY="11.0" />
                      </children>
                   </AnchorPane>
@@ -43,7 +43,7 @@
                <children>
                   <AnchorPane prefHeight="49.0" prefWidth="414.0">
                      <children>
-                        <Button fx:id="button3" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" prefWidth="115.0" text="Update" />
+                        <Button fx:id="button3" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#update3" prefWidth="115.0" text="Update" />
                         <TextField fx:id="field3" layoutX="140.0" layoutY="11.0" />
                      </children>
                   </AnchorPane>
@@ -57,7 +57,7 @@
                <children>
                   <AnchorPane prefHeight="49.0" prefWidth="414.0">
                      <children>
-                        <Button fx:id="button4" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" prefWidth="115.0" text="Update" />
+                        <Button fx:id="button4" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#update4" prefWidth="115.0" text="Update" />
                         <TextField fx:id="field4" layoutX="140.0" layoutY="11.0" />
                      </children>
                   </AnchorPane>
@@ -71,7 +71,7 @@
                <children>
                   <AnchorPane prefHeight="49.0" prefWidth="414.0">
                      <children>
-                        <Button fx:id="button5" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" prefWidth="115.0" text="Update" />
+                        <Button fx:id="button5" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#update5" prefWidth="115.0" text="Update" />
                         <TextField fx:id="field5" layoutX="140.0" layoutY="11.0" />
                      </children>
                   </AnchorPane>
@@ -85,7 +85,7 @@
                <children>
                   <AnchorPane prefHeight="49.0" prefWidth="414.0">
                      <children>
-                        <Button fx:id="button6" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" prefWidth="115.0" text="Update" />
+                        <Button fx:id="button6" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#update6" prefWidth="115.0" text="Update" />
                         <TextField fx:id="field6" layoutX="140.0" layoutY="11.0" />
                      </children>
                   </AnchorPane>
@@ -99,7 +99,7 @@
                <children>
                   <AnchorPane prefHeight="49.0" prefWidth="414.0">
                      <children>
-                        <Button fx:id="button7" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" prefWidth="115.0" text="Update" />
+                        <Button fx:id="button7" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#update7" prefWidth="115.0" text="Update" />
                         <TextField fx:id="field7" layoutX="140.0" layoutY="11.0" />
                      </children>
                   </AnchorPane>
@@ -113,7 +113,7 @@
                <children>
                   <AnchorPane prefHeight="49.0" prefWidth="414.0">
                      <children>
-                        <Button fx:id="button8" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" prefWidth="115.0" text="Update" />
+                        <Button fx:id="button8" layoutX="14.0" layoutY="11.0" mnemonicParsing="false" onAction="#update8" prefWidth="115.0" text="Update" />
                         <TextField fx:id="field8" layoutX="140.0" layoutY="11.0" />
                      </children>
                   </AnchorPane>

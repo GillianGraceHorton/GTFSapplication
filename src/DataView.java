@@ -13,6 +13,9 @@ import javafx.scene.layout.VBox;
  */
 public class DataView {
 
+    private enum Mode {
+        ROUTE, STOP, STOPTIME, TRIP
+    }
     @FXML
     private VBox dataBox;
     @FXML
@@ -23,6 +26,7 @@ public class DataView {
     protected TextField field1, field2, field3, field4, field5, field6, field7, field8;
 
     private Object data;
+    private Mode mode;
 
     public DataView() {
     }
@@ -40,12 +44,21 @@ public class DataView {
     }
 
     public DataView setData(Object data) {
+        if(data instanceof StopTime) {
+            mode = Mode.STOPTIME;
+        } else if(data instanceof Route) {
+            mode = Mode.ROUTE;
+        } else if(data instanceof Trip) {
+            mode = Mode.TRIP;
+        } else if(data instanceof Stop) {
+            mode = Mode.STOP;
+        }
         this.data = data;
         return this;
     }
 
     public DataView fillData() {
-        if(data instanceof StopTime) {
+        if(mode == Mode.STOPTIME) {
             StopTime stopTime = (StopTime) data;
             //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
             button1.setText("Trip ID");
@@ -65,11 +78,11 @@ public class DataView {
             button8.setText("Drop Off Type");
             field8.setText(stopTime.getDropoffType());
 
-        } else if(data instanceof Route) {
+        } else if(mode == Mode.ROUTE) {
 
-        } else if(data instanceof Trip) {
+        } else if(mode == Mode.TRIP) {
 
-        } else if(data instanceof Stop) {
+        } else if(mode == Mode.STOP) {
 
         }
         return this;
@@ -77,6 +90,118 @@ public class DataView {
 
     public VBox getDataBox() {
         return this.dataBox;
+    }
+
+    public void update1() {
+        if(mode == Mode.STOPTIME) {
+            //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
+            StopTime stopTime = (StopTime) data;
+            stopTime.setTripID(field1.getText());
+        } else if(mode == Mode.ROUTE) {
+
+        } else if(mode == Mode.TRIP) {
+
+        } else if(mode == Mode.STOP) {
+
+        }
+    }
+
+    public void update2() {
+        if(mode == Mode.STOPTIME) {
+            //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
+            StopTime stopTime = (StopTime) data;
+            stopTime.setStopID(field2.getText());
+        } else if(mode == Mode.ROUTE) {
+
+        } else if(mode == Mode.TRIP) {
+
+        } else if(mode == Mode.STOP) {
+
+        }
+    }
+
+    public void update3() {
+        if(mode == Mode.STOPTIME) {
+            //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
+            StopTime stopTime = (StopTime) data;
+            stopTime.setArrivalTime(new Time(field3.getText()));
+        } else if(mode == Mode.ROUTE) {
+
+        } else if(mode == Mode.TRIP) {
+
+        } else if(mode == Mode.STOP) {
+
+        }
+    }
+
+    public void update4() {
+        if(mode == Mode.STOPTIME) {
+            //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
+            StopTime stopTime = (StopTime) data;
+            stopTime.setArrivalTime(new Time(field4.getText()));
+        } else if(mode == Mode.ROUTE) {
+
+        } else if(mode == Mode.TRIP) {
+
+        } else if(mode == Mode.STOP) {
+
+        }
+    }
+
+    public void update5() {
+        if(mode == Mode.STOPTIME) {
+            //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
+            StopTime stopTime = (StopTime) data;
+            stopTime.setStopSequence(Integer.parseInt(field5.getText()));
+        } else if(mode == Mode.ROUTE) {
+
+        } else if(mode == Mode.TRIP) {
+
+        } else if(mode == Mode.STOP) {
+
+        }
+    }
+
+    public void update6() {
+        if(mode == Mode.STOPTIME) {
+            //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
+            StopTime stopTime = (StopTime) data;
+            stopTime.setStopHeadsign(field6.getText());
+        } else if(mode == Mode.ROUTE) {
+
+        } else if(mode == Mode.TRIP) {
+
+        } else if(mode == Mode.STOP) {
+
+        }
+    }
+
+    public void update7() {
+        if(mode == Mode.STOPTIME) {
+            //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
+            StopTime stopTime = (StopTime) data;
+            stopTime.setPickupType(field7.getText());
+        } else if(mode == Mode.ROUTE) {
+
+        } else if(mode == Mode.TRIP) {
+
+        } else if(mode == Mode.STOP) {
+
+        }
+    }
+
+    public void update8() {
+        if(mode == Mode.STOPTIME) {
+            //Trip ID, Stop ID, Arrival, Departure, Sequence, Stop Headsign, Pickup Type, Drop Off Type
+            StopTime stopTime = (StopTime) data;
+            stopTime.setDropoffType(field8.getText());
+        } else if(mode == Mode.ROUTE) {
+
+        } else if(mode == Mode.TRIP) {
+
+        } else if(mode == Mode.STOP) {
+
+        }
     }
 
 }

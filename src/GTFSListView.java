@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Author: Gracie Horton
+ * Author: Gracie Horton, hoffmanjc
  * Description:
  * Date Created: 10/3/2017 - 4:57:27 PM
  */
