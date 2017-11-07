@@ -24,15 +24,11 @@ public class GTFSListView extends HBox implements Observer {
     private Tab routesTab;
     private Tab tripsTab;
     private Tab stopTimesTab;
-    private Tab routesContainingStopTab;
-    private Tab routeWithStopsTab;
 
     private ListView<Stop> stops;
     private ListView<Route> routes;
     private ListView<Trip> trips;
     private ListView<Trip> stopTimes;
-    private TextArea routesContainingStop;
-    private TextArea routeWithStops;
 
     private EventHandler<MouseEvent> itemClicked;
 

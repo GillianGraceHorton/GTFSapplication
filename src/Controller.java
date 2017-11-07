@@ -39,8 +39,9 @@ public class Controller implements Initializable {
 	private Tab mapTab;
 
 	/**
-	 * Author:
-	 * Description:
+	 * @author: hortong
+	 * Description: initializes the entire GUI and passes references of object to the necessary
+	 * places
 	 * @param location
 	 * @param resources
 	 */
@@ -75,10 +76,6 @@ public class Controller implements Initializable {
 
 	public void editFilesHandler(){
 
-	}
-
-	public void exportFileHandler(){
-		//TODO: remove exportFileHandler if not needed in future implementation
 	}
 
 	/**
@@ -227,6 +224,10 @@ public class Controller implements Initializable {
         }
 	}
 
+	/**
+	 * @author: heinzja
+	 * description: handles the importing of multiple files
+	 */
 	public void importMultipleFilesHandler(){
 		List<File> files = fileChooser.showOpenMultipleDialog(null);
 		for(File file : files){

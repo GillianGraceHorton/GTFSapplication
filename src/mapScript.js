@@ -64,4 +64,5 @@ function removeRoutes(){
         for(index = 0; index < routes.length; index++){
             routes[index].setMap(null);
         }
+        routes = [];
 }

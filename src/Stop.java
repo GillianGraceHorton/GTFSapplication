@@ -29,80 +29,40 @@ public class Stop {
 		this.stopDescription = stopDesc;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @param stopID
-	 */
 	public Stop(String stopID){
 		this.stopID = stopID;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @param location
-	 */
 	public void setLocation(Location location) {
 		this.location = location;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @param stopDescription
-	 */
 	public void setStopDescription(String stopDescription) {
 		this.stopDescription = stopDescription;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public Location getLocation() {
 		return location;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public String getStopID() {
 		return stopID;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public ArrayList<StopTime> getStopTimes() {
 		return stopTimes;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
 	public String getStopDescription() {
 		return stopDescription;
 	}
 
 	/**
-	 * Author:
+	 * Author: hortong
 	 * Description: Adds stop times to the stops object
 	 * @param stopTime - The stopTime to add
 	 * @return boolean - if it was successfully added or not
@@ -148,8 +108,8 @@ public class Stop {
 	}
 
 	/**
-	 * Author:
-	 * Description:
+	 * Author: hortong
+	 * Description: toString for the listViews
 	 * @return
 	 */
 	public String toString(){
@@ -157,8 +117,8 @@ public class Stop {
 	}
 
 	/**
-	 * Author:
-	 * Description:
+	 * Author: heinzja
+	 * Description: toString for the exports
 	 * @return
 	 */
 	public String toStringExport(){
@@ -180,8 +140,8 @@ public class Stop {
 	}
 
 	/**
-	 * Author:
-	 * Description:
+	 * Author: hortong
+	 * Description: copies the instance variable from one stop object to another
 	 * @param stop
 	 * @throws IllegalArgumentException
 	 */

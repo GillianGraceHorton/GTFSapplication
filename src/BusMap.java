@@ -5,7 +5,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -31,7 +30,15 @@ public class BusMap extends HBox implements Observer {
 	List<Route> selected;
 	private EventHandler<MouseEvent> itemClicked;
 
-	public BusMap() throws FileNotFoundException, ScriptException {
+    /**
+     * @author: hortong
+     * creates the webView and webEngine objects and loads the HTML file.
+     * creates the listView object and the routes list.
+     * adds EventHandler to listView
+     * @throws FileNotFoundException
+     * @throws ScriptException
+     */
+	public BusMap() throws FileNotFoundException, ScriptException, MalformedURLException {
 		routes = new ListView();
 		routes.setMinWidth(150);
 		routes.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -40,16 +47,12 @@ public class BusMap extends HBox implements Observer {
 		selected = new LinkedList<>();
 		this.getChildren().addAll(webView, routes);
 
-		try {
-			webView.setVisible(true);
-			webEngine = webView.getEngine();
-			webEngine.setJavaScriptEnabled(true);
-			File file = new File("src\\loadGoogleMap.html");
-			System.out.println(file.exists() + " file exitence");
-			webEngine.load(file.toURI().toURL().toString());
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
+		webView.setVisible(true);
+		webEngine = webView.getEngine();
+		webEngine.setJavaScriptEnabled(true);
+		File file = new File("src\\loadGoogleMap.html");
+		System.out.println(file.exists() + " file exitence");
+		webEngine.load(file.toURI().toURL().toString());
 
 		itemClicked = event -> {
 			webView.getEngine().executeScript("removeRoutes()");
@@ -60,6 +63,11 @@ public class BusMap extends HBox implements Observer {
 		routes.setOnMouseClicked(itemClicked);
 	}
 
+    /**
+     * @author: hortong
+     * adds a marker for the specified stop to the javaScript file markers array
+     * @param stop to create a marker for
+     */
 	public void addStopMarker(Stop stop){
 		try {
 			if(!stop.isEmpty()) {
@@ -71,37 +79,36 @@ public class BusMap extends HBox implements Observer {
 		}
 	}
 
-	/**
-	 * Author:
-	 * Description:
-	 * @param dataStorage
-	 */
 	public void setSubject(Subject dataStorage) {
 		this.dataStorage = dataStorage;
 	}
 
 	/**
-	 * Author:
-	 * Description:
-	 * @param updates - Collection of objects to send to observers
+	 * @author: hortong
+	 * Description: adds each route in the update to the listView if it isn not empty
+	 * @param updates - Collection of objects sent to each observer.
 	 */
 	@Override
 	public void update(ArrayList<Object> updates) {
 		ObservableList<Route> routes =  FXCollections.observableArrayList();
 		for (Object item: updates) {
-			if(item instanceof Route){ routes.add((Route)item); }
+			if(item instanceof Route && !((Route)item).isEmpty()){ routes.add((Route)item); }
 		}
 		this.routes.setItems(routes);
 	}
 
+    /**
+     * @author: hortong
+     * add each stop in the route to the markers array in the javaScript file, then calls the
+     * javaScript method to draw the route.
+     * @param route to draw
+     */
 	private void drawRoute(Route route){
 		if(!route.getStops().isEmpty() && !route.isEmpty()) {
 			for (Stop stop : route.getStops().values()) {
 				addStopMarker(stop);
 			}
-			System.out.println("drawRoute(\"" + route.getRouteColor().trim() + "\")");
 			webView.getEngine().executeScript("drawRoute(\"" + route.getRouteColor().trim() + "\")");
-			System.out.println("drew route");
 		}
 	}
 }
