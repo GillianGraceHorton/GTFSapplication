@@ -3,11 +3,10 @@ import com.sun.jdi.request.DuplicateRequestException;
 import java.util.*;
 
 /**
- * @author Gracie Horton
- * @version 1.0
- * @created 03-Oct-2017 4:57:35 PM
+ * Author: Gracie Horton
+ * Date: 03-Oct-2017 4:57:35 PM
+ * Description:
  */
-@SuppressWarnings("ALL")
 public class Trip {
 
     private String shapeID;
@@ -31,15 +30,6 @@ public class Trip {
         this.blockID = blockID;
         this.shapeID = shapeID;
         this.tripList = new TreeMap<>();
-    }
-
-
-
-    /**
-     * @param route
-     */
-    public Trip(Route route) {
-        //TODO: Implement if needed, remove if not
     }
 
     public Trip(String tripID) {
@@ -86,8 +76,16 @@ public class Trip {
         return tripList;
     }
 
+    public void setTripList(NavigableMap<Integer, StopTime> tripList) {
+        this.tripList = tripList;
+    }
+
     public String getShapeID() {
         return shapeID;
+    }
+
+    public void setShapeID(String shapeID) {
+        this.shapeID = shapeID;
     }
 
     public String getBlockID() {
@@ -118,8 +116,8 @@ public class Trip {
         return tripID;
     }
 
-    public Boolean hasTripList(){
-        return tripList.size()>0;
+    public Boolean hasTripList() {
+        return tripList.size() > 0;
     }
 
     public boolean setTimes() {
@@ -127,8 +125,8 @@ public class Trip {
     }
 
     /**
-     * added the specified stop at the specified index in the tripList.
-     *
+     * Author:
+     * Description: Added the specified stop at the specified index in the tripList.
      * @param stopTime to be added to the tripList
      * @return true after the stop is added
      */
@@ -140,15 +138,13 @@ public class Trip {
                 //get the sorted list, get stoptimes before and after and compare
                 checkTimes(stopTime);
                 result = true;
-            }
-            else {
+            } else {
                 throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Trip: " + tripID);
             }
             if (route != null) {
-                if(stopTime.getStop() != null){
+                if (stopTime.getStop() != null) {
                     route.addStop(stopTime.getStop(), stopTime.getStopSequence());
-                }
-                else{
+                } else {
                     System.out.println("POSSIBLE BUG");
                 }
             }
@@ -169,16 +165,16 @@ public class Trip {
     }
 
     /**
-     * Gets the stop associated to the trip from the specified trip id.
-     *
+     * Author:
+     * Description: Gets the stop associated to the trip from the specified trip id.
      * @param stopId
      * @return the stop object connected to the given stopID
      */
     public Stop getStop(String stopId) {
         Stop result = null;
         if (tripList != null && stopId != null) {
-            for (StopTime stopTime:tripList.values()) {
-                if(stopTime.getStopID().equals(stopId)){
+            for (StopTime stopTime : tripList.values()) {
+                if (stopTime.getStopID().equals(stopId)) {
                     return stopTime.getStop();
                 }
             }
@@ -187,10 +183,10 @@ public class Trip {
     }
 
 
-
     /**
-     * @return returns string of data stored in trip class
      * @author Joseph Heinz - heinzja@msoe.edu
+     * Description: formats the data strored in the trip class for GUI presentation.
+     * @return returns string of data stored in trip class
      */
     public String toStringData() {
         if (isEmpty()) {
@@ -206,10 +202,14 @@ public class Trip {
         return toReturn;
     }
 
-    public String toString(){
+    public String toString() {
         return "TripID: " + tripID + "\nRouteID: " + routeID;
     }
 
+    /**
+     *
+     * @return
+     */
     public String tripListToString() {
         StringBuilder toReturn = new StringBuilder();
         toReturn.append("TripID: ").append(this.getTripID()).append("\n").append("Stops: ").append("\n");
@@ -227,6 +227,10 @@ public class Trip {
         return (this.getTripID().equalsIgnoreCase(trip.getTripID()));
     }
 
+    /**
+     *
+     * @return
+     */
     public String toStringExport() {
         //returns Trip format: route_id,service_id,trip_id,trip_headsign,direction_id,block_id,shape_id
         return String.format("%s,%s,%s,%s,%s,%s,%s", getRouteID(), getServiceID(), getTripID(), getTripHeadsign(),
@@ -248,14 +252,13 @@ public class Trip {
     }
 
     /**
-     * @author hortong
-     * copies every instance variable within the trip parameter over this instance except for
-     * the tripID, and the tripList
+     * Description: Copies every instance variable within the trip parameter over this
+     *              instance except for the tripID, and the tripList.
      * @param trip to copy from
      * @throws IllegalArgumentException if the IDs don't match
      */
-    public void copyInstanceVariables(Trip trip)throws IllegalArgumentException {
-        if(!this.getTripID().equalsIgnoreCase(trip.getTripID())){
+    public void copyInstanceVariables(Trip trip) throws IllegalArgumentException {
+        if (!this.getTripID().equalsIgnoreCase(trip.getTripID())) {
             throw new IllegalArgumentException("This trip's ID: " + this.getTripID() + ", does " +
                     "not match the ID of the argument: " + trip.getTripID());
         }
@@ -268,8 +271,15 @@ public class Trip {
         this.routeID = trip.getRouteID();
     }
 
+    /**
+     *
+     * @param prev
+     * @param current
+     * @param next
+     * @return
+     */
     public boolean checkTime(StopTime prev, StopTime current, StopTime next) {
-        if(prev != null) {
+        if (prev != null) {
             if (!(prev.getDepartureTime().compareTo(current.getArrivalTime()) <= 0)) {
                 throw new IllegalArgumentException("For Trip " + tripID + ", StopTime " + prev.getStopSequence()
                         + "'s Departure Time Is Greater Than Or Equal To StopTime " + current.getStopSequence()
@@ -277,7 +287,7 @@ public class Trip {
             }
         }
 
-        if(next != null) {
+        if (next != null) {
             if (!(current.getDepartureTime().compareTo(next.getArrivalTime()) <= 0)) {
                 throw new IllegalArgumentException("For Trip " + tripID + ", StopTime " + current.getStopSequence()
                         + "'s Departure Time Is Greater Than Or Equal To StopTime " + next.getStopSequence()

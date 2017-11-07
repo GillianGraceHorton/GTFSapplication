@@ -14,29 +14,29 @@ import java.io.IOException;
 @SuppressWarnings("ALL")
 public class Driver extends Application {
 
-	/**
-	 * Author:
-	 * Description: Begins application
-	 * @param args - beginning arguments being passed into the application
-	 */
-	public static void main(String[] args){
-		launch(args);
-	}
+    /**
+     * Description: Begins application
+     * @param args - beginning arguments being passed into the application
+     */
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-	/**
-	 * Author:
-	 * Description:
-	 * @param primaryStage
-	 */
-	public void start(Stage primaryStage) throws IOException {
-		try {
-			Parent mainPane = FXMLLoader.load(getClass().getResource("transitc.fxml"));
-			primaryStage.setTitle("Transit");
-			primaryStage.setScene(new Scene(mainPane));
-			primaryStage.show();
-		}catch (IOException e){
-			throw new IOException("Error: transitc.fxml not found.\n" + e);
-		}
-	}
+    /**
+     * Author:
+     * Description:
+     *
+     * @param primaryStage
+     */
+    public void start(Stage primaryStage) throws IOException {
+        try {
+            Parent mainPane = FXMLLoader.load(getClass().getResource("transitc.fxml"));
+            primaryStage.setTitle("Transit");
+            primaryStage.setScene(new Scene(mainPane));
+            primaryStage.show();
+        } catch (IOException e) {
+            throw new IOException("Error: transitc.fxml not found.\n" + e);
+        }
+    }
 
 }

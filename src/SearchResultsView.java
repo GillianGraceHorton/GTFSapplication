@@ -7,7 +7,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class SearchResultsView extends HBox {
     private NavigableMap<String, TitledPane> searches;
@@ -20,7 +22,7 @@ public class SearchResultsView extends HBox {
      * @author: hortong
      * creates a new SearchResultsView object
      */
-    public SearchResultsView() {
+    public SearchResultsView(){
         searches = new TreeMap<>();
         details = new TextArea();
         details.setEditable(false);
@@ -29,13 +31,13 @@ public class SearchResultsView extends HBox {
 
         itemClicked = event -> {
             details.clear();
-            Object item = ((ListView) event.getSource()).getSelectionModel().getSelectedItem();
-            if (item instanceof Stop) {
-                details.setText(((Stop) item).toStringData());
-            } else if (item instanceof Route) {
-                details.setText(((Route) item).toStringData());
-            } else if (item instanceof Trip) {
-                details.setText(((Trip) item).toStringData());
+            Object item = ((ListView)event.getSource()).getSelectionModel().getSelectedItem();
+            if(item instanceof Stop){
+                details.setText(((Stop)item).toStringData());
+            }else if(item instanceof Route){
+                details.setText(((Route)item).toStringData());
+            }else if(item instanceof Trip){
+                details.setText(((Trip)item).toStringData());
             }
         };
 

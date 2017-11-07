@@ -1,3 +1,6 @@
+import javafx.scene.control.Alert;
+import javafx.scene.shape.Path;
+
 import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,36 +13,36 @@ import java.util.*;
  * Created: 10/3/2017 4:57:25 PM
  */
 public class FileManager {
-    public NavigableMap<String, String> validFileTypes;
+    NavigableMap<String /* ID */, String /* Value */> validFileTypes;
 
     /**
      * @author Joseph Heinz - heinzja@msoe.edu
      * Description: initializes FileManager and validFileTypes
      */
-    public FileManager() {
+    FileManager() {
         validFileTypes = new TreeMap<>();
         addValidType();
     }
 
     /**
      * Description: Parses information from a Stop file.
+     *
      * @param file containing stop objects
      * @return Array containing all the stop objects
      * @author hortong
      */
-    public LinkedList<Stop> parseStopFile(File file) throws InputMismatchException,
-            FileNotFoundException, NullPointerException {
+    public LinkedList<Stop> parseStopFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
         LinkedList<Stop> toReturn = new LinkedList<>();
         try {
             String stop_id, stop_desc, stop_name;
             double stop_lat, stop_lon;
             Scanner scanner = new Scanner(file);
             String firstLine;
-            if(scanner.hasNextLine()) {
+            if (scanner.hasNextLine()) {
                 firstLine = scanner.nextLine();
-            } else {
-                throw new NullPointerException("Incorrect File Type: " + file.getName());
             }
+            else { throw new NullPointerException("Incorrect File Type: " + file.getName()); }
+
             if (!firstLine.equals(validFileTypes.get("stops"))) {
                 throw new InputMismatchException("Error: Invalid Stops File format for: " + file.getName());
             }
@@ -47,6 +50,7 @@ public class FileManager {
             while (scanner.hasNext()) {
                 line = scanner.nextLine();
                 try {
+
                     String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                     stop_id = items[0];
                     stop_name = items[1];
@@ -54,13 +58,12 @@ public class FileManager {
                     stop_lat = Double.parseDouble(items[3]);
                     stop_lon = Double.parseDouble(items[4]);
                     toReturn.add(new Stop(stop_lon, stop_lat, stop_name, stop_id, stop_desc));
-                }catch(IllegalArgumentException e){
-                    JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n    " + e
-                            .getMessage());
+
+                } catch (IllegalArgumentException e) {
+                    JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n    " + e.getMessage());
                     JOptionPane.showConfirmDialog(null, "would you like to manually correct the" +
-                            " information for the stop? if you select no the line will be ignored",
-                            "", JOptionPane.YES_NO_OPTION);
-                }catch (NullPointerException e) {
+                                    " information for the stop? if you select no the line will be ignored", "", JOptionPane.YES_NO_OPTION);
+                } catch (NullPointerException e) {
                     throw new NullPointerException("ERROR: Invalid Stop File Format at the following line:\n" + line);
                 }
             }
@@ -72,19 +75,19 @@ public class FileManager {
 
     /**
      * Description: Parses information from a Route file.
+     *
      * @param file containing route objects
      * @return Array containing all the route objects
      * @author hortong
      */
-    public LinkedList<Route> parseRouteFile(File file) throws InputMismatchException,
-            FileNotFoundException, NullPointerException {
+    public LinkedList<Route> parseRouteFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
         LinkedList<Route> toReturn = new LinkedList<>();
         try {
             String route_id, agency_id, route_short_name, route_long_name;
             String route_desc, route_type, route_url, route_color, route_text_color;
             Scanner scanner = new Scanner(file);
             String firstLine;
-            if(scanner.hasNextLine()) {
+            if (scanner.hasNextLine()) {
                 firstLine = scanner.nextLine();
             } else {
                 throw new NullPointerException("Incorrect File Type: " + file.getName());
@@ -95,23 +98,23 @@ public class FileManager {
             String line;
             while (scanner.hasNext()) {
                 line = scanner.nextLine();
-                try{
-                String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-                route_id = items[0];
-                agency_id = items[1];
-                route_short_name = items[2];
-                route_long_name = items[3];
-                route_desc = items[4];
-                route_type = items[5];
-                route_url = items[6];
-                route_color = items[7];
-                route_text_color = items[8];
-                toReturn.add(new Route(route_id, agency_id, route_short_name, route_long_name,
-                        route_desc, route_type, route_url, route_color, route_text_color));
-                }catch(IllegalArgumentException e){
+                try {
+                    String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
+                    route_id = items[0];
+                    agency_id = items[1];
+                    route_short_name = items[2];
+                    route_long_name = items[3];
+                    route_desc = items[4];
+                    route_type = items[5];
+                    route_url = items[6];
+                    route_color = items[7];
+                    route_text_color = items[8];
+                    toReturn.add(new Route(route_id, agency_id, route_short_name, route_long_name,
+                            route_desc, route_type, route_url, route_color, route_text_color));
+                } catch (IllegalArgumentException e) {
                     JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n    " + e
                             .getMessage());
-                }catch (NullPointerException e) {
+                } catch (NullPointerException e) {
                     throw new NullPointerException("ERROR: Invalid Route File Format at the following line:\n" + line);
                 }
             }
@@ -124,22 +127,20 @@ public class FileManager {
     /**
      * Author: hortong
      * Description: Parses information from a Trip file.
+     *
      * @param file - file to parse for Trip data
      * @return - returns ArrayList full of parsed data from trip file.
      */
-    public LinkedList<Trip> parseTripFile(File file) throws InputMismatchException,
-            FileNotFoundException,
-            NullPointerException {
+    public LinkedList<Trip> parseTripFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
         LinkedList<Trip> toReturn = new LinkedList<>();
         try {
             String route_id, service_id, trip_id, trip_head_sign, direction_id, block_id, shape_id;
             Scanner scanner = new Scanner(file);
             String firstLine;
-            if(scanner.hasNextLine()) {
+            if (scanner.hasNextLine()) {
                 firstLine = scanner.nextLine();
-            } else {
-                throw new NullPointerException("Incorrect File Type: " + file.getName());
             }
+            else { throw new NullPointerException("Incorrect File Type: " + file.getName()); }
             if (!firstLine.equals(validFileTypes.get("trips"))) {
                 throw new InputMismatchException("Error: Invalid Trip file format for: " + file.getName());
             }
@@ -156,7 +157,7 @@ public class FileManager {
                     block_id = items[5];
                     shape_id = items[6];
                     toReturn.add(new Trip(trip_id, service_id, route_id, trip_head_sign, direction_id, block_id, shape_id));
-                }catch(IllegalArgumentException e){
+                } catch (IllegalArgumentException e) {
                     JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n" + e
                             .getMessage());
                 } catch (NullPointerException e) {
@@ -171,18 +172,19 @@ public class FileManager {
 
     /**
      * Description: Parses information from a StopTimes file.
+     *
      * @param file - the file to parse for data
      * @return ArrayLists of StopTimes objects
      * @throws InputMismatchException Invalid StopTimes File format.
-     * @throws FileNotFoundException File was not found
-     * @throws NullPointerException Invalid StopTimes File Format at a specific line
+     * @throws FileNotFoundException  File was not found
+     * @throws NullPointerException   Invalid StopTimes File Format at a specific line
      */
-    public LinkedList<StopTime> parseStopTimesFile(File file)  throws InputMismatchException, FileNotFoundException, NullPointerException {
-        LinkedList<StopTime> toReturn = new LinkedList<>();
+    public LinkedList<StopTime> parseStopTimesFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
+        LinkedList<StopTime> stopTimesList = new LinkedList<>();
         try {
             Scanner scanner = new Scanner(file);
-            String firstLine = null;
-            if(scanner.hasNextLine()) {
+            String firstLine;
+            if (scanner.hasNextLine()) {
                 firstLine = scanner.nextLine();
             } else {
                 throw new NullPointerException("Incorrect File Type: " + file.getName());
@@ -191,34 +193,26 @@ public class FileManager {
             if (!firstLine.equals(validFileTypes.get("stop_times"))) {
                 throw new InputMismatchException("Error: Invalid StopTimes File format for: " + file.getName());
             }
-           String line, trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type;
             //reads each of the lines in the stop_times file, creates a new stopTimes object from
             // the information, and adds it to the toReturn ArrayList of stopTime objects.
             while (scanner.hasNextLine()) {
-                line = scanner.nextLine();
-                try {
-                    String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-                    trip_id = items[0];
-                    arrival_time = items[1];
-                    departure_time = items[2];
-                    stop_id = items[3];
-                    stop_sequence = items[4];
-                    stop_headsign = items[5];
-                    pickup_type = items[6];
-                    drop_off_type = items[7];
-                    toReturn.add(new StopTime(trip_id, arrival_time, departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type));
-                    /* Catches an error in creating the stopTime object and adds it to the
-                        ArrayList of error messages then continues going through the lines in the file.*/
-                } catch (IllegalArgumentException e) {
-                    JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n\t" + e.getMessage());
-                }catch (NullPointerException e) {
-                    throw new NullPointerException("ERROR: Invalid StopTimes File Format at the following line:\n"+line);
+                String line = scanner.nextLine();
+                String[] str = new String[8];
+                String x = line + ",";
+                int iPos = 0;
+                int iStr = 0;
+                int iNext;
+                while( (iNext = x.indexOf( ',', iPos )) != -1 && iStr < 8 ){
+                    if( iNext == iPos ){ str[iStr++] = ""; }
+                    else { str[iStr++] = x.substring(iPos, iNext); }
+                    iPos = iNext + 1;
                 }
+                stopTimesList.add(new StopTime(str[0],str[1],str[2],str[3],str[4],str[5],str[6],str[7]));
             }
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("ERROR: " + file.getName() + " was not found.\n" + e.getMessage());
         }
-        return toReturn;
+        return stopTimesList;
     }
 
     /**
@@ -251,22 +245,47 @@ public class FileManager {
         validFileTypes.put("trips", tripsFormat);
     }
 
+    private void mkAlert(Alert.AlertType alertType, String title, String headerText, String contentText){
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(headerText);
+        alert.setContentText(contentText);
+        alert.showAndWait();
+    }
+
+    /**
+     * Author: Joseph Heinz - heinzja@msoe.edu
+     * Description: Creates a directory at the path of the given file.
+     *              Alerts user of this directory creation.
+     * @param directory
+     */
+    private void makeDirectory(File directory){
+        directory.mkdir();
+        mkAlert(Alert.AlertType.INFORMATION,"Export Notice", "Please Note:",
+                "An 'exports' directory was created to hold your exported files\n" +
+                        "Location: " + directory.getPath());
+    }
+
     /**
      * Author: Joseph Heinz - heinzja@msoe.edu
      * Description: exports stops to user chosen directory
+     *
      * @param exportName - File containing the desired directory and name of the file to export.
-     * @param ds - DataStorage object which holds all stored Stop objects.
+     * @param ds         - DataStorage object which holds all stored Stop objects.
      * @throws IOException Unable to create file for export
      */
     public void exportStopFile(File exportName, DataStorage ds) throws IOException {
         File exportDir = new File(exportName.getParent(), "exports");
         try {
-            if (!exportDir.exists()) {
-                exportDir.mkdir();
-            }
+            if (!exportDir.exists()) { makeDirectory(exportDir); }
             File exportFile = new File(exportDir.getPath(), exportName.getName() + ".txt");
             if (!exportFile.exists()) {
                 exportFile.createNewFile();
+            }
+            else {
+                mkAlert(Alert.AlertType.ERROR,"Error","File Already Exists",
+                        "The export filename already exist, please chose a different one.");
+                throw new IOException();
             }
 
             PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
@@ -280,26 +299,29 @@ public class FileManager {
         } catch (IOException e) {
             throw new IOException("Error: Unable to create: " + exportName.getName(), e);
         }
-        System.out.println("TEST: exportStopFile completed");
     }
 
     /**
      * Author: Joseph Heinz - heinzja@msoe.edu
      * Description: Creates Route file in user chosen directory
+     *
      * @param exportName - File containing the desired directory and name of the file to export
-     * @param ds - DataStorage object which holds all stored Route objects
+     * @param ds         - DataStorage object which holds all stored Route objects
      * @throws IOException Unable to create file for export
      */
     public void exportRouteFile(File exportName, DataStorage ds) throws IOException {
         File exportDir = new File(exportName.getParent(), "exports");
         try {
-            if (!exportDir.exists()) {
-                exportDir.mkdir();
-                System.out.println("TEST: exportRouteFile -> exports directory created");
-            }
+            if (!exportDir.exists()) { makeDirectory(exportDir); }
+
             File exportFile = new File(exportDir.getPath(), exportName.getName() + ".txt");
             if (!exportFile.exists()) {
                 exportFile.createNewFile();
+            }
+            else {
+                mkAlert(Alert.AlertType.ERROR,"Error","File Already Exists",
+                        "The export filename already exist, please chose a different one.");
+                throw new IOException();
             }
 
             PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
@@ -313,26 +335,29 @@ public class FileManager {
         } catch (IOException e) {
             throw new IOException("Error: Unable to create: " + exportName.getName(), e);
         }
-        System.out.println("TEST: exportRouteFile completed");
     }
 
     /**
      * Author: Joseph Heinz - heinzja@msoe.edu
      * Description: Creates Trip file in user chosen directory
+     *
      * @param exportName - File containing the desired directory and name of the file to export
-     * @param ds - DataStorage object which holds all stored Trip objects
+     * @param ds         - DataStorage object which holds all stored Trip objects
      * @throws IOException Unable to create file for export
      */
     public void exportTripFile(File exportName, DataStorage ds) throws IOException {
         File exportDir = new File(exportName.getParent(), "exports");
         try {
-            if (!exportDir.exists()) {
-                exportDir.mkdir();
-                System.out.println("TEST: exportTripFile -> exports file created");
-            }
+            if (!exportDir.exists()) { makeDirectory(exportDir); }
+
             File exportFile = new File(exportDir.getPath(), exportName.getName() + ".txt");
             if (!exportFile.exists()) {
                 exportFile.createNewFile();
+            }
+            else {
+                mkAlert(Alert.AlertType.ERROR,"Error","File Already Exists",
+                        "The export filename already exist, please chose a different one.");
+                throw new IOException();
             }
 
             PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
@@ -346,26 +371,29 @@ public class FileManager {
         } catch (IOException e) {
             throw new IOException("Error: Unable to create: " + exportName.getName(), e);
         }
-        System.out.println("TEST: exportTripFile completed");
     }
 
     /**
      * Author: Joseph Heinz - heinzja@msoe.edu
      * Description: Creates StopTimes file in user chosen directory
+     *
      * @param exportName - File containing the desired directory and name of the file to export
-     * @param ds - DataStorage object which holds all stored StopTime objects
+     * @param ds         - DataStorage object which holds all stored StopTime objects
      * @throws IOException Unable to create file for export
      */
     public void exportStopTimesFile(File exportName, DataStorage ds) throws IOException {
         File exportDir = new File(exportName.getParent(), "exports");
         try {
-            if (!exportDir.exists()) {
-                exportDir.mkdir();
-                System.out.println("TEST: exportStopTimesFile -> exports file created");
-            }
+            if (!exportDir.exists()) { makeDirectory(exportDir); }
+
             File exportFile = new File(exportDir.getPath(), exportName.getName() + ".txt");
             if (!exportFile.exists()) {
                 exportFile.createNewFile();
+            }
+            else {
+                mkAlert(Alert.AlertType.ERROR,"Error","File Already Exists",
+                        "The export filename already exist, please chose a different one.");
+                throw new IOException();
             }
 
             PrintWriter pw = new PrintWriter(exportFile, "UTF-8");
@@ -377,19 +405,19 @@ public class FileManager {
         } catch (IOException e) {
             throw new IOException("Error: Unable to create: " + exportName.getName(), e);
         }
-        System.out.println("TEST: exportStopTimesFile completed");
     }
 
     /**
      * Author: hortong
      * Description: Displays message window to the user containing all the parsing errors encountered that
-     *              didn't break the flow of the program.
+     * didn't break the flow of the program.
+     *
      * @param fileName
      * @param errors
      */
-    private void errorsInParsing(String fileName, ArrayList<String> errors){
+    private void errorsInParsing(String fileName, ArrayList<String> errors) {
         StringBuilder warning = new StringBuilder();
-        for (String error:errors) {
+        for (String error : errors) {
             warning.append(error);
         }
         JOptionPane.showMessageDialog(null, warning.toString(), "Errors from parsing the file: " + fileName,

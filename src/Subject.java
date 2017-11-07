@@ -5,24 +5,26 @@
  */
 public interface Subject {
 
-	/**
-	 * Author: Gracie Horton
-	 * Description:
-	 * @param observer
-	 */
+    /**
+     * Author: Gracie Horton
+     * Description:
+     *
+     * @param observer
+     */
     void attach(Observer observer);
 
-	/**
-	 * Author: Gracie Horton
-	 * Description:
-	 * @param observer
-	 */
+    /**
+     * Author: Gracie Horton
+     * Description:
+     *
+     * @param observer
+     */
     boolean detach(Observer observer);
 
-	/**
-	 * Author: Gracie Horton
-	 * Description:
-	 */
-	void notifyObservers();
+    /**
+     * Author: Gracie Horton
+     * Description:
+     */
+    void notifyObservers();
 
 }

@@ -9,7 +9,7 @@ class TimeTest {
     Time time3;
 
     @BeforeEach
-    void beforeEach(){
+    void beforeEach() {
         time1 = new Time("08:16:00");
         time2 = new Time("00:00:00");
         time3 = new Time("00:30:00");
@@ -30,7 +30,7 @@ class TimeTest {
     }
 
     @Test
-    void compareTo(){
+    void compareTo() {
         assertEquals(-1, time2.compareTo(time1));
         assertEquals(0, time1.compareTo(time1));
         assertEquals(1, time3.compareTo(time2));

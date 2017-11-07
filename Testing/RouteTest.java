@@ -8,8 +8,8 @@ class RouteTest {
 
     @BeforeEach
     void startUp() {
-        route = new Route("route_1","null","null","null",
-                "null","null","null","null","null");
+        route = new Route("route_1", "null", "null", "null",
+                "null", "null", "null", "null", "null");
     }
 
     /**
@@ -19,7 +19,7 @@ class RouteTest {
     @Test
     void addStop() {
         //Test if all stops can be found
-        for(int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 10; i++) {
             Stop stop = new Stop(12, 11, "Stop", "stop_" + i, "Stop");
             assertTrue(route.addStop(stop, i));
         }
@@ -38,13 +38,13 @@ class RouteTest {
         assertEquals(route.searchRoute("stop_3"), null);
 
         //Add stops
-        for(int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 10; i++) {
             Stop stop = new Stop(12, 11, "Stop", "stop_" + i, "Stop");
             route.addStop(stop, i);
         }
 
         //Test if all stops can be found
-        for(int i = 10; i >= 1; i--) {
+        for (int i = 10; i >= 1; i--) {
             assertEquals(route.searchRoute("stop_" + i).getStopID(), ("stop_" + i));
         }
 
