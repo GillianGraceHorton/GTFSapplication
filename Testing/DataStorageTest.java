@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.script.ScriptException;
 import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.NavigableMap;
@@ -23,7 +24,7 @@ class DataStorageTest {
      * @author: hortong
      */
     @Test
-    void attach() throws FileNotFoundException, ScriptException {
+    void attach() throws FileNotFoundException, ScriptException, MalformedURLException {
         //creates observer object to test the attach method
         Observer observer = new BusMap();
 
@@ -71,7 +72,7 @@ class DataStorageTest {
      * @author: hortong
      */
     @Test
-    void detach() throws FileNotFoundException, ScriptException {
+    void detach() throws FileNotFoundException, ScriptException, MalformedURLException {
         ArrayList<Observer> observers = new ArrayList<>();
         Observer observer1 = new BusMap();
         observers.add(observer1);
@@ -126,7 +127,7 @@ class DataStorageTest {
      * @author: hortong
      */
     @Test
-    void notifyObservers() throws FileNotFoundException, ScriptException {
+    void notifyObservers() throws FileNotFoundException, ScriptException, MalformedURLException {
         ArrayList<Observer> observers = new ArrayList<>();
         LinkedList<Stop> updates = new LinkedList<>();
         Stop stop = new Stop(0, 0, "test",  "1A", "");
