@@ -17,8 +17,8 @@ function addStopMarker(latitude, longitude){
         markers.push(marker);
 }
 
-function drawRoute(){
-        makeConnection();
+function drawRoute(color){
+        makeConnection(color);
         markers = [];
 }
 
@@ -31,12 +31,15 @@ function generateWaypoints(){
             });
         }
         return waypts;
-
 }
 
-function makeConnection(){
+function makeConnection(color){
         var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer;
+        directionsDisplay = new google.maps.DirectionsRenderer({
+            polylineOptions: {
+              strokeColor: color
+            }
+          });
         directionsDisplay.setMap(map);
         waypts = generateWaypoints();
         directionsService.route({

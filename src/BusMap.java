@@ -106,7 +106,7 @@ public class BusMap extends Pane implements Observer {
 			for (Stop stop : route.getStops().values()) {
 				addStopMarker(stop);
 			}
-			webView.getEngine().executeScript("drawRoute()");
+			webView.getEngine().executeScript("drawRoute(" + route.getColor() + ")");
 			System.out.println("drew route");
 		}
 	}
