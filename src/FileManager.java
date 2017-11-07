@@ -40,9 +40,9 @@ public class FileManager {
             String firstLine;
             if (scanner.hasNextLine()) {
                 firstLine = scanner.nextLine();
-            } else {
-                throw new NullPointerException("Incorrect File Type: " + file.getName());
             }
+            else { throw new NullPointerException("Incorrect File Type: " + file.getName()); }
+
             if (!firstLine.equals(validFileTypes.get("stops"))) {
                 throw new InputMismatchException("Error: Invalid Stops File format for: " + file.getName());
             }
@@ -50,6 +50,7 @@ public class FileManager {
             while (scanner.hasNext()) {
                 line = scanner.nextLine();
                 try {
+
                     String[] items = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                     stop_id = items[0];
                     stop_name = items[1];
@@ -57,12 +58,11 @@ public class FileManager {
                     stop_lat = Double.parseDouble(items[3]);
                     stop_lon = Double.parseDouble(items[4]);
                     toReturn.add(new Stop(stop_lon, stop_lat, stop_name, stop_id, stop_desc));
+
                 } catch (IllegalArgumentException e) {
-                    JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n    " + e
-                            .getMessage());
+                    JOptionPane.showMessageDialog(null, "Error at line: " + line + "\n    " + e.getMessage());
                     JOptionPane.showConfirmDialog(null, "would you like to manually correct the" +
-                                    " information for the stop? if you select no the line will be ignored",
-                            "", JOptionPane.YES_NO_OPTION);
+                                    " information for the stop? if you select no the line will be ignored", "", JOptionPane.YES_NO_OPTION);
                 } catch (NullPointerException e) {
                     throw new NullPointerException("ERROR: Invalid Stop File Format at the following line:\n" + line);
                 }
@@ -80,8 +80,7 @@ public class FileManager {
      * @return Array containing all the route objects
      * @author hortong
      */
-    public LinkedList<Route> parseRouteFile(File file) throws InputMismatchException,
-            FileNotFoundException, NullPointerException {
+    public LinkedList<Route> parseRouteFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
         LinkedList<Route> toReturn = new LinkedList<>();
         try {
             String route_id, agency_id, route_short_name, route_long_name;
@@ -132,9 +131,7 @@ public class FileManager {
      * @param file - file to parse for Trip data
      * @return - returns ArrayList full of parsed data from trip file.
      */
-    public LinkedList<Trip> parseTripFile(File file) throws InputMismatchException,
-            FileNotFoundException,
-            NullPointerException {
+    public LinkedList<Trip> parseTripFile(File file) throws InputMismatchException, FileNotFoundException, NullPointerException {
         LinkedList<Trip> toReturn = new LinkedList<>();
         try {
             String route_id, service_id, trip_id, trip_head_sign, direction_id, block_id, shape_id;
@@ -142,9 +139,8 @@ public class FileManager {
             String firstLine;
             if (scanner.hasNextLine()) {
                 firstLine = scanner.nextLine();
-            } else {
-                throw new NullPointerException("Incorrect File Type: " + file.getName());
             }
+            else { throw new NullPointerException("Incorrect File Type: " + file.getName()); }
             if (!firstLine.equals(validFileTypes.get("trips"))) {
                 throw new InputMismatchException("Error: Invalid Trip file format for: " + file.getName());
             }
@@ -257,12 +253,19 @@ public class FileManager {
         alert.showAndWait();
     }
 
+    /**
+     * Author: Joseph Heinz - heinzja@msoe.edu
+     * Description: Creates a directory at the path of the given file.
+     *              Alerts user of this directory creation.
+     * @param directory
+     */
     private void makeDirectory(File directory){
         directory.mkdir();
         mkAlert(Alert.AlertType.INFORMATION,"Export Notice", "Please Note:",
                 "An 'exports' directory was created to hold your exported files\n" +
                         "Location: " + directory.getPath());
     }
+
     /**
      * Author: Joseph Heinz - heinzja@msoe.edu
      * Description: exports stops to user chosen directory

@@ -31,29 +31,16 @@ public class DataStorage implements Subject {
         searchResultsView = view;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param observer - the observer to attach
-     */
     public void attach(Observer observer) {
         observers.add(observer);
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param observer
-     * @return boolean - result of removing an observer
-     */
     public boolean detach(Observer observer) {
         return observers.remove(observer);
     }
 
     /**
-     * Author: hortong
+     * Author: hortong & Joseph Heinz - heinzja@msoe.edu
      * Description: Takes an arrayList of objects created by files loaded in the file manager and adds each object.
      *
      * @param updates - ArrayList of objects created by the file loaded in the File manager class
@@ -314,7 +301,6 @@ public class DataStorage implements Subject {
         }
         return routesToReturn;
     }
-
 
     public Collection<Observer> getObservers() {
         return observers;
