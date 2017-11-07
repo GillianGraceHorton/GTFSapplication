@@ -100,182 +100,74 @@ public class Route {
         return result;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public Color getColor() {
         return color;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param color
-     */
     public void setColor(Color color) {
         this.color = color;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public NavigableMap<Integer, Stop> getStops() {
         return stops;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param stops
-     */
     public void setStops(NavigableMap<Integer, Stop> stops) {
         this.stops = stops;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public String getRouteID() {
         return routeID;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public String getAgencyID() {
         return agencyID;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public String getRouteShortName() {
         return routeShortName;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param routeShortName
-     */
     public void setRouteShortName(String routeShortName) {
         this.routeShortName = routeShortName;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public String getRouteLongName() {
         return routeLongName;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param routeLongName
-     */
     public void setRouteLongName(String routeLongName) {
         this.routeLongName = routeLongName;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public String getRouteDescription() {
         return routeDescription;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param routeDescription
-     */
     public void setRouteDescription(String routeDescription) {
         this.routeDescription = routeDescription;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public String getRouteType() {
         return routeType;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param routeType
-     */
     public void setRouteType(String routeType) {
         this.routeType = routeType;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public String getRouteUrl() {
         return routeUrl;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param routeUrl
-     */
     public void setRouteUrl(String routeUrl) {
         this.routeUrl = routeUrl;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public String getRouteColor() {
         return routeColor;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public String getRouteTextColor() {
         return routeTextColor;
     }
@@ -333,7 +225,6 @@ public class Route {
     /**
      * Author:
      * Description: Compares two route objects based on their routeIDs
-     *
      * @param route - the route to compare to
      * @return boolean - true if their routeIDs are the same, false if they are not the same
      */
@@ -344,7 +235,6 @@ public class Route {
     /**
      * Author: Joseph Heinz - heinzja@msoe.edu
      * Description: Returns a formatted string for a a line in an Route export file.
-     *
      * @return String - formatted string used for file exporting
      */
     public String toStringExport() {
@@ -356,7 +246,6 @@ public class Route {
     /**
      * Author: Joseph Heinz - heinzja@msoe.edu
      * Description: checks to see if Route Object is empty and a placeholder, or a valid Route Object
-     *
      * @return result of if the Route Object is used as a place holder (empty) or is a valid Route Object (not empty)
      */
     public boolean isEmpty() {
@@ -370,7 +259,6 @@ public class Route {
     /**
      * Author:
      * Description:
-     *
      * @return String -
      */
     public String stopsToString() {
@@ -389,7 +277,6 @@ public class Route {
     /**
      * Author:
      * Description:
-     *
      * @param route
      * @throws IllegalArgumentException
      */
@@ -409,6 +296,11 @@ public class Route {
         this.routeTextColor = route.getRouteTextColor();
     }
 
+    /**
+     * Author:
+     * Description:
+     * @param trip
+     */
     public void copyTripListToRoute(Trip trip) {
         for (StopTime stopTime : trip.getTripList().values()) {
             addStop(stopTime.getStop(), stopTime.getStopSequence());
