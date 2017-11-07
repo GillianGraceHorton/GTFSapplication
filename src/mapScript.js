@@ -17,8 +17,8 @@ function addStopMarker(latitude, longitude){
         markers.push(marker);
 }
 
-function drawRoute(routeColor){
-        makeConnection(routeColor);
+function drawRoute(){
+        makeConnection();
         markers = [];
 }
 
@@ -34,13 +34,9 @@ function generateWaypoints(){
 
 }
 
-function makeConnection(routeColor){
+function makeConnection(){
         var directionsService = new google.maps.DirectionsService;
-        var directionsDisplay = new google.maps.DirectionsRenderer({
-            polylineOptions: {
-              strokeColor: routeColor
-            }
-          });
+        var directionsDisplay = new google.maps.DirectionsRenderer;
         directionsDisplay.setMap(map);
         waypts = generateWaypoints();
         directionsService.route({
@@ -53,7 +49,6 @@ function makeConnection(routeColor){
             if (status === 'OK') {
               directionsDisplay.setDirections(response);
               //var route = response.routes[0];
-
             }else {
               window.alert('Directions request failed due to ' + status);
             }

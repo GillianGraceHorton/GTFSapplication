@@ -21,10 +21,8 @@ public class BusMap extends Pane implements Observer {
 	private ArrayList<Trip> trips;
 	WebView webView;
 	WebEngine webEngine;
-	boolean drewRoute;
 
 	public BusMap() throws FileNotFoundException, ScriptException {
-		drewRoute = false;
 		stops = new ArrayList<>();
 		routes = new ArrayList<>();
 		trips = new ArrayList<>();
@@ -105,12 +103,10 @@ public class BusMap extends Pane implements Observer {
 
 	private void drawRoute(Route route){
 		if(!route.getStops().isEmpty() && !route.isEmpty()) {
-			System.out.println(route.toStringData());
 			for (Stop stop : route.getStops().values()) {
 				addStopMarker(stop);
 			}
-			webView.getEngine().executeScript("drawRoute(" + route.getRouteColor() + ")");
-			drewRoute = true;
+			webView.getEngine().executeScript("drawRoute()");
 			System.out.println("drew route");
 		}
 	}
