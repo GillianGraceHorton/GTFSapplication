@@ -1,5 +1,6 @@
 var map;
 var markers;
+var routes;
 
 function initMap() {
         var midWest = {lat: 40.105124, lng: -91.142859};
@@ -8,6 +9,7 @@ function initMap() {
           center: midWest
         });
         markers = [];
+        routes = [];
 }
 
 function addStopMarker(latitude, longitude){
@@ -51,9 +53,15 @@ function makeConnection(color){
         }, function(response, status) {
             if (status === 'OK') {
               directionsDisplay.setDirections(response);
-              //var route = response.routes[0];
+              routes.push(directionsDisplay);
             }else {
               window.alert('Directions request failed due to ' + status);
             }
         });
+}
+
+function removeRoutes(){
+        for(index = 0; index < routes.length; index++){
+            routes[index].setMap(null);
+        }
 }

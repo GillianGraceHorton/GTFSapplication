@@ -1,3 +1,10 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
@@ -7,27 +14,31 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Author: hortong, hoffmanjc
  * Description:
  * Date: 10/3/2017 4:57:29 PM
  */
-public class BusMap extends Pane implements Observer {
+public class BusMap extends HBox implements Observer {
 
 	private Subject dataStorage;
-	private ArrayList<Stop> stops;
-	private ArrayList<Route> routes;
-	private ArrayList<Trip> trips;
 	WebView webView;
 	WebEngine webEngine;
+	ListView routes;
+	List<Route> selected;
+	private EventHandler<MouseEvent> itemClicked;
 
 	public BusMap() throws FileNotFoundException, ScriptException {
-		stops = new ArrayList<>();
-		routes = new ArrayList<>();
-		trips = new ArrayList<>();
+		routes = new ListView();
+		routes.setMinWidth(150);
+		routes.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		webView = new WebView();
-		this.getChildren().add(webView);
+		webView.setMaxWidth(650);
+		selected = new LinkedList<>();
+		this.getChildren().addAll(webView, routes);
 
 		try {
 			webView.setVisible(true);
@@ -39,6 +50,14 @@ public class BusMap extends Pane implements Observer {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
+
+		itemClicked = event -> {
+			webView.getEngine().executeScript("removeRoutes()");
+			Object item = ((ListView)event.getSource()).getSelectionModel().getSelectedItem();
+			Route route = (Route)item;
+			drawRoute(route);
+		};
+		routes.setOnMouseClicked(itemClicked);
 	}
 
 	public void addStopMarker(Stop stop){
@@ -64,40 +83,15 @@ public class BusMap extends Pane implements Observer {
 	/**
 	 * Author:
 	 * Description:
-	 * @return
-	 */
-	public ArrayList<Stop> getStops() {
-		return stops;
-	}
-
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
-	public ArrayList<Route> getRoutes() {
-		return routes;
-	}
-
-	/**
-	 * Author:
-	 * Description:
-	 * @return
-	 */
-	public ArrayList<Trip> getTrips() {
-		return trips;
-	}
-
-	/**
-	 * Author:
-	 * Description:
 	 * @param updates - Collection of objects to send to observers
 	 */
 	@Override
 	public void update(ArrayList<Object> updates) {
+		ObservableList<Route> routes =  FXCollections.observableArrayList();
 		for (Object item: updates) {
-			if(item instanceof Route){ drawRoute((Route)item); }
+			if(item instanceof Route){ routes.add((Route)item); }
 		}
+		this.routes.setItems(routes);
 	}
 
 	private void drawRoute(Route route){
@@ -105,8 +99,8 @@ public class BusMap extends Pane implements Observer {
 			for (Stop stop : route.getStops().values()) {
 				addStopMarker(stop);
 			}
-			System.out.println(route.getRouteColor());
-			webView.getEngine().executeScript("drawRoute(\"" + route.getRouteColor() + "\")");
+			System.out.println("drawRoute(\"" + route.getRouteColor().trim() + "\")");
+			webView.getEngine().executeScript("drawRoute(\"" + route.getRouteColor().trim() + "\")");
 			System.out.println("drew route");
 		}
 	}
