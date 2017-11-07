@@ -279,16 +279,7 @@ public class DataStorage implements Subject {
      * @return Trip object with the specified tripID or null if there is no such trip
      */
     public Trip searchTrips(String tripID) {
-        Trip result = null;
-        if (trips != null) {
-            NavigableSet<String> nav = trips.navigableKeySet();
-            for (String id : nav) {
-                if (id.equalsIgnoreCase(tripID)) {
-                    result = trips.get(id);
-                }
-            }
-        }
-        return result;
+        return trips.get(tripID);
     }
 
     /**
@@ -417,4 +408,19 @@ public class DataStorage implements Subject {
         searchResultsView.addSearchResults(tripID, results);
     }
 
+    public Collection<Trip> searchTripsForRoute(String routeID) {
+        ArrayList<Trip> tripsToReturn = null;
+        NavigableSet<String> navSet;
+        if (trips != null) {
+            navSet = trips.navigableKeySet();
+            tripsToReturn = new ArrayList<>();
+            for (String id : navSet) {
+                Trip tmp = trips.get(id);
+                if (tmp.getRouteID().equalsIgnoreCase(routeID.trim())) {
+                    tripsToReturn.add(tmp);
+                }
+            }
+        }
+        return tripsToReturn;
+    }
 }

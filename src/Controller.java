@@ -156,7 +156,7 @@ public class Controller implements Initializable {
 
     public void searchForTripHandler() {
         ArrayList<Object> results = new ArrayList<>();
-        String tripID = searchForRouteTextField.getText();
+        String tripID = searchForTripTextField.getText();
         if (dataStorage.searchTrips(tripID) != null) {
             results.add(dataStorage.searchTrips(tripID));
             searchResultsView.addSearchResults(tripID, results);
@@ -164,7 +164,6 @@ public class Controller implements Initializable {
             JOptionPane.showMessageDialog(null, "No such trip exists for the the trip ID: " +
                     tripID);
         }
-
     }
 
     /**
@@ -173,12 +172,14 @@ public class Controller implements Initializable {
      */
     public void searchForRouteHandler() {
         ArrayList<Object> results = new ArrayList<>();
-        String routeID = searchForTripTextField.getText();
+        String routeID = searchForRouteTextField.getText();
         if (dataStorage.searchRoutes(routeID) != null) {
             results.add(dataStorage.searchRoutes(routeID));
+            results.addAll(dataStorage.searchTripsForRoute(routeID));
             searchResultsView.addSearchResults(routeID, results);
         } else {
-            JOptionPane.showMessageDialog(null, "No such trip exists for the the trip ID: " + routeID);
+            JOptionPane.showMessageDialog(null, "No such route exists for the the route ID: " +
+                    routeID);
         }
     }
 
