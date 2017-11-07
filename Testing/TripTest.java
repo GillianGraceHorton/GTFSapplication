@@ -53,7 +53,7 @@ class TripTest {
         assertEquals(trip.getStop("stop_3"), null);
 
         //Add stops
-        for(int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 10; i++) {
             StopTime stopTime = new StopTime("stopTime", "", "",
                     "stop_0", "0", "", "", "");
             Stop stop = new Stop(12, 11, "Stop", "stop_" + i, "Stop");
@@ -62,7 +62,7 @@ class TripTest {
         }
 
         //Test if all stops can be found
-        for(int i = 10; i >= 1; i--) {
+        for (int i = 10; i >= 1; i--) {
             assertEquals(trip.getStop("stop_" + i).getStopID(), ("stop_" + i));
         }
 

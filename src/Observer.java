@@ -7,10 +7,11 @@ import java.util.ArrayList;
  */
 public interface Observer {
 
-	/**
-	 * Description:
-	 * @param updatedItems
-	 */
-	void update(ArrayList<Object> updatedItems);
+    /**
+     * Description:
+     *
+     * @param updatedItems
+     */
+    void update(ArrayList<Object> updatedItems);
 
 }

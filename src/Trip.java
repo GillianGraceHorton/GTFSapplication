@@ -37,7 +37,6 @@ public class Trip {
     }
 
 
-
     /**
      * @param route
      */
@@ -50,60 +49,60 @@ public class Trip {
         tripList = new TreeMap<>();
     }
 
-    public void setRoute(Route route) {
-        this.route = route;
-    }
-
-    public void setShapeID(String shapeID) {
-        this.shapeID = shapeID;
-    }
-
-    public void setBlockID(String blockID) {
-        this.blockID = blockID;
-    }
-
-    public void setDirectionID(String directionID) {
-        this.directionID = directionID;
-    }
-
-    public void setTripHeadsign(String tripHeadsign) {
-        this.tripHeadsign = tripHeadsign;
-    }
-
-    public void setServiceID(String serviceID) {
-        this.serviceID = serviceID;
+    public NavigableMap<Integer, StopTime> getTripList() {
+        return tripList;
     }
 
     public void setTripList(NavigableMap<Integer, StopTime> tripList) {
         this.tripList = tripList;
     }
 
-    public NavigableMap<Integer, StopTime> getTripList() {
-        return tripList;
-    }
-
     public String getShapeID() {
         return shapeID;
+    }
+
+    public void setShapeID(String shapeID) {
+        this.shapeID = shapeID;
     }
 
     public String getBlockID() {
         return blockID;
     }
 
+    public void setBlockID(String blockID) {
+        this.blockID = blockID;
+    }
+
     public String getDirectionID() {
         return directionID;
+    }
+
+    public void setDirectionID(String directionID) {
+        this.directionID = directionID;
     }
 
     public String getTripHeadsign() {
         return tripHeadsign;
     }
 
+    public void setTripHeadsign(String tripHeadsign) {
+        this.tripHeadsign = tripHeadsign;
+    }
+
     public String getServiceID() {
         return serviceID;
     }
 
+    public void setServiceID(String serviceID) {
+        this.serviceID = serviceID;
+    }
+
     public Route getRoute() {
         return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
     }
 
     public String getRouteID() {
@@ -114,8 +113,8 @@ public class Trip {
         return tripID;
     }
 
-    public Boolean hasTripList(){
-        return tripList.size()>0;
+    public Boolean hasTripList() {
+        return tripList.size() > 0;
     }
 
     public boolean setTimes() {
@@ -138,21 +137,19 @@ public class Trip {
                 int current = tripArray.indexOf(stopTime);
                 if (current == tripArray.size() - 1 && current != 0) {
                     checkTime(tripArray.get(current - 1), stopTime, null);
-                } else if(current < tripArray.size() - 1 && current == 0) {
+                } else if (current < tripArray.size() - 1 && current == 0) {
                     checkTime(null, stopTime, tripArray.get(current + 1));
-                } else if(current < tripArray.size() - 1 && current != 0) {
+                } else if (current < tripArray.size() - 1 && current != 0) {
                     checkTime(tripArray.get(current - 1), stopTime, tripArray.get(current + 1));
                 }
                 result = true;
-            }
-            else {
+            } else {
                 throw new DuplicateRequestException("Attempted To Add Duplicate Stop to Trip: " + tripID);
             }
             if (route != null) {
-                if(stopTime.getStop() != null){
+                if (stopTime.getStop() != null) {
                     route.addStop(stopTime.getStop(), stopTime.getStopSequence());
-                }
-                else{
+                } else {
                     System.out.println("POSSIBLE BUG");
                 }
             }
@@ -169,15 +166,14 @@ public class Trip {
     public Stop getStop(String stopId) {
         Stop result = null;
         if (tripList != null && stopId != null) {
-            for (StopTime stopTime:tripList.values()) {
-                if(stopTime.getStopID().equals(stopId)){
+            for (StopTime stopTime : tripList.values()) {
+                if (stopTime.getStopID().equals(stopId)) {
                     return stopTime.getStop();
                 }
             }
         }
         return result;
     }
-
 
 
     /**
@@ -198,7 +194,7 @@ public class Trip {
         return toReturn;
     }
 
-    public String toString(){
+    public String toString() {
         return "TripID: " + tripID + "\nRouteID: " + routeID;
     }
 
@@ -243,11 +239,12 @@ public class Trip {
      * @author hortong
      * copies every instance variable within the trip parameter over this instance except for
      * the tripID, and the tripList
+     *
      * @param trip to copy from
      * @throws IllegalArgumentException if the IDs don't match
      */
-    public void copyInstanceVariables(Trip trip)throws IllegalArgumentException {
-        if(!this.getTripID().equalsIgnoreCase(trip.getTripID())){
+    public void copyInstanceVariables(Trip trip) throws IllegalArgumentException {
+        if (!this.getTripID().equalsIgnoreCase(trip.getTripID())) {
             throw new IllegalArgumentException("This trip's ID: " + this.getTripID() + ", does " +
                     "not match the ID of the argument: " + trip.getTripID());
         }
@@ -261,7 +258,7 @@ public class Trip {
     }
 
     public boolean checkTime(StopTime prev, StopTime current, StopTime next) {
-        if(prev != null) {
+        if (prev != null) {
             if (!(prev.getDepartureTime().compareTo(current.getArrivalTime()) <= 0)) {
                 throw new IllegalArgumentException("For Trip " + tripID + ", StopTime " + prev.getStopSequence()
                         + "'s Departure Time Is Greater Than Or Equal To StopTime " + current.getStopSequence()
@@ -269,7 +266,7 @@ public class Trip {
             }
         }
 
-        if(next != null) {
+        if (next != null) {
             if (!(current.getDepartureTime().compareTo(next.getArrivalTime()) <= 0)) {
                 throw new IllegalArgumentException("For Trip " + tripID + ", StopTime " + current.getStopSequence()
                         + "'s Departure Time Is Greater Than Or Equal To StopTime " + next.getStopSequence()

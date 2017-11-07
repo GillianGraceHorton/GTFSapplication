@@ -23,7 +23,7 @@ class FileManagerTest {
     }
 
     @Test
-    void isValid(){
+    void isValid() {
 
     }
 }

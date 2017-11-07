@@ -38,7 +38,7 @@ public class GTFSListView extends HBox implements Observer {
 
 
     /**
-     * Author: hortong
+     * Author:
      * Description: Initializes the GTFSListView class
      */
     public GTFSListView() {
@@ -68,15 +68,15 @@ public class GTFSListView extends HBox implements Observer {
         itemClicked = event -> {
             details.clear();
             Object list = event.getSource();
-            Object item = ((ListView)event.getSource()).getSelectionModel().getSelectedItem();
-            if(list == stopTimes){
-                details.setText(((Trip)item).tripListToString());
-            }else if(item instanceof Stop){
-                details.setText(((Stop)item).toStringData());
-            }else if(item instanceof Route){
-                details.setText(((Route)item).toStringData());
-            }else if(item instanceof Trip){
-                details.setText(((Trip)item).toStringData());
+            Object item = ((ListView) event.getSource()).getSelectionModel().getSelectedItem();
+            if (list == stopTimes) {
+                details.setText(((Trip) item).tripListToString());
+            } else if (item instanceof Stop) {
+                details.setText(((Stop) item).toStringData());
+            } else if (item instanceof Route) {
+                details.setText(((Route) item).toStringData());
+            } else if (item instanceof Trip) {
+                details.setText(((Trip) item).toStringData());
             }
         };
         stops.setOnMouseClicked(itemClicked);
@@ -86,20 +86,22 @@ public class GTFSListView extends HBox implements Observer {
     }
 
     /**
-     * Author: hortong
+     * Author:
      * Description: Adjusts the sizes of the javaFX objects
+     *
      * @param height height of the object
      * @param width  width of the object
      */
     public void adjustSizes(double height, double width) {
-        tabPane.setPrefWidth(width*(2.0/3.0));
-        details.setPrefWidth(width/3.0);
+        tabPane.setPrefWidth(width * (2.0 / 3.0));
+        details.setPrefWidth(width / 3.0);
         details.setPrefHeight(height);
     }
 
     /**
-     * Author:hortong
-     * Description: sets the subject
+     * Author:
+     * Description:
+     *
      * @param dataStorage
      */
     public void setSubject(Subject dataStorage) {
@@ -107,24 +109,25 @@ public class GTFSListView extends HBox implements Observer {
     }
 
     /**
-     * Author: hortong
+     * Author:
      * Description: Receives update from the subject
+     *
      * @param addedItems items that have been updated
      */
     public void update(ArrayList<Object> addedItems) {
-        ObservableList<Stop> stops =  FXCollections.observableArrayList();
-        ObservableList<Route> routes =  FXCollections.observableArrayList();
-        ObservableList<Trip> trips =  FXCollections.observableArrayList();
+        ObservableList<Stop> stops = FXCollections.observableArrayList();
+        ObservableList<Route> routes = FXCollections.observableArrayList();
+        ObservableList<Trip> trips = FXCollections.observableArrayList();
         ObservableList<Trip> stopTimes = FXCollections.observableArrayList();
         for (Object item : addedItems) {
             if (item instanceof Stop) {
-                stops.add((Stop)item);
+                stops.add((Stop) item);
             } else if (item instanceof Route) {
-                routes.add((Route)item);
+                routes.add((Route) item);
             } else if (item instanceof Trip) {
-                trips.add((Trip)item);
-                if (((Trip)item).getTripList() != null) {
-                    stopTimes.add((Trip)item);
+                trips.add((Trip) item);
+                if (((Trip) item).getTripList() != null) {
+                    stopTimes.add((Trip) item);
                 }
 
             }
@@ -133,5 +136,43 @@ public class GTFSListView extends HBox implements Observer {
             this.trips.setItems(trips);
             this.stopTimes.setItems(stopTimes);
         }
+    }
+
+    /**
+     * Author:
+     * Description:
+     *
+     * @param routes
+     */
+    public void displayRoutesContainingStop(ArrayList<Route> routes) {
+        if (routesContainingStopTab == null) {
+            routesContainingStopTab = new Tab("Routes containing Stop");
+            routesContainingStop = new TextArea();
+            routesContainingStopTab.setContent(routesContainingStop);
+            tabPane.getTabs().add(routesContainingStopTab);
+        }
+        StringBuilder toAdd = new StringBuilder();
+        for (Route route : routes) {
+            toAdd.append("RouteID: ").append(route.getRouteID()).append(", Route Name: ").append(route
+                    .getRouteLongName()).append("\n");
+        }
+        routesContainingStop.setText(toAdd.toString());
+        routesContainingStop.setEditable(false);
+    }
+
+    /**
+     * Author:
+     * Description:
+     *
+     * @param route
+     */
+    public void displayRouteWithStops(Route route) {
+        if (routeWithStopsTab == null) {
+            routeWithStopsTab = new Tab("Route With its Stops");
+            routeWithStops = new TextArea();
+            routeWithStopsTab.setContent(routeWithStops);
+            tabPane.getTabs().add(routeWithStopsTab);
+        }
+        routeWithStops.setText(route.stopsToString());
     }
 }
