@@ -20,62 +20,48 @@ public class BusMap extends Pane implements Observer {
         trips = new ArrayList<>();
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @param dataStorage
-     */
     public void setSubject(Subject dataStorage) {
         this.dataStorage = dataStorage;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public ArrayList<Stop> getStops() {
         return stops;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
     public ArrayList<Route> getRoutes() {
         return routes;
     }
 
-    /**
-     * Author:
-     * Description:
-     *
-     * @return
-     */
-    public ArrayList<Trip> getTrips() {
-        return trips;
-    }
+    public ArrayList<Trip> getTrips() { return trips; }
 
     /**
      * Author:
-     * Description:
+     * Description: updates observers with the Stops, Routes, or Trips stored
      *
      * @param updates - Collection of objects to send to observers
      */
     @Override
     public void update(ArrayList<Object> updates) {
-        for (Object item : updates) {
-            if (item instanceof Stop) {
+        Object firstItem = updates.get(0);
+        if(firstItem instanceof  Stop){
+            for (Object item : updates) {
                 stops.add((Stop) item);
-            } else if (item instanceof Route) {
+            }
+        }
+        else if (firstItem instanceof  Route) {
+            for (Object item : updates) {
                 routes.add((Route) item);
-            } else if (item instanceof Trip) {
+            }
+        }
+        else if (firstItem instanceof  Trip) {
+            for (Object item : updates) {
                 trips.add((Trip) item);
             }
         }
+//        for (Object item : updates) {
+//            if (item instanceof Stop) { stops.add((Stop) item); }
+//            else if (item instanceof Route) { routes.add((Route) item); }
+//            else if (item instanceof Trip) { trips.add((Trip) item); }
+//        }
     }
 }
