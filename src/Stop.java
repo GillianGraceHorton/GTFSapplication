@@ -7,27 +7,26 @@ import java.util.ArrayList;
  */
 public class Stop {
 
-	private Location location; //gps location of the stop
-	private String stopID; //stop identifier
-	private String name; //stop name
-	private String stopDescription; //short description of stop and/or where it is located
-	private ArrayList<StopTime> stopTimes;
+    private Location location; //gps location of the stop
+    private String stopID; //stop identifier
+    private String name; //stop name
+    private String stopDescription; //short description of stop and/or where it is located
+    private ArrayList<StopTime> stopTimes;
 
-	/**
-	 * Author:
-	 * Description: Creates a stop object with information loaded from a stop file
-	 * @param lon longitude for the gps location of the stop
-	 * @param lat latitude for the gps location of the stop
-	 * @param name of the stop
-	 * @param stopID identifier for the stop
-	 * @param stopDesc description of the stop
-	 */
-	public Stop(double lon, double lat, String name, String stopID, String stopDesc){
-		this.location = new Location(lon, lat);
-		this.name = name;
-		this.stopID = stopID;
-		this.stopDescription = stopDesc;
-	}
+    /**
+     * Description: Creates a stop object with information loaded from a stop file
+     * @param lon      longitude for the gps location of the stop
+     * @param lat      latitude for the gps location of the stop
+     * @param name     of the stop
+     * @param stopID   identifier for the stop
+     * @param stopDesc description of the stop
+     */
+    public Stop(double lon, double lat, String name, String stopID, String stopDesc) {
+        this.location = new Location(lon, lat);
+        this.name = name;
+        this.stopID = stopID;
+        this.stopDescription = stopDesc;
+    }
 
 	public Stop(String stopID){
 		this.stopID = stopID;
@@ -125,19 +124,19 @@ public class Stop {
 		return String.format("%s,%s,%s,%f,%f,",getStopID(),getName(),getStopDescription(),getLocation().getLat(),getLocation().getLon());
 	}
 
-	/**
-	 * Author: Joseph Heinz - heinzja@msoe.edu
-	 * Description: Checks if this Stop Object contains a location and name, if not, then the stop
-	 * 				is a place holder for future stop information to added to.
-	 * @return returns result of if this Stop Object is a placeholder (empty) or valid
-	 */
-	public boolean isEmpty(){
-		boolean result = true;
-		if(this.location != null && this.name != null){
-			result = false;
-		}
-		return result;
-	}
+    /**
+     * Author: Joseph Heinz - heinzja@msoe.edu
+     * Description: Checks if this Stop Object contains a location and name, if not, then the stop
+     *              is a place holder for future stop information to added to.
+     * @return returns result of if this Stop Object is a placeholder (empty) or valid
+     */
+    public boolean isEmpty() {
+        boolean result = true;
+        if (this.location != null && this.name != null) {
+            result = false;
+        }
+        return result;
+    }
 
 	/**
 	 * Author: hortong
@@ -153,7 +152,6 @@ public class Stop {
 		this.name = stop.getName();
 		this.stopDescription = stop.getStopDescription();
 		this.location = stop.getLocation();
-		this.stopTimes = stop.getStopTimes();
 	}
 
 }
