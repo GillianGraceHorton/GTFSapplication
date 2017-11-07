@@ -48,10 +48,6 @@ public class Trip {
         }
     }
 
-    public void setShapeID(String shapeID) {
-        this.shapeID = shapeID;
-    }
-
     public void setBlockID(String blockID) {
         this.blockID = blockID;
     }
@@ -66,10 +62,6 @@ public class Trip {
 
     public void setServiceID(String serviceID) {
         this.serviceID = serviceID;
-    }
-
-    public void setTripList(NavigableMap<Integer, StopTime> tripList) {
-        this.tripList = tripList;
     }
 
     public NavigableMap<Integer, StopTime> getTripList() {
