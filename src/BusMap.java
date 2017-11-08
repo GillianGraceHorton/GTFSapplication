@@ -13,8 +13,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Author: hortong, hoffmanjc
@@ -105,16 +107,16 @@ public class BusMap extends HBox implements Observer {
      */
 	private void drawRoute(Route route){
 		if(!route.getStops().isEmpty() && !route.isEmpty()) {
-			for (Stop stop : route.getStops().values()) {
-				addStopMarker(stop);
-			}
-
-			if (route.getRouteColor().trim().equals("FFFFFF")){							 //changes white lines to red
-				webView.getEngine().executeScript("drawRoute(\"" + "FF0000" + "\")");
-			}
-			else {
-				webView.getEngine().executeScript("drawRoute(\"" + route.getRouteColor().trim() + "\")");
-			}
+			Object[] stops = route.getStops().values().toArray();
+			for (int index = 0; index < stops.length; index++) {
+                addStopMarker((Stop)stops[index]);
+            }
+				if (route.getRouteColor().trim().equals("FFFFFF")){							 //changes white lines to red
+					webView.getEngine().executeScript("drawRoute(\"" + "FF0000" + "\")");
+				}
+				else {
+					webView.getEngine().executeScript("drawRoute(\"" + route.getRouteColor().trim() + "\")");
+				}
 		}
 	}
 }
